@@ -29,6 +29,7 @@ import com.intrepid.nicge.ui.Enviroment;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.animation.AnimationPack;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
+import org.bquarkz.beyondtime.simulator.Simulation;
 
 @GameScene
 public class CombatScene implements Scene
@@ -44,6 +45,7 @@ public class CombatScene implements Scene
     private SeekerCamera seekerCamera;
     private CombatManager combatManager;
     private Enviroment enviroment;
+    private Simulation simulation;
 
     // ****************************************************************************************
     // Constructors
@@ -56,6 +58,8 @@ public class CombatScene implements Scene
     public void start()
     {
         c = 0;
+
+        simulation = new Simulation();
 
         AnimationPack pack = Game.common.getAsset( Resources.Animations.SENTINEL );
 
@@ -110,7 +114,6 @@ public class CombatScene implements Scene
     public void display( GraphicsBatch batch )
     {
         batch.begin();
-        //batch.draw( Game.common.getAsset( Resources.Textures.BADLOGIC_LOGO ), 0, 0 );
         enviroment.display( batch );
         batch.end();
     }
@@ -148,6 +151,9 @@ public class CombatScene implements Scene
     @Override
     public void simulation()
     {
+        simulation.step( (long)( Game.time.getRawDeltaTime() * 1_000_000_000 ) );
+        Game.util.addDebugMessage( "KOTLIN-SIMULATION-PERIOD",
+                String.format( "%.2f", simulation.report().periodControl().currentPeriodPercent() ) );
     }
 
     // ****************************************************************************************

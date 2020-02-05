@@ -157,7 +157,7 @@ public class Button implements IComponent
     @Override
     public void update()
     {
-        elapsedTime += Game.time.getDeltaTime();
+        elapsedTime += Game.time.getRawDeltaTime();
 
         if( isActionActive )
         {

@@ -1,23 +1,6 @@
-//eclipse{
-//	project {
-//	    name = appName + "-game"
-//		linkedResource name: 'assets', type: '2', location: 'PARENT-1-PROJECT_LOC/assets/resources/'
-//	}
-
-//    classpath {
-//        file {
-//            withXml {
-//                def node = it.asNode()
-//                node.appendNode('classpathentry', [kind: 'src', path: 'assets', exported: true])
-//				def writer = new FileWriter(file(".classpath"))
-//				def printer = new XmlNodePrinter(new PrintWriter(writer))
-//				printer.setPreserveWhitespace(true)
-//				printer.print(node)
-//            }
-//        }
-//    }
-
-//}
+plugins {
+	id("org.jetbrains.kotlin.jvm") version "1.3.61"
+}
 
 task generateEclipseClasspath( description: "Post processing to create a classpath file for eclipse", group: "IDE" ) {
 	doLast {
@@ -32,4 +15,8 @@ task generateEclipseClasspath( description: "Post processing to create a classpa
 
 dependencies {
     compile project(":engine")
+	implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	testImplementation("org.jetbrains.kotlin:kotlin-test")
+	testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }

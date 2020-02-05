@@ -44,7 +44,7 @@ abstract class AbstractEntity implements Entity
     @Override
     public void update()
     {
-        elapsedTime += Game.time.getDeltaTime();
+        elapsedTime += Game.time.getRawDeltaTime();
     }
 
     @Override

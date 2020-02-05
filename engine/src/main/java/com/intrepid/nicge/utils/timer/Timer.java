@@ -58,10 +58,10 @@ public class Timer implements Updatable, Poolable {
 	@Override
 	public void update() {
 		if( isRunning ) {
-			elapsedTime += Game.time.getDeltaTime();
+			elapsedTime += Game.time.getRawDeltaTime();
 			
 			if( isPaused ) {
-				pausedTime += Game.time.getDeltaTime();
+				pausedTime += Game.time.getRawDeltaTime();
 			}
 		}
 	}

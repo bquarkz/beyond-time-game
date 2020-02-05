@@ -61,7 +61,7 @@ public final class Game implements Application
     private static GameConfiguration gameConfiguration;
     private static double elapsedTime;
     private static Theater theater;
-    private static double loopTime;
+    private static double lastLoopTime;
     private static double allProcessTime;
     private static AudioControl audioControl;
     private static Reflection reflection;
@@ -77,6 +77,9 @@ public final class Game implements Application
         Game.boot = boot;
         Game.gameConfiguration = boot.getConfig();
         Game.process = getProcess();
+        Game.elapsedTime = 0.0000001;
+        Game.lastLoopTime = 0.0000001;
+        Game.allProcessTime = 0.0000001;
     }
 
     // ****************************************************************************************
@@ -95,11 +98,11 @@ public final class Game implements Application
         double display = usage.getProcessExecution( GameProcess.DISPLAY );
         double audio = usage.getProcessExecution( GameProcess.AUDIO );
 
-        Game.info.addSystemInfo( "Control Capture:..(%02d)", (int)control );
-        Game.info.addSystemInfo( "Simulation:.......(%02d)", (int)simulation );
-        Game.info.addSystemInfo( "Update:...........(%02d)", (int)update );
-        Game.info.addSystemInfo( "Display:..........(%02d)", (int)display );
-        Game.info.addSystemInfo( "Audio Update:.....(%02d)", (int)audio );
+        Game.info.addSystemInfo( "Control Capture:..(%s)", (int)control );
+        Game.info.addSystemInfo( "Simulation:.......(%s)", (int)simulation );
+        Game.info.addSystemInfo( "Update:...........(%s)", (int)update );
+        Game.info.addSystemInfo( "Display:..........(%s)", (int)display );
+        Game.info.addSystemInfo( "Audio Update:.....(%s)", (int)audio );
 
         Game.info.addSystemInfo( "FPS: " + Game.graphics.getFPS() );
         Game.info.throwUp();
@@ -143,7 +146,7 @@ public final class Game implements Application
 
         // initialization all game variable and its stuff
         Game.elapsedTime = Gdx.graphics.getDeltaTime();
-        Game.loopTime = 0;
+        Game.lastLoopTime = 0;
         Game.allProcessTime = 0;
 
         // initialize the game
@@ -157,13 +160,13 @@ public final class Game implements Application
         Game.graphics.clearScreen();
 
         // it gets the time who last loop took to be executed
-        Game.elapsedTime += (double)Game.time.getDeltaTime();
+        Game.elapsedTime += Game.time.getRawDeltaTime();
 
         // execute all process and calculate the time to execute sounds
         double procGeral_i = Game.time.getSystemMicroTime();
         executeAllProcess( procGeral_i );
         double procGeral_f = Game.time.getSystemMicroTime();
-        Game.loopTime = procGeral_f - procGeral_i;
+        Game.lastLoopTime = procGeral_f - procGeral_i;
 
         // well, that is it... and throw up all debug info into screen
         throwUpDebugInfo();
@@ -178,7 +181,7 @@ public final class Game implements Application
         allProcessTime = Game.time.getSystemMicroTime() - procGeral_i;
 
         // calculate how many time was gone since last update (targeting the FPS)
-        double soundPlayLeftOverTime = ( Game.time.getDeltaTime() * 1000 ) - allProcessTime;
+        double soundPlayLeftOverTime = ( Game.time.getRawDeltaTime() * 1_000_000 ) - allProcessTime;
         // take just 90% of that time
         soundPlayLeftOverTime *= 0.9f;
         // throw up the sound stack
@@ -380,13 +383,18 @@ public final class Game implements Application
     {
         public static double getSystemMicroTime()
         {
-            return ( ( System.nanoTime() ) / 1000000.0 );
+            return ( System.nanoTime() / 1000000.0 );
+        }
+
+        public static double getSystemNanoTime()
+        {
+            return System.nanoTime();
         }
 
         /**
          * @return the time span between the current frame and the last frame in seconds, without smoothing
          */
-        public static float getDeltaTime()
+        public static float getRawDeltaTime()
         {
             return Gdx.graphics.getRawDeltaTime();
         }
@@ -401,9 +409,9 @@ public final class Game implements Application
             return Game.timerManager;
         }
 
-        public static double getTotalLoopTime()
+        public static double getLastLoopTime()
         {
-            return loopTime;
+            return lastLoopTime;
         }
 
         public static double getAllProcessTime()
@@ -416,7 +424,7 @@ public final class Game implements Application
     {
         public static double getProcessExecution( GameProcess gp )
         {
-            return ( gp.getExecutionTime() / loopTime ) * 100.0;
+            return ( gp.getExecutionTime() / lastLoopTime ) * 100.0;
         }
     }
 

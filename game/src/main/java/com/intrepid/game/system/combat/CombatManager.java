@@ -81,7 +81,7 @@ public class CombatManager
 
     public void update()
     {
-        elapsedTime += Game.time.getDeltaTime();
+        elapsedTime += Game.time.getRawDeltaTime();
 
         if( elapsedTime >= 0.35f )
         {

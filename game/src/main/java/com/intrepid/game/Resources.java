@@ -36,7 +36,7 @@ public class Resources
 
         private Resource< Texture > resource;
 
-        private Textures( String name )
+        Textures( String name )
         {
             resource = registerTexture( name );
         }
@@ -73,7 +73,7 @@ public class Resources
 
         private Resource< AnimationPack > resource;
 
-        private Animations( String name )
+        Animations( String name )
         {
             resource = registerAnimationPack( name );
         }

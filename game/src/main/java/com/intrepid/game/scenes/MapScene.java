@@ -20,6 +20,7 @@ import com.intrepid.nicge.theater.cameras.SeekerCamera;
 import com.intrepid.nicge.theater.scene.GameScene;
 import com.intrepid.nicge.theater.scene.Scene;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
+import org.bquarkz.beyondtime.simulator.Simulation;
 
 @GameScene
 public class MapScene implements Scene
@@ -113,6 +114,8 @@ public class MapScene implements Scene
     @Override
     public void simulation()
     {
+        Game.util.addDebugMessage( "LAST LOOP TIME",
+                String.format( "%.2f", Game.time.getLastLoopTime() ) );
     }
 
     // ****************************************************************************************
