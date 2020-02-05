@@ -1,0 +1,6 @@
+rootProject.name = 'beyond-time'
+
+include 'engine'
+include 'game'
+include 'desktop'
+include 'tools'

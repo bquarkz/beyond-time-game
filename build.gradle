@@ -1,0 +1,44 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        jcenter()
+    }
+    dependencies {
+    }
+}
+
+allprojects {
+    //apply plugin: "eclipse"
+    apply plugin: "idea"
+    apply plugin: 'java'
+	//apply plugin: 'java-library'
+	//apply plugin: 'jvm-component'
+	//apply plugin: 'maven'
+
+    version = '1.0'
+    ext {
+        appName = "beyond-time"
+        gdxVersion = '1.9.10'
+        lwjglVersion = '3.2.1'//'2.9.3'
+        roboVMVersion = '2.3.6'
+        box2DLightsVersion = '1.4'
+        ashleyVersion = '1.7.0'
+        aiVersion = '1.8.0'
+    }
+	
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+	
+	tasks.withType(JavaCompile) {
+		options.encoding = 'UTF-8'
+	}
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    }
+}

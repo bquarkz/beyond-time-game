@@ -1,0 +1,65 @@
+project.ext.mainClassName = "com.intrepid.launcher.GameDesktopLauncher"
+project.ext.assetsDir = new File("../assets/resources/");
+
+task run(dependsOn: classes, type: JavaExec) {
+    main = project.mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    workingDir = project.assetsDir
+    ignoreExitValue = true
+}
+
+task debug(dependsOn: classes, type: JavaExec) {
+    main = project.mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    workingDir = project.assetsDir
+    ignoreExitValue = true
+    debug = true
+}
+
+task pack(type: Jar) {
+	manifest {
+    	attributes 'Implementation-Title': appName,
+    	'Implementation-Version': version,
+    	'Main-Class': project.mainClassName
+	}
+	baseName = appName
+    from files(sourceSets.main.output.classesDirs)
+    from files(sourceSets.main.output.resourcesDir)
+	from { configurations.compile.collect { it.isDirectory() ? it : zipTree( it ) } }
+    from files(project.assetsDir);
+	zip64="true"
+    with jar
+}
+
+pack.dependsOn classes
+	
+task dist(type: Jar) {
+    from files(sourceSets.main.output.classesDirs)
+    from files(sourceSets.main.output.resourcesDir)
+    from {configurations.compile.collect {zipTree(it)}}
+    from files(project.assetsDir);
+ 
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+    }
+}
+
+dist.dependsOn classes
+
+dependencies {
+    compile project(":engine")
+    compile project(":game")
+
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+    //compile "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
+    //compile "de.tomgrill.gdxfacebook:gdx-facebook-desktop:1.4.1"
+    //compile "de.tomgrill.gdxdialogs:gdx-dialogs-desktop:1.2.5"
+}
