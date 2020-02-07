@@ -1,7 +1,8 @@
-# Sparking Heaven @ Intrepid "Homemade" Fun Company
-# NICGE - New Indie Common Game Engine
+# BEYOND TIME
+## NICGE - New Indie Common Game Engine
  
-My own game engine for 2D with Top-Down View games, multi-plataform that uses libGDX and so many other tools.
+New crazy ideas about science fiction, time traveling, mechas and simulation.
+It should be a game but could only be a place to put my crap stuff instead.
 
 ## Developer(s):
-Nilton Rogerio Constantino aKa 'bQUARKz' [ niltonrc@gmail.com , bquarkz@gmail.com ]
+Nilton Rogerio Constantino aKa 'bQUARKz' [ bquarkz@gmail.com ]
