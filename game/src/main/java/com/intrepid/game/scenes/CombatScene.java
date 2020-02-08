@@ -26,6 +26,7 @@ import com.intrepid.nicge.ui.Environment;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.animation.AnimationPack;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
+import com.intrepid.nicge.utils.timer.Timer;
 import org.bquarkz.beyondtime.simulator.Simulation;
 
 @GameScene
@@ -45,6 +46,8 @@ public class CombatScene implements IScene
     private SeekerCamera seekerCamera;
     private Environment environment;
     private Simulation simulation;
+
+    private Timer timer;
 
     // ****************************************************************************************
     // Constructors
@@ -77,14 +80,24 @@ public class CombatScene implements IScene
         environment = Environment.create();
         environment.addComponent( b );
         Gdx.input.setInputProcessor( environment );
+
+        timer = new Timer();
+        timer.start();
     }
 
     @Override
     public void update()
     {
-        Game.util.addDebugMessage( "SCENE", "COMBAT SCENE - " + c++ );
+        timer.update();
+        Game.util.addDebugMessage( "SCENE",
+                "COUNTER: " + c,
+                "TIMER: " + timer.getTotalTime_s() + "s",
+                "SIMULATION-PERIOD: " + String.format( "%.2f", simulation
+                        .report()
+                        .periodControl()
+                        .currentPeriodPercent() ) );
 
-        if( c == 890 )
+        if( c++ == 890 || timer.getTotalTime_s() > 15 )
         {
             Game.scene.change( MapScene.class, AllCurtains.IMAGE_FADE );
         }
@@ -140,8 +153,6 @@ public class CombatScene implements IScene
             simulation.step( STEP );
             lag -= OPTIMAL_TIME;
         }
-        Game.util.addDebugMessage( "KOTLIN-SIMULATION-PERIOD",
-                String.format( "%.2f", simulation.report().periodControl().currentPeriodPercent() ) );
     }
 
     // ****************************************************************************************
