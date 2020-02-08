@@ -123,7 +123,7 @@ public final class Studio implements Application {
 		// aplicar o atenuador de 90%, por seguranca.
 		soundPlayLeftOverTime *= 0.9f;
 		// descarrega a fila de sons ate o tempo faltante;
-		Studio.audioControl.getSoundManager().execute( soundPlayLeftOverTime );
+		Studio.audioControl.getSoundManager().execute( (long)soundPlayLeftOverTime );
 		
 		double procGeral_f = Studio.time.getSystemMicroTime();
 		

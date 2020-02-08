@@ -12,6 +12,7 @@
  */
 package com.intrepid.game;
 
+import com.intrepid.game.scenes.CombatScene;
 import com.intrepid.game.scenes.MapScene;
 import com.intrepid.nicge.theater.scene.AbstractBootScene;
 import com.intrepid.nicge.theater.scene.GameScene;
@@ -23,6 +24,6 @@ public class BootScene extends AbstractBootScene
 	@Override
 	public Class< ? extends IScene > getStartScene()
 	{
-		return MapScene.class;
+		return CombatScene.class;
 	}
 }

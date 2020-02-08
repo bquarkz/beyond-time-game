@@ -6,84 +6,122 @@ import com.intrepid.nicge.utils.pool.IPoolable;
 
 public class Timer implements IUpdatable, IPoolable
 {
-	// ****************************************************************************************
-	// Const Fields
-	// ****************************************************************************************
+    // ****************************************************************************************
+    // Const Fields
+    // ****************************************************************************************
 
-	// ****************************************************************************************
-	// Common Fields
-	// ****************************************************************************************
-	private float elapsedTime;
-	private float pausedTime;
-	private boolean isRunning;
-	private boolean isPaused;
+    // ****************************************************************************************
+    // Common Fields
+    // ****************************************************************************************
+    private long elapsedTime;
+    private long pausedTime;
+    private boolean isRunning;
+    private boolean isPaused;
 
-	// ****************************************************************************************
-	// Constructors
-	// ****************************************************************************************
-	public Timer() {
-		this.elapsedTime = 0.0f;
-		this.pausedTime = 0.0f;
-		this.isRunning = false;
-		this.isPaused = false;
-	}
-	
-	// ****************************************************************************************
-	// Methods
-	// ****************************************************************************************
-	public void start() {
-		pausedTime = 0.0f;
-		elapsedTime = 0.0f;
-		isRunning = true;
-		isPaused = false;
-	}
+    // ****************************************************************************************
+    // Constructors
+    // ****************************************************************************************
+    public Timer()
+    {
+        this.elapsedTime = 0L;
+        this.pausedTime = 0L;
+        this.isRunning = false;
+        this.isPaused = false;
+    }
 
-	public void stop() {
-		isRunning = false;
-		isPaused = false;
-	}
-	
-	public void pause() {
-		isPaused = true;
-	}
-	
-	public void unpause() {
-		isPaused = false;
-	}
-	
-	public boolean checkTimeInMiliSecs( float timeInMili ) {
-		float checkTime = timeInMili / 1000f;
-		return getTotalTime() >= checkTime;
-	}
+    // ****************************************************************************************
+    // Methods
+    // ****************************************************************************************
+    public void start()
+    {
+        pausedTime = 0L;
+        elapsedTime = 0L;
+        isRunning = true;
+        isPaused = false;
+    }
 
-	@Override
-	public void update() {
-		if( isRunning ) {
-			elapsedTime += Game.time.getRawDeltaTime();
-			
-			if( isPaused ) {
-				pausedTime += Game.time.getRawDeltaTime();
-			}
-		}
-	}
-	
-	// ****************************************************************************************
-	// Getters And Setters Methods
-	// ****************************************************************************************
-	public float getTotalTime() {
-		float totalTime = elapsedTime - pausedTime;
-		return ( totalTime > 0.0f ) ? totalTime : 0.0f;
-	}
-	
-	public float getRunningTime() {
-		return elapsedTime;
-	}
-	
-	public float getPausedTime() {
-		return pausedTime;
-	}
-	
-	// ****************************************************************************************
-	// Patterns
-	// ***************************************************************************************
+    public void stop()
+    {
+        isRunning = false;
+        isPaused = false;
+    }
+
+    public void pause()
+    {
+        isPaused = true;
+    }
+
+    public void unpause()
+    {
+        isPaused = false;
+    }
+
+    public boolean checkTime_ns( long time_ns )
+    {
+        return getTotalTime_ns() >= time_ns;
+    }
+
+    public boolean checkTime_ms( long time_ms )
+    {
+        long time_ns = time_ms * 1_000_000;
+        return checkTime_ns( time_ns );
+    }
+
+    public boolean checkTime_ns( double time_ns )
+    {
+        return getTotalTime_ns() >= (long)time_ns;
+    }
+
+    public boolean checkTime_ms( double time_ms )
+    {
+        long time_ns = (long)time_ms * 1_000_000;
+        return checkTime_ns( time_ns );
+    }
+
+    @Override
+    public void update()
+    {
+        if( isRunning )
+        {
+            elapsedTime += Game.time.getRawDeltaTime_ns();
+
+            if( isPaused )
+            {
+                pausedTime += Game.time.getRawDeltaTime_ns();
+            }
+        }
+    }
+
+    // ****************************************************************************************
+    // Getters And Setters Methods
+    // ****************************************************************************************
+    public long getTotalTime_ns()
+    {
+        long totalTime = elapsedTime - pausedTime;
+        return Math.max( totalTime, 0L );
+    }
+
+    public long getTotalTime_ms()
+    {
+        return getTotalTime_ns() / 1_000_000L;
+    }
+
+    public long getTotalTime_s()
+    {
+        return getTotalTime_ns() / 1_000_000_000L;
+    }
+
+    public long getRunningTime()
+    {
+        return elapsedTime;
+    }
+
+    public long getPausedTime()
+    {
+        return pausedTime;
+    }
+
+    // ****************************************************************************************
+    // Patterns
+    // ***************************************************************************************
 }

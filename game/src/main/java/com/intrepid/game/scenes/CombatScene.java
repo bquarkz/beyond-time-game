@@ -17,9 +17,6 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.intrepid.game.Resources;
 import com.intrepid.game.curtains.AllCurtains;
-import com.intrepid.game.system.campaing.GroupInfo;
-import com.intrepid.game.system.combat.CombatManager;
-import com.intrepid.game.system.sheet.Sheet;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.theater.cameras.SeekerCamera;
 import com.intrepid.nicge.theater.scene.GameScene;
@@ -46,7 +43,6 @@ public class CombatScene implements IScene
     // ****************************************************************************************
     private int c;
     private SeekerCamera seekerCamera;
-    private CombatManager combatManager;
     private Environment environment;
     private Simulation simulation;
 
@@ -81,22 +77,6 @@ public class CombatScene implements IScene
         environment = Environment.create();
         environment.addComponent( b );
         Gdx.input.setInputProcessor( environment );
-
-        Random random = new Random( System.currentTimeMillis() );
-        GroupInfo players = GroupInfo.create();
-        players.add( Sheet.createWithRandomAttributes( random, "LUKE" ) );
-        players.add( Sheet.createWithRandomAttributes( random, "SUZANE" ) );
-        players.add( Sheet.createWithRandomAttributes( random, "MARK" ) );
-        players.add( Sheet.createWithRandomAttributes( random, "STEPHEN" ) );
-
-        GroupInfo enemies = GroupInfo.create();
-        enemies.add( Sheet.createWithRandomAttributes( random, "ROGER" ) );
-        enemies.add( Sheet.createWithRandomAttributes( random, "MEGANE" ) );
-        enemies.add( Sheet.createWithRandomAttributes( random, "SPARK" ) );
-        enemies.add( Sheet.createWithRandomAttributes( random, "UNCLE BOB" ) );
-
-        combatManager = CombatManager.create( players, enemies );
-        combatManager.setupCombat();
     }
 
     @Override
@@ -109,7 +89,6 @@ public class CombatScene implements IScene
             Game.scene.change( MapScene.class, AllCurtains.IMAGE_FADE );
         }
 
-        combatManager.update();
         environment.update();
     }
 
@@ -155,7 +134,7 @@ public class CombatScene implements IScene
     public void simulation()
     {
         int nUpdates = 0;
-        long lag = Game.time.getElapsedTime();
+        long lag = Game.time.getElapsedTime_ns();
         while( lag >= OPTIMAL_TIME && nUpdates++ < MAX_NUMBER_OF_UPDATES )
         {
             simulation.step( STEP );

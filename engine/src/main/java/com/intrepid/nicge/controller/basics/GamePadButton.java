@@ -16,6 +16,6 @@ public interface GamePadButton extends UnitControl {
 	boolean isEdgeDown();
 	boolean isEdgeUp();
 	boolean isPressed();
-	boolean isPressedForMiliSecs( float time );
-	float getHowMuchTimeInMiliSecsItIsPressed();
+	boolean isPressedForMilliSecs( float time );
+	float getHowMuchTimeInMilliSecsItIsPressed();
 }

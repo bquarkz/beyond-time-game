@@ -68,13 +68,13 @@ public class KeyboardButton implements GamePadButton {
 	}
 
 	@Override
-	public boolean isPressedForMiliSecs( float time ) {
-		return timer.checkTimeInMiliSecs( time );
+	public boolean isPressedForMilliSecs( float time ) {
+		return timer.checkTime_ns( (long)( time * 1_000_000L ) );
 	}
 
 	@Override
-	public float getHowMuchTimeInMiliSecsItIsPressed() {
-		return timer.getTotalTime();
+	public float getHowMuchTimeInMilliSecsItIsPressed() {
+		return timer.getTotalTime_ns() / 1_000_000.0f;
 	}
 	
 	@Override

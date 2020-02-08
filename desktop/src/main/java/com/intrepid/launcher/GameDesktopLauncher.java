@@ -69,7 +69,7 @@ public class GameDesktopLauncher extends AbstractLauncher< GameBoot >
         gcb.setNativeResolutionHeight( windowResolutionHeight / nrscl ); // by 4 = 270
 
         gcb.setBitsPerPixel( 24 );
-        gcb.setFPS( 120 );
+        gcb.setFPS( 60 );
         gcb.setMMSA( 2 );
         gcb.setVSync( false );
         gcb.setClassLoadersPackages( packages );

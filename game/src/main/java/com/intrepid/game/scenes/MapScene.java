@@ -69,15 +69,6 @@ public class MapScene implements IScene
         batch.begin();
         batch.draw( texture, 0, 0 );
         batch.end();
-
-        try
-        {
-            Thread.sleep( 8 );
-        }
-        catch( InterruptedException e )
-        {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -113,7 +104,7 @@ public class MapScene implements IScene
     @Override
     public void simulation()
     {
-        Game.util.addDebugMessage( "LAST LOOP TIME", Game.time.getLastLoopTime() + "ns" );
+        Game.util.addDebugMessage( "LAST LOOP TIME", Game.time.getLastLoopTime_ns() + "ns" );
     }
 
     // ****************************************************************************************

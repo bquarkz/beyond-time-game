@@ -41,7 +41,7 @@ public enum GameProcess implements IProcessExecution
     // Fields & Ks
     // ****************************************************************************************
     private IProcessExecution processExecution;
-    private double executionTime;
+    private long executionTime;
 
     // ****************************************************************************************
     // Methods
@@ -49,13 +49,13 @@ public enum GameProcess implements IProcessExecution
     @Override
     public void execute()
     {
-        double ti = Game.time.getSystemMilliTime();
+        long ti = Game.time.getCurrentTime_ns();
         processExecution.execute();
-        double tf = Game.time.getSystemMilliTime();
+        long tf = Game.time.getCurrentTime_ns();
         executionTime = tf - ti;
     }
 
-    public double getExecutionTime()
+    public long getExecutionTime()
     {
         return executionTime;
     }

@@ -142,7 +142,7 @@ public final class Game implements Application
 		while( !Game.assetManager.update() );
 
         // initialization all game variable and its stuff
-        Game.elapsedTime = Game.time.getRawDeltaTime();
+        Game.elapsedTime = Game.time.getRawDeltaTime_ns();
         Game.lastLoopTime = 0L;
         Game.allProcessTime = 0L;
 
@@ -157,15 +157,16 @@ public final class Game implements Application
         Game.graphics.clearScreen();
 
         // it gets the time who last loop took to be executed
-        Game.elapsedTime += Game.time.getRawDeltaTime();
+        Game.elapsedTime += Game.time.getRawDeltaTime_ns();
 
         // execute all process and calculate the time to execute sounds
-        long procGeral_i = Game.time.getSystemMilliTime();
+        long procGeral_i = Game.time.getCurrentTime_ns();
         executeAllProcess( procGeral_i );
-        long procGeral_f = Game.time.getSystemMilliTime();
 
         // well, that is it... and throw up all debug info into screen
         throwUpDebugInfo();
+
+        long procGeral_f = Game.time.getCurrentTime_ns();
 
         Game.lastLoopTime = procGeral_f - procGeral_i;
     }
@@ -176,10 +177,10 @@ public final class Game implements Application
         {
             processExecution.execute();
         }
-        allProcessTime = Game.time.getSystemNanoTime() - procGeral_i;
+        allProcessTime = Game.time.getCurrentTime_ns() - procGeral_i;
 
         // calculate how many time was gone since last update (targeting the FPS)
-        long leftoverTimeToPlaySounds = ( Game.time.getRawDeltaTime() ) - allProcessTime;
+        long leftoverTimeToPlaySounds = ( Game.time.getRawDeltaTime_ns() ) - allProcessTime;
 
         // throw up the sound stack
         Game.audioControl.getSoundManager().execute( leftoverTimeToPlaySounds );
@@ -378,12 +379,12 @@ public final class Game implements Application
 
     public static final class time
     {
-        public static long getSystemMilliTime()
+        public static long getCurrentTime_ms()
         {
-            return ( getSystemNanoTime() / 1_000_000 );
+            return ( Game.time.getCurrentTime_ns() / 1_000_000 );
         }
 
-        public static long getSystemNanoTime()
+        public static long getCurrentTime_ns()
         {
             return System.nanoTime();
         }
@@ -391,7 +392,7 @@ public final class Game implements Application
         /**
          * Get delta time in nano-seconds, without scale
          */
-        public static long getRawDeltaTime()
+        public static long getRawDeltaTime_ns()
         {
             return (long)( Gdx.graphics.getRawDeltaTime() * 1_000_000_000L );
         }
@@ -399,7 +400,7 @@ public final class Game implements Application
         /**
          * Get delta time in seconds without scale
          */
-        public static long getDeltaTime()
+        public static long getDeltaTime_ns()
         {
             return (long)( Gdx.graphics.getDeltaTime() * 1_000_000_000L );
         }
@@ -407,7 +408,7 @@ public final class Game implements Application
         /**
          * Get delta time in seconds, without scale
          */
-        public static float getGdxRawDeltaTime()
+        public static float getGdxRawDeltaTime_s()
         {
             return Gdx.graphics.getRawDeltaTime();
         }
@@ -415,12 +416,12 @@ public final class Game implements Application
         /**
          * Get delta time in seconds with scale
          */
-        public static float getGdxDeltaTime()
+        public static float getGdxDeltaTime_s()
         {
             return Gdx.graphics.getDeltaTime();
         }
 
-        public static long getElapsedTime()
+        public static long getElapsedTime_ns()
         {
             return Game.elapsedTime;
         }
@@ -430,12 +431,12 @@ public final class Game implements Application
             return Game.timerManager;
         }
 
-        public static long getLastLoopTime()
+        public static long getLastLoopTime_ns()
         {
             return lastLoopTime;
         }
 
-        public static long getAllProcessTime()
+        public static long getAllProcessTime_ns()
         {
             return allProcessTime;
         }
@@ -445,7 +446,7 @@ public final class Game implements Application
     {
         public static double getProcessExecution( GameProcess gp )
         {
-            return ( gp.getExecutionTime() / lastLoopTime ) * 100.0;
+            return ( gp.getExecutionTime() / (double)Game.time.getLastLoopTime_ns() ) * 100.0;
         }
     }
 
