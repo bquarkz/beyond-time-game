@@ -12,12 +12,12 @@
  */
 package com.intrepid.nicge.utils.fsmachine;
 
-import com.intrepid.nicge.utils.containers.Container;
+import com.intrepid.nicge.utils.containers.IContainer;
 import com.intrepid.nicge.utils.containers.Stack;
 import com.intrepid.nicge.utils.fsmachine.exceptions.EFSMachineStop;
 import com.intrepid.nicge.utils.fsmachine.exceptions.RENullFSMachineDefs;
 
-public class FSMachine< T extends FiniteState >
+public class FSMachine< T extends IFiniteState >
 {
     // ****************************************************************************************
     // Const Fields
@@ -30,17 +30,17 @@ public class FSMachine< T extends FiniteState >
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
-    private FSMachineDefinition< T > fsMachineDefinition;
+    private IFSMachineDefinition< T > fsMachineDefinition;
     private T actualState;
     private T nextState;
-    private Container< T > containerState;
+    private IContainer< T > containerState;
     private TransitionType transitionType;
 
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
 //	@SuppressWarnings("unchecked")
-    public FSMachine( FSMachineDefinition< T > fsMachineDef )
+    public FSMachine( IFSMachineDefinition< T > fsMachineDef )
     {
         if( fsMachineDef == null )
         {
@@ -195,7 +195,7 @@ public class FSMachine< T extends FiniteState >
         return actualState;
     }
 
-    public FSMachineDefinitionAccess< T > getDefinition()
+    public IFSMachineDefinitionAccess< T > getDefinition()
     {
         return fsMachineDefinition;
     }

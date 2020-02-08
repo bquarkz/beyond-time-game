@@ -17,7 +17,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.intrepid.nicge.theater.Displayable;
+import com.intrepid.nicge.theater.IDisplayable;
 import com.intrepid.nicge.theater.cameras.Camera;
 import com.intrepid.nicge.ui.IComponent;
 import com.intrepid.nicge.utils.IProcessExecution;
@@ -44,7 +44,7 @@ public abstract class Enviroment implements IProcessExecution, InputProcessor {
 	// Common Fields
 	// ****************************************************************************************
 	private List< IComponent > componentList;
-	private List< Displayable > displayableList;
+	private List< IDisplayable > displayableList;
 
 	// ****************************************************************************************
 	// Constructors
@@ -61,7 +61,7 @@ public abstract class Enviroment implements IProcessExecution, InputProcessor {
 	// ****************************************************************************************
 	public abstract void addComponents( List< IComponent > list );
 	
-	public void addDisplayable( Displayable displayable ) {
+	public void addDisplayable( IDisplayable displayable ) {
 		displayableList.add( displayable );
 	}
 	
@@ -155,7 +155,7 @@ public abstract class Enviroment implements IProcessExecution, InputProcessor {
 			c.display( batch );
 		}
 		
-		for( Displayable d : displayableList ) {
+		for( IDisplayable d : displayableList ) {
 			d.display( batch );
 		}
 		batch.end();

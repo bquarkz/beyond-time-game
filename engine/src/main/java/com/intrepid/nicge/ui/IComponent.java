@@ -12,10 +12,10 @@
  */
 package com.intrepid.nicge.ui;
 
-import com.intrepid.nicge.theater.Displayable;
-import com.intrepid.nicge.theater.Updatable;
+import com.intrepid.nicge.theater.IDisplayable;
+import com.intrepid.nicge.theater.IUpdatable;
 
-public interface IComponent extends IMouseControl, Updatable, Displayable
+public interface IComponent extends IMouseControl, IUpdatable, IDisplayable
 {
     // ****************************************************************************************
     // Constants

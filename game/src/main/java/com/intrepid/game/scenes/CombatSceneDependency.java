@@ -17,7 +17,7 @@ import java.util.Set;
 import com.intrepid.game.Resources;
 import com.intrepid.nicge.content.Dependency;
 import com.intrepid.nicge.content.DependencyResource;
-import com.intrepid.nicge.content.Resource;
+import com.intrepid.nicge.content.IResource;
 
 @Dependency( CombatScene.class )
 public class CombatSceneDependency extends DependencyResource
@@ -38,7 +38,7 @@ public class CombatSceneDependency extends DependencyResource
     // Methods
     // ****************************************************************************************
     @Override
-    protected void setDependencies( Set< Resource< ? > > resources )
+    protected void setDependencies( Set< IResource< ? > > resources )
     {
         resources.add( Resources.Textures.BADLOGIC_LOGO );
         resources.add( Resources.Animations.SENTINEL );

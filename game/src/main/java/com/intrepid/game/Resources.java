@@ -15,12 +15,12 @@ package com.intrepid.game;
 import static com.intrepid.nicge.content.ResourceFactory.*;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.intrepid.nicge.content.Resource;
+import com.intrepid.nicge.content.IResource;
 import com.intrepid.nicge.utils.animation.AnimationPack;
 
 public class Resources
 {
-    public enum Textures implements Resource< Texture >
+    public enum Textures implements IResource< Texture >
     {
         BADLOGIC_LOGO( "badlogic.jpg" ),
         OUTRO_LOGO( "badlogic_other.jpg" ),
@@ -34,7 +34,7 @@ public class Resources
         PURPLE_COUTAIN( "PurpleCourtain.png" ),
         ;
 
-        private Resource< Texture > resource;
+        private IResource< Texture > resource;
 
         Textures( String name )
         {
@@ -66,12 +66,12 @@ public class Resources
         }
     }
 
-    public enum Animations implements Resource< AnimationPack >
+    public enum Animations implements IResource< AnimationPack >
     {
         SENTINEL( "sentinel.api" ),
         ;
 
-        private Resource< AnimationPack > resource;
+        private IResource< AnimationPack > resource;
 
         Animations( String name )
         {

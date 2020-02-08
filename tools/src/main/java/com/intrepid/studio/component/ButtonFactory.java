@@ -12,7 +12,7 @@
  */
 package com.intrepid.studio.component;
 
-import com.intrepid.nicge.utils.threads.ThreadRunnable;
+import com.intrepid.nicge.utils.threads.IThreadRunnable;
 
 public class ButtonFactory {
 	// ****************************************************************************************
@@ -37,17 +37,17 @@ public class ButtonFactory {
 	}
 	
 	public Button create( int x, int y, int width, int height, String text,
-	        ThreadRunnable command, boolean lockSystem ) {
+                          IThreadRunnable command, boolean lockSystem ) {
 		return new Button( x, y, width, height, text, command, lockSystem );
 	}
 	
 	public Button create( int x, int y, int width, int height, String text,
-	        ThreadRunnable command ) {
+	        IThreadRunnable command ) {
 		return new Button( x, y, width, height, text, command, true );
 	}
 	
     public Button create( int x, int y, int width, int height, String text,
-            ThreadRunnable... commands ) {
+            IThreadRunnable... commands ) {
         return new Button( x, y, width, height, text, true, commands );
     }
 

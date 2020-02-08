@@ -16,8 +16,8 @@ import com.intrepid.nicge.utils.fsmachine.exceptions.REConsistenceError;
 import com.intrepid.nicge.utils.fsmachine.exceptions.REDontHaveStateStart;
 import com.intrepid.nicge.utils.fsmachine.exceptions.REFiniteStateDontHaveDefaultConstructor;
 
-public abstract class AbstractFSMachineDefinition< T extends FiniteState >
-		implements FSMachineDefinition< T >
+public abstract class AbstractFSMachineDefinition< T extends IFiniteState >
+		implements IFSMachineDefinition< T >
 {
 	// ****************************************************************************************
 	// Const Fields

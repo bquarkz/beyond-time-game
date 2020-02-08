@@ -12,7 +12,7 @@
  */
 package com.intrepid.nicge.utils.containers;
 
-public class Queue< T > implements Container< T >
+public class Queue< T > implements IContainer< T >
 {
     // ****************************************************************************************
     // Const Fields

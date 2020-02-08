@@ -16,27 +16,30 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.intrepid.game.Resources;
-import com.intrepid.game.courtains.AllCurtains;
+import com.intrepid.game.curtains.AllCurtains;
 import com.intrepid.game.system.campaing.GroupInfo;
 import com.intrepid.game.system.combat.CombatManager;
 import com.intrepid.game.system.sheet.Sheet;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.theater.cameras.SeekerCamera;
 import com.intrepid.nicge.theater.scene.GameScene;
-import com.intrepid.nicge.theater.scene.Scene;
+import com.intrepid.nicge.theater.scene.IScene;
 import com.intrepid.nicge.ui.Button;
-import com.intrepid.nicge.ui.Enviroment;
+import com.intrepid.nicge.ui.Environment;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.animation.AnimationPack;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 import org.bquarkz.beyondtime.simulator.Simulation;
 
 @GameScene
-public class CombatScene implements Scene
+public class CombatScene implements IScene
 {
     // ****************************************************************************************
     // Const Fields
     // ****************************************************************************************
+    private static final long OPTIMAL_TIME = 1_000_000_000 / Game.common.getGameConfiguration().getRefreshRate();
+    private static final int MAX_NUMBER_OF_UPDATES = 10;
+    private static final long STEP = OPTIMAL_TIME / MAX_NUMBER_OF_UPDATES;
 
     // ****************************************************************************************
     // Common Fields
@@ -44,7 +47,7 @@ public class CombatScene implements Scene
     private int c;
     private SeekerCamera seekerCamera;
     private CombatManager combatManager;
-    private Enviroment enviroment;
+    private Environment environment;
     private Simulation simulation;
 
     // ****************************************************************************************
@@ -75,9 +78,9 @@ public class CombatScene implements Scene
         b.setSupportClicked( sclicked );
         b.setScreenPosition( 250, 150 );
         b.setSize( 32, 32 );
-        enviroment = Enviroment.create();
-        enviroment.addComponent( b );
-        Gdx.input.setInputProcessor( enviroment );
+        environment = Environment.create();
+        environment.addComponent( b );
+        Gdx.input.setInputProcessor( environment );
 
         Random random = new Random( System.currentTimeMillis() );
         GroupInfo players = GroupInfo.create();
@@ -107,14 +110,14 @@ public class CombatScene implements Scene
         }
 
         combatManager.update();
-        enviroment.update();
+        environment.update();
     }
 
     @Override
     public void display( GraphicsBatch batch )
     {
         batch.begin();
-        enviroment.display( batch );
+        environment.display( batch );
         batch.end();
     }
 
@@ -151,7 +154,13 @@ public class CombatScene implements Scene
     @Override
     public void simulation()
     {
-        simulation.step( (long)( Game.time.getRawDeltaTime() * 1_000_000_000 ) );
+        int nUpdates = 0;
+        long lag = Game.time.getElapsedTime();
+        while( lag >= OPTIMAL_TIME && nUpdates++ < MAX_NUMBER_OF_UPDATES )
+        {
+            simulation.step( STEP );
+            lag -= OPTIMAL_TIME;
+        }
         Game.util.addDebugMessage( "KOTLIN-SIMULATION-PERIOD",
                 String.format( "%.2f", simulation.report().periodControl().currentPeriodPercent() ) );
     }

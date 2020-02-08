@@ -58,8 +58,7 @@ final public class ComponentControl implements Comparable< ComponentControl >
     // ****************************************************************************************
     static void runIfEnabled(
             Iterable< ComponentControl > components,
-            Consumer< IComponent > consumer
-    )
+            Consumer< IComponent > consumer )
     {
         for( ComponentControl cc : components )
         {

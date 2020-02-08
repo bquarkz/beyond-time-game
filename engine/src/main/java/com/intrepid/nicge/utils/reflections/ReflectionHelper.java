@@ -18,19 +18,19 @@ import java.util.Set;
 
 import com.intrepid.nicge.content.Dependency;
 import com.intrepid.nicge.content.DependencyResource;
-import com.intrepid.nicge.content.Loadable;
+import com.intrepid.nicge.content.ILoadable;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.theater.scene.GameScene;
-import com.intrepid.nicge.theater.scene.Scene;
-import com.intrepid.nicge.utils.fsmachine.FSMachineDefinition;
+import com.intrepid.nicge.theater.scene.IScene;
+import com.intrepid.nicge.utils.fsmachine.IFSMachineDefinition;
 import com.intrepid.nicge.utils.fsmachine.HashFSMachineDefinition;
 import com.intrepid.nicge.utils.logger.Log;
 
 public class ReflectionHelper {
-	public static FSMachineDefinition< Scene > autoSearchSceneDefinitionsByAnnotations() {
-		FSMachineDefinition< Scene > definitions = new HashFSMachineDefinition<>();
-		Set< Class< ? extends Scene > > scenes = findScenes();
-		for( Class< ? extends Scene > scene : scenes ) {
+	public static IFSMachineDefinition< IScene > autoSearchSceneDefinitionsByAnnotations() {
+		IFSMachineDefinition< IScene > definitions = new HashFSMachineDefinition<>();
+		Set< Class< ? extends IScene > > scenes = findScenes();
+		for( Class< ? extends IScene > scene : scenes ) {
 			boolean isStartScene = false;
 			// check if "GameScene" annotation is present then add to machine
 			if( scene.isAnnotationPresent( GameScene.class ) ) {
@@ -45,8 +45,8 @@ public class ReflectionHelper {
 		return definitions;
 	}
 	
-    public static Map< Class< ? >, Loadable > createDependencyContainer() {
-        Map< Class< ? >, Loadable > depedencyContainer = new HashMap<>();
+    public static Map< Class< ? >, ILoadable > createDependencyContainer() {
+        Map< Class< ? >, ILoadable > depedencyContainer = new HashMap<>();
         
         Reflection reflections = Game.util.getReflections();
         Set< Class< ? > > dependencyClasses = reflections.get().getTypesAnnotatedWith( Dependency.class );
@@ -57,7 +57,7 @@ public class ReflectionHelper {
             boolean needsIntanciation = dependencyClass.getSuperclass() == DependencyResource.class;
             if( needsIntanciation ) {
                 try {
-                    Loadable loadable = (Loadable) dependencyClass.newInstance();
+                    ILoadable loadable = (ILoadable) dependencyClass.newInstance();
                     Log.from( Game.class ).info( "loading dependency class:[ " + dependencyClass.getName() + " ]; to main class:[ " + mainClass.getName() +" ]" );
                     depedencyContainer.put( mainClass, loadable );
                 } catch ( InstantiationException | IllegalAccessException e ) {
@@ -71,9 +71,9 @@ public class ReflectionHelper {
         return depedencyContainer;
     }
 
-	private static Set< Class< ? extends Scene > > findScenes() {
+	private static Set< Class< ? extends IScene > > findScenes() {
 		Reflection reflections = Game.util.getReflections();
-		Set< Class< ? extends Scene > > scenes = reflections.get().getSubTypesOf( Scene.class );
+		Set< Class< ? extends IScene > > scenes = reflections.get().getSubTypesOf( IScene.class );
 		return scenes;
 	}
 }

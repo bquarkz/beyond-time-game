@@ -30,7 +30,7 @@ final class ComponentConfig
     public ComponentConfig()
     {
         this.enabled = true;
-        this.layer = Enviroment.LAYER_MIDDLE;
+        this.layer = Environment.LAYER_MIDDLE;
     }
 
     // ****************************************************************************************

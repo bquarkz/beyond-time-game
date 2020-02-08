@@ -21,7 +21,7 @@ import java.util.Set;
 import com.intrepid.nicge.utils.containers.Stack;
 import com.intrepid.nicge.utils.pool.exceptions.EPoolEmpty;
 
-public final class Pool< T extends Poolable >
+public final class Pool< T extends IPoolable >
         implements Iterable< PoolableWrapper< T > >/*, Iterator< T > */
 {
     // ****************************************************************************************
@@ -31,7 +31,7 @@ public final class Pool< T extends Poolable >
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
-    private Stack< PoolableWrapper< Poolable > > free;
+    private Stack< PoolableWrapper< IPoolable > > free;
     private Class< T > poolalbleClass;
     //	private Map< Integer, PoolableWrapper< Poolable > > used;
 //	private boolean needToUpdate;
@@ -74,7 +74,7 @@ public final class Pool< T extends Poolable >
     {
         for( int i = 0; i < free.size(); i++ )
         {
-            Poolable poolable;
+            IPoolable poolable;
             try
             {
                 poolable = poolalbleClass.newInstance();
@@ -83,7 +83,7 @@ public final class Pool< T extends Poolable >
             {
                 throw new RuntimeException( e );
             }
-            free.push( new PoolableWrapper< Poolable >( i, poolable, this ) );
+            free.push( new PoolableWrapper< IPoolable >( i, poolable, this ) );
         }
     }
 
@@ -97,7 +97,7 @@ public final class Pool< T extends Poolable >
 
         for( int i = 0; i < free.size(); i++ )
         {
-            Poolable poolable;
+            IPoolable poolable;
             try
             {
                 Constructor< T > constructor = poolalbleClass.getConstructor( argumentClasses );
@@ -114,7 +114,7 @@ public final class Pool< T extends Poolable >
                         poolalbleClass.getSimpleName() );
             }
 
-            free.push( new PoolableWrapper< Poolable >( i, poolable, this ) );
+            free.push( new PoolableWrapper< IPoolable >( i, poolable, this ) );
         }
     }
 
@@ -138,7 +138,7 @@ public final class Pool< T extends Poolable >
     {
         setOfUsedValues.remove( poolable.get() );
 //		used.remove( poolable.getID() );
-        free.push( (PoolableWrapper< Poolable >)poolable );
+        free.push( (PoolableWrapper< IPoolable >)poolable );
     }
 
     @SuppressWarnings( "unchecked" )
@@ -147,7 +147,7 @@ public final class Pool< T extends Poolable >
 //		for( PoolableWrapper<Poolable> poolable : used.values() ) {
         for( PoolableWrapper< T > poolable : setOfUsedValues )
         {
-            free.push( (PoolableWrapper< Poolable >)poolable );
+            free.push( (PoolableWrapper< IPoolable >)poolable );
         }
 
 //		PENSE

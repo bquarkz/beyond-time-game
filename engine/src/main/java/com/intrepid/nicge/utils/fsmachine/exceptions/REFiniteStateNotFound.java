@@ -12,16 +12,16 @@
  */
 package com.intrepid.nicge.utils.fsmachine.exceptions;
 
-import com.intrepid.nicge.utils.fsmachine.FSMachineDefinition;
-import com.intrepid.nicge.utils.fsmachine.FiniteState;
+import com.intrepid.nicge.utils.fsmachine.IFSMachineDefinition;
+import com.intrepid.nicge.utils.fsmachine.IFiniteState;
 
 public class REFiniteStateNotFound extends RuntimeException {
 	private static final long serialVersionUID = -7437583066247995484L;
 	
 	public REFiniteStateNotFound(
 			@SuppressWarnings("rawtypes")
-			Class< ? extends FSMachineDefinition > classMachine,
-			Class< ? extends FiniteState > classState ) {
+			Class< ? extends IFSMachineDefinition > classMachine,
+			Class< ? extends IFiniteState > classState ) {
 		super( "The FiniteMachineDefs: " + classMachine.getName() +
 				"; dont have the FiniteState: " + classState.getName() + ";" );
 	}

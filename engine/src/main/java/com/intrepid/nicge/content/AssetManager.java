@@ -75,19 +75,19 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager
 //		setLoader(ShaderProgram.class, new ShaderProgramLoader(resolver));
     }
 
-    public < T > T get( Resource< T > resource )
+    public < T > T get( IResource< T > resource )
     {
         return (T)this.get( resource.getPath(), resource.getResourceClass() );
     }
 
-    public void load( Resource< ? > resource )
+    public void load( IResource< ? > resource )
     {
         this.load( resource.getPath(), resource.getResourceClass() );
     }
 
-    public void load( Set< Resource< ? > > resources )
+    public void load( Set< IResource< ? > > resources )
     {
-        for( Resource< ? > resource : resources )
+        for( IResource< ? > resource : resources )
         {
             this.load( resource.getPath(), resource.getResourceClass() );
         }

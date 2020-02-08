@@ -14,13 +14,13 @@ package com.intrepid.game;
 
 import java.util.Set;
 
-import com.intrepid.game.courtains.AllCurtains;
-import com.intrepid.nicge.content.Resource;
+import com.intrepid.game.curtains.AllCurtains;
+import com.intrepid.nicge.content.IResource;
 import com.intrepid.nicge.kernel.game.GameBoot;
 import com.intrepid.nicge.kernel.game.GameConfiguration;
-import com.intrepid.nicge.theater.courtain.Curtain;
-import com.intrepid.nicge.theater.scene.Scene;
-import com.intrepid.nicge.utils.fsmachine.FSMachineDefinition;
+import com.intrepid.nicge.theater.curtain.Curtain;
+import com.intrepid.nicge.theater.scene.IScene;
+import com.intrepid.nicge.utils.fsmachine.IFSMachineDefinition;
 import com.intrepid.nicge.utils.logger.Log;
 
 public class BeyondTimeGame implements GameBoot
@@ -34,14 +34,14 @@ public class BeyondTimeGame implements GameBoot
     }
 
     @Override
-    public FSMachineDefinition< Scene > instantiation()
+    public IFSMachineDefinition< IScene > instantiation()
     {
         Log.from( BeyondTimeGame.class ).info( "scenes instantiation" );
         return null;
     }
 
     @Override
-    public void loader( Set< Resource< ? > > resources )
+    public void loader( Set< IResource< ? > > resources )
     {
         Log.from( BeyondTimeGame.class ).info( "loading assets" );
         for( Curtain curtain : AllCurtains.values() )

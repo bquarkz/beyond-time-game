@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.intrepid.game.system.sheet.Sheet;
-import com.intrepid.nicge.utils.readonlycollections.ReadOnlyList;
+import com.intrepid.nicge.utils.readonlycollections.IReadOnlyList;
 
 public class GroupInfo
 {
@@ -29,7 +29,7 @@ public class GroupInfo
     // Common Fields
     // ****************************************************************************************
     private final List< Sheet > sheets;
-    private final ReadOnlyList< Sheet > readOnlySheets;
+    private final IReadOnlyList< Sheet > readOnlySheets;
 
     // ****************************************************************************************
     // Constructors
@@ -37,7 +37,7 @@ public class GroupInfo
     protected GroupInfo()
     {
         sheets = new ArrayList<>( MAX_GROUP_SIZE );
-        readOnlySheets = ReadOnlyList.wrap( sheets );
+        readOnlySheets = IReadOnlyList.wrap( sheets );
     }
 
     // ****************************************************************************************
@@ -71,7 +71,7 @@ public class GroupInfo
     // ****************************************************************************************
     // Getters And Setters Methods
     // ****************************************************************************************
-    public ReadOnlyList< Sheet > getSheets()
+    public IReadOnlyList< Sheet > getSheets()
     {
         return readOnlySheets;
     }

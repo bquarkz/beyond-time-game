@@ -22,14 +22,14 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.intrepid.nicge.content.AssetManager;
-import com.intrepid.nicge.content.Resource;
+import com.intrepid.nicge.content.IResource;
 import com.intrepid.nicge.kernel.Application;
 import com.intrepid.nicge.kernel.Boot;
 import com.intrepid.nicge.kernel.ScreenInfo;
 import com.intrepid.nicge.kernel.game.GameConfiguration;
 import com.intrepid.nicge.utils.IProcessExecution;
 import com.intrepid.nicge.utils.audio.AudioControl;
-import com.intrepid.nicge.utils.audio.MusicBoard;
+import com.intrepid.nicge.utils.audio.IMusicBoard;
 import com.intrepid.nicge.utils.graphics.TextureWorks;
 import com.intrepid.nicge.utils.reflections.Reflection;
 import com.intrepid.nicge.utils.threads.ThreadExecutor;
@@ -94,7 +94,7 @@ public final class Studio implements Application {
 	   	
 		// Game load assets
 		// Engine load needs to run before
-		Set< Resource< ? > > resources = new HashSet<>();
+		Set< IResource< ? > > resources = new HashSet<>();
 	   	Studio.boot.loader( resources );
    		Studio.assetManager.load( resources );
 	   	while( !Studio.assetManager.update() );
@@ -188,21 +188,21 @@ public final class Studio implements Application {
 			return Studio.config;
 		}
 		
-		public static < T > T getAsset( Resource< T > resource ) {
+		public static < T > T getAsset( IResource< T > resource ) {
 			return Studio.assetManager.get( resource );
 		}
 	}
 	
 	public static final class audio {
-		public static void playSound( Resource< Sound > sound ) {
+		public static void playSound( IResource< Sound > sound ) {
 			Studio.audioControl.playSound( sound, Studio.assetManager );
 		}
 		
-		public static void setMusicBoardFrom( Resource< Music > music ) {
+		public static void setMusicBoardFrom( IResource< Music > music ) {
 			Studio.audioControl.setMusicBoardFrom( music, Studio.assetManager );
 		}
 		
-		public static MusicBoard getMusicBoard() {
+		public static IMusicBoard getMusicBoard() {
 			return Studio.audioControl.getMusicBoard();
 		}
 	}

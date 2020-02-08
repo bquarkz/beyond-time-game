@@ -1,10 +1,11 @@
 package com.intrepid.nicge.utils.timer;
 
 import com.intrepid.nicge.kernel.game.Game;
-import com.intrepid.nicge.theater.Updatable;
-import com.intrepid.nicge.utils.pool.Poolable;
+import com.intrepid.nicge.theater.IUpdatable;
+import com.intrepid.nicge.utils.pool.IPoolable;
 
-public class Timer implements Updatable, Poolable {
+public class Timer implements IUpdatable, IPoolable
+{
 	// ****************************************************************************************
 	// Const Fields
 	// ****************************************************************************************

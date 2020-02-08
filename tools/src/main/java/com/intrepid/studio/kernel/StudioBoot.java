@@ -14,7 +14,7 @@ package com.intrepid.studio.kernel;
 
 import java.util.Set;
 
-import com.intrepid.nicge.content.Resource;
+import com.intrepid.nicge.content.IResource;
 import com.intrepid.nicge.kernel.Boot;
 import com.intrepid.nicge.kernel.game.GameConfiguration;
 
@@ -26,7 +26,7 @@ public class StudioBoot implements Boot< GameConfiguration > {
 	}
 
 	@Override
-	public void loader( Set< Resource< ? > > resources ) {
+	public void loader( Set< IResource< ? > > resources ) {
 		System.out.println("carregando os assets");
 	}
 

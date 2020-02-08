@@ -14,7 +14,7 @@ package com.intrepid.nicge.utils.containers;
 
 import com.badlogic.gdx.utils.Queue;
 
-public class Stack< T > implements Container< T >
+public class Stack< T > implements IContainer< T >
 {
     // ****************************************************************************************
     // Const Fields

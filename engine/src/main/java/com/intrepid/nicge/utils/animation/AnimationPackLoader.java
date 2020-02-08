@@ -26,7 +26,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.intrepid.nicge.kernel.Configurations;
-import com.intrepid.nicge.utils.konstants.ResourcesPath;
+import com.intrepid.nicge.utils.konstants.IResourcesPath;
 
 public class AnimationPackLoader 
 		extends AsynchronousAssetLoader< AnimationPack, AnimationPackLoader.AnimationPackParameter > {
@@ -70,7 +70,7 @@ public class AnimationPackLoader
 		String json = ( ENCODED ? new String( Base64.getDecoder().decode( bytes ) ) : new String( bytes ) );
 		AnimationPackInfo animationPackInfo = new Json().fromJson( AnimationPackInfo.class, json );		
 
-		String texturePath = ResourcesPath.TEXTURES_PATH + file.nameWithoutExtension() + ".png";
+		String texturePath = IResourcesPath.TEXTURES_PATH + file.nameWithoutExtension() + ".png";
 		Texture texture = manager.get( texturePath, Texture.class );
 
 		return new AnimationPack( animationPackInfo, texture );
@@ -83,7 +83,7 @@ public class AnimationPackLoader
 													 AnimationPackParameter parameter ) {
 		Array<AssetDescriptor > deps = new Array<>();
 		
-		String path = ResourcesPath.TEXTURES_PATH + file.nameWithoutExtension() + ".png";
+		String path = IResourcesPath.TEXTURES_PATH + file.nameWithoutExtension() + ".png";
 		FileHandle resolved = resolve( path );
 		
 		TextureLoader.TextureParameter textureParams = new TextureLoader.TextureParameter();

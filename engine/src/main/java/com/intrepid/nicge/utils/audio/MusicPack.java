@@ -14,13 +14,14 @@ package com.intrepid.nicge.utils.audio;
 
 import com.badlogic.gdx.audio.Music;
 import com.intrepid.nicge.content.AssetManager;
-import com.intrepid.nicge.content.Resource;
+import com.intrepid.nicge.content.IResource;
 import com.intrepid.nicge.kernel.game.Game;
-import com.intrepid.nicge.theater.Updatable;
+import com.intrepid.nicge.theater.IUpdatable;
 import com.intrepid.nicge.utils.pool.PoolableWrapper;
 import com.intrepid.nicge.utils.timer.Timer;
 
-public class MusicPack implements Updatable, MusicBoard {
+public class MusicPack implements IUpdatable, IMusicBoard
+{
 	// ****************************************************************************************
 	// Const Fields
 	// ****************************************************************************************
@@ -28,7 +29,7 @@ public class MusicPack implements Updatable, MusicBoard {
 	// ****************************************************************************************
 	// Common Fields
 	// ****************************************************************************************
-	private Resource< Music > resource;	
+	private IResource< Music > resource;
 	private float volume;
 	private float pan;
 	private double fadeVolume;	
@@ -44,7 +45,7 @@ public class MusicPack implements Updatable, MusicBoard {
 	// ****************************************************************************************
 	// Constructors
 	// ****************************************************************************************
-	public MusicPack( Resource< Music > resource, float volume, float pan ) {
+	public MusicPack( IResource< Music > resource, float volume, float pan ) {
 		this.resource = resource;
 		setVolume( volume );
 		setPan( pan );
@@ -56,7 +57,7 @@ public class MusicPack implements Updatable, MusicBoard {
 		timer = Game.time.getTimers().getTimer();
 	}
 	
-	public MusicPack( Resource< Music > resource ) {
+	public MusicPack( IResource< Music > resource ) {
 		this( resource, 1.0f, 0.0f );
 	}
 

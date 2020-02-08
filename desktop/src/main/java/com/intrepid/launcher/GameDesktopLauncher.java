@@ -50,11 +50,11 @@ public class GameDesktopLauncher extends AbstractLauncher< GameBoot >
         gcb.setFullscreenMode( false );
         gcb.setResisable( true );
 
-		int windowResolutionWidth = 1920;
-		int windowResolutionHeight = 1080;
+//		int windowResolutionWidth = 1920;
+//		int windowResolutionHeight = 1080;
 
-//		int windowResolutionWidth = 1280;
-//		int windowResolutionHeight = 720;
+		int windowResolutionWidth = 1280;
+		int windowResolutionHeight = 720;
 
 //        int windowResolutionWidth = 480;
 //        int windowResolutionHeight = 270;
@@ -62,16 +62,16 @@ public class GameDesktopLauncher extends AbstractLauncher< GameBoot >
         gcb.setWindowResolutionWidth( windowResolutionWidth );
         gcb.setWindowResolutionHeight( windowResolutionHeight );
 
-		int nrscl = 4;
+		int nrscl = 3;
 //        int nrscl = 1;
 
         gcb.setNativeResolutionWidth( windowResolutionWidth / nrscl ); // by 4 = 480
         gcb.setNativeResolutionHeight( windowResolutionHeight / nrscl ); // by 4 = 270
 
         gcb.setBitsPerPixel( 24 );
-        gcb.setFPS( 60 );
+        gcb.setFPS( 120 );
         gcb.setMMSA( 2 );
-        gcb.setVSync( true );
+        gcb.setVSync( false );
         gcb.setClassLoadersPackages( packages );
 
         GameBoot boot = new BeyondTimeGame( gcb );

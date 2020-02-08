@@ -15,7 +15,7 @@ package com.intrepid.nicge.utils.pool;
 import com.intrepid.nicge.utils.logger.Log;
 import com.intrepid.nicge.utils.pool.exceptions.EPoolableNotFoundInPool;
 
-public final class PoolableWrapper< T extends Poolable >
+public final class PoolableWrapper< T extends IPoolable >
 {
     // ****************************************************************************************
     // Const Fields

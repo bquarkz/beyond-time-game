@@ -13,9 +13,9 @@
 package com.intrepid.nicge.kernel.game;
 
 import com.intrepid.nicge.kernel.Boot;
-import com.intrepid.nicge.theater.scene.Scene;
-import com.intrepid.nicge.utils.fsmachine.FSMachineDefinition;
+import com.intrepid.nicge.theater.scene.IScene;
+import com.intrepid.nicge.utils.fsmachine.IFSMachineDefinition;
 
 public interface GameBoot extends Boot< GameConfiguration > {
-	FSMachineDefinition< Scene > instantiation();
+	IFSMachineDefinition< IScene > instantiation();
 }

@@ -23,10 +23,10 @@ import com.intrepid.nicge.controller.joystick.JoystickMap;
 import com.intrepid.nicge.controller.joystick.JoystickPad;
 import com.intrepid.nicge.controller.keyboard.KeyboardMap;
 import com.intrepid.nicge.controller.keyboard.KeyboardPad;
-import com.intrepid.nicge.theater.Controlable;
-import com.intrepid.nicge.theater.Updatable;
+import com.intrepid.nicge.theater.IControllable;
+import com.intrepid.nicge.theater.IUpdatable;
 
-public class ControllerManager implements Updatable, Controlable
+public class ControllerManager implements IUpdatable, IControllable
 {
     // ****************************************************************************************
     // Const Fields

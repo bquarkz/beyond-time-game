@@ -15,13 +15,13 @@ package com.intrepid.game;
 import com.intrepid.game.scenes.MapScene;
 import com.intrepid.nicge.theater.scene.AbstractBootScene;
 import com.intrepid.nicge.theater.scene.GameScene;
-import com.intrepid.nicge.theater.scene.Scene;
+import com.intrepid.nicge.theater.scene.IScene;
 
 @GameScene( start=true )
 public class BootScene extends AbstractBootScene
 {
 	@Override
-	public Class< ? extends Scene > getStartScene()
+	public Class< ? extends IScene > getStartScene()
 	{
 		return MapScene.class;
 	}

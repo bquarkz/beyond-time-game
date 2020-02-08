@@ -67,13 +67,13 @@ public class SoundManager
         }
     }
 
-    public void execute( double timeToExecute )
+    public void execute( long timeToExecute )
     {
-        double consumedTime = 0, t_i, t_f;
+        long consumedTime = 0, t_i, t_f;
 
         while( timeToExecute > consumedTime )
         {
-            t_i = Game.time.getSystemMicroTime();
+            t_i = Game.time.getSystemNanoTime();
 
             boolean hQisEmpty = highPrior_Queue.isEmpty();
             boolean mQisEmpty = middlePrior_Queue.isEmpty();
@@ -97,7 +97,7 @@ public class SoundManager
                 lowPrior_Queue.pop().play();
             }
 
-            t_f = Game.time.getSystemMicroTime();
+            t_f = Game.time.getSystemNanoTime();
 
             consumedTime += t_f - t_i;
         }

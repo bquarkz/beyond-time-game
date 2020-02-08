@@ -13,11 +13,11 @@
 package com.intrepid.nicge.entities;
 
 import com.badlogic.gdx.math.Vector2;
-import com.intrepid.nicge.theater.Displayable;
-import com.intrepid.nicge.theater.Updatable;
+import com.intrepid.nicge.theater.IDisplayable;
+import com.intrepid.nicge.theater.IUpdatable;
 
 public interface Entity
-        extends Comparable< Entity >, Updatable, Displayable
+        extends Comparable< Entity >, IUpdatable, IDisplayable
 {
     Vector2 getPosition();
 

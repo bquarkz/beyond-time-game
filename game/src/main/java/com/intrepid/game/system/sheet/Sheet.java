@@ -14,9 +14,9 @@ package com.intrepid.game.system.sheet;
 
 import java.util.Random;
 
-import com.intrepid.nicge.theater.Updatable;
+import com.intrepid.nicge.theater.IUpdatable;
 
-public class Sheet implements Updatable
+public class Sheet implements IUpdatable
 {
     // ****************************************************************************************
     // Const Fields

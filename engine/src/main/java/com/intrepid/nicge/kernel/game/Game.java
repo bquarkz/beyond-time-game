@@ -23,20 +23,20 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.intrepid.nicge.content.AssetManager;
-import com.intrepid.nicge.content.Loadable;
-import com.intrepid.nicge.content.Resource;
+import com.intrepid.nicge.content.ILoadable;
+import com.intrepid.nicge.content.IResource;
 import com.intrepid.nicge.kernel.Application;
 import com.intrepid.nicge.kernel.KernelScreenVariables;
 import com.intrepid.nicge.kernel.ScreenInfo;
 import com.intrepid.nicge.theater.Theater;
-import com.intrepid.nicge.theater.courtain.Curtain;
-import com.intrepid.nicge.theater.courtain.CurtainLayer;
-import com.intrepid.nicge.theater.courtain.CurtainManager;
-import com.intrepid.nicge.theater.scene.Scene;
+import com.intrepid.nicge.theater.curtain.Curtain;
+import com.intrepid.nicge.theater.curtain.CurtainLayer;
+import com.intrepid.nicge.theater.curtain.CurtainManager;
+import com.intrepid.nicge.theater.scene.IScene;
 import com.intrepid.nicge.utils.IProcessExecution;
 import com.intrepid.nicge.utils.audio.AudioControl;
-import com.intrepid.nicge.utils.audio.MusicBoard;
-import com.intrepid.nicge.utils.fsmachine.FSMachineDefinition;
+import com.intrepid.nicge.utils.audio.IMusicBoard;
+import com.intrepid.nicge.utils.fsmachine.IFSMachineDefinition;
 import com.intrepid.nicge.utils.graphics.TextureWorks;
 import com.intrepid.nicge.utils.logger.Log;
 import com.intrepid.nicge.utils.reflections.Reflection;
@@ -59,15 +59,15 @@ public final class Game implements Application
 
     private static GameBoot boot;
     private static GameConfiguration gameConfiguration;
-    private static double elapsedTime;
     private static Theater theater;
-    private static double lastLoopTime;
-    private static double allProcessTime;
+    private static long elapsedTime;
+    private static long lastLoopTime;
+    private static long allProcessTime;
     private static AudioControl audioControl;
     private static Reflection reflection;
     private static TimerManager timerManager;
     private static IProcessExecution[] process;
-    private static Map< Class< ? >, Loadable > dependencyContainer;
+    private static Map< Class< ? >, ILoadable > dependencyContainer;
 
     // ****************************************************************************************
     // Constructors
@@ -77,9 +77,6 @@ public final class Game implements Application
         Game.boot = boot;
         Game.gameConfiguration = boot.getConfig();
         Game.process = getProcess();
-        Game.elapsedTime = 0.0000001;
-        Game.lastLoopTime = 0.0000001;
-        Game.allProcessTime = 0.0000001;
     }
 
     // ****************************************************************************************
@@ -129,7 +126,7 @@ public final class Game implements Application
         Game.reflection = new Reflection( classLoadersPackages );
 
         // boot instantiation
-        final FSMachineDefinition< Scene > bootDefinitions = Optional
+        final IFSMachineDefinition< IScene > bootDefinitions = Optional
                 .ofNullable( Game.boot.instantiation() )
                 .orElseGet( ReflectionHelper::autoSearchSceneDefinitionsByAnnotations );
         Game.theater = new Theater( bootDefinitions, Game.assetManager );
@@ -139,15 +136,15 @@ public final class Game implements Application
 
         // game load assets
         // engine load needs to run before
-        final Set< Resource< ? > > resources = new HashSet<>();
+        final Set< IResource< ? > > resources = new HashSet<>();
         Game.boot.loader( resources );
         Game.assetManager.load( resources );
 		while( !Game.assetManager.update() );
 
         // initialization all game variable and its stuff
-        Game.elapsedTime = Gdx.graphics.getDeltaTime();
-        Game.lastLoopTime = 0;
-        Game.allProcessTime = 0;
+        Game.elapsedTime = Game.time.getRawDeltaTime();
+        Game.lastLoopTime = 0L;
+        Game.allProcessTime = 0L;
 
         // initialize the game
         Game.boot.initialization();
@@ -163,29 +160,29 @@ public final class Game implements Application
         Game.elapsedTime += Game.time.getRawDeltaTime();
 
         // execute all process and calculate the time to execute sounds
-        double procGeral_i = Game.time.getSystemMicroTime();
+        long procGeral_i = Game.time.getSystemMilliTime();
         executeAllProcess( procGeral_i );
-        double procGeral_f = Game.time.getSystemMicroTime();
-        Game.lastLoopTime = procGeral_f - procGeral_i;
+        long procGeral_f = Game.time.getSystemMilliTime();
 
         // well, that is it... and throw up all debug info into screen
         throwUpDebugInfo();
+
+        Game.lastLoopTime = procGeral_f - procGeral_i;
     }
 
-    private void executeAllProcess( double procGeral_i )
+    private void executeAllProcess( long procGeral_i )
     {
         for( IProcessExecution processExecution : process )
         {
             processExecution.execute();
         }
-        allProcessTime = Game.time.getSystemMicroTime() - procGeral_i;
+        allProcessTime = Game.time.getSystemNanoTime() - procGeral_i;
 
         // calculate how many time was gone since last update (targeting the FPS)
-        double soundPlayLeftOverTime = ( Game.time.getRawDeltaTime() * 1_000_000 ) - allProcessTime;
-        // take just 90% of that time
-        soundPlayLeftOverTime *= 0.9f;
+        long leftoverTimeToPlaySounds = ( Game.time.getRawDeltaTime() ) - allProcessTime;
+
         // throw up the sound stack
-        Game.audioControl.getSoundManager().execute( soundPlayLeftOverTime );
+        Game.audioControl.getSoundManager().execute( leftoverTimeToPlaySounds );
     }
 
     @Override
@@ -236,7 +233,7 @@ public final class Game implements Application
     public static final class scene
     {
         public static void change(
-                Class< ? extends Scene > sceneClass,
+                Class< ? extends IScene > sceneClass,
                 Curtain curtain )
         {
             Game.theater.changeScene( sceneClass, curtain );
@@ -322,14 +319,14 @@ public final class Game implements Application
 //		    }
 //		}
 
-        public static < T > T getAsset( Resource< T > resource )
+        public static < T > T getAsset( IResource< T > resource )
         {
             return Game.assetManager.get( resource );
         }
 
-        public static Loadable getDependencies( Class< ? > clazz )
+        public static ILoadable getDependencies( Class< ? > clazz )
         {
-            final Loadable dependencies = dependencyContainer.get( clazz );
+            final ILoadable dependencies = dependencyContainer.get( clazz );
             if( dependencies == null )
             {
                 final String message = "dependencies for: " + clazz.getName() + "; was NOT loaded";
@@ -342,17 +339,17 @@ public final class Game implements Application
 
     public static final class audio
     {
-        public static void playSound( Resource< Sound > sound )
+        public static void playSound( IResource< Sound > sound )
         {
             Game.audioControl.playSound( sound, Game.assetManager );
         }
 
-        public static void setMusicBoardFrom( Resource< Music > music )
+        public static void setMusicBoardFrom( IResource< Music > music )
         {
             Game.audioControl.setMusicBoardFrom( music, Game.assetManager );
         }
 
-        public static MusicBoard getMusicBoard()
+        public static IMusicBoard getMusicBoard()
         {
             return Game.audioControl.getMusicBoard();
         }
@@ -381,25 +378,49 @@ public final class Game implements Application
 
     public static final class time
     {
-        public static double getSystemMicroTime()
+        public static long getSystemMilliTime()
         {
-            return ( System.nanoTime() / 1000000.0 );
+            return ( getSystemNanoTime() / 1_000_000 );
         }
 
-        public static double getSystemNanoTime()
+        public static long getSystemNanoTime()
         {
             return System.nanoTime();
         }
 
         /**
-         * @return the time span between the current frame and the last frame in seconds, without smoothing
+         * Get delta time in nano-seconds, without scale
          */
-        public static float getRawDeltaTime()
+        public static long getRawDeltaTime()
+        {
+            return (long)( Gdx.graphics.getRawDeltaTime() * 1_000_000_000L );
+        }
+
+        /**
+         * Get delta time in seconds without scale
+         */
+        public static long getDeltaTime()
+        {
+            return (long)( Gdx.graphics.getDeltaTime() * 1_000_000_000L );
+        }
+
+        /**
+         * Get delta time in seconds, without scale
+         */
+        public static float getGdxRawDeltaTime()
         {
             return Gdx.graphics.getRawDeltaTime();
         }
 
-        public static double getElapsedTime()
+        /**
+         * Get delta time in seconds with scale
+         */
+        public static float getGdxDeltaTime()
+        {
+            return Gdx.graphics.getDeltaTime();
+        }
+
+        public static long getElapsedTime()
         {
             return Game.elapsedTime;
         }
@@ -409,12 +430,12 @@ public final class Game implements Application
             return Game.timerManager;
         }
 
-        public static double getLastLoopTime()
+        public static long getLastLoopTime()
         {
             return lastLoopTime;
         }
 
-        public static double getAllProcessTime()
+        public static long getAllProcessTime()
         {
             return allProcessTime;
         }

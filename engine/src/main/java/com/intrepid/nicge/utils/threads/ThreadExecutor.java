@@ -34,7 +34,7 @@ public final class ThreadExecutor implements Runnable
     // Common Fields
     // ****************************************************************************************
     private static final AtomicBoolean running = new AtomicBoolean( false );
-    private static final Map< ThreadRunnable, Future< ? > > map = new ConcurrentHashMap<>();
+    private static final Map< IThreadRunnable, Future< ? > > map = new ConcurrentHashMap<>();
     private static final AtomicBoolean allTasksAreFinished = new AtomicBoolean( true );
 
 
@@ -54,7 +54,7 @@ public final class ThreadExecutor implements Runnable
     // Methods
     // ****************************************************************************************
     @SuppressWarnings( "unchecked" )
-    public < T extends ThreadRunnable > Future< T > execute( T command )
+    public < T extends IThreadRunnable > Future< T > execute( T command )
     {
         final Future< T > threadExecutionFuture = (Future< T >)pool.submit( command );
         ThreadExecutor.map.put( command, threadExecutionFuture );
@@ -67,7 +67,7 @@ public final class ThreadExecutor implements Runnable
         while( running.get() )
         {
             boolean allTasksCheck = true;
-            for( ThreadRunnable task : ThreadExecutor.map.keySet() )
+            for( IThreadRunnable task : ThreadExecutor.map.keySet() )
             {
                 boolean taskDone = ThreadExecutor.map.get( task ).isDone();
                 allTasksCheck &= taskDone;

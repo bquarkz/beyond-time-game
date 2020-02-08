@@ -14,7 +14,8 @@ package com.intrepid.nicge.content;
 
 import com.intrepid.nicge.kernel.game.Game;
 
-public class ResourceWrapper< T > implements Resource< T > {
+public class ResourceWrapper< T > implements IResource< T >
+{
 	// ****************************************************************************************
 	// Const Fields
 	// ****************************************************************************************
@@ -69,7 +70,7 @@ public class ResourceWrapper< T > implements Resource< T > {
 		if( this == that ) return true;
 		if( getClass() != that.getClass() ) return false;
 		
-		if( this.getResourceId() == ( (Resource< ? >)that ).getResourceId() )
+		if( this.getResourceId() == ( (IResource< ? >)that ).getResourceId() )
 			return true;
 		else
 			return false;

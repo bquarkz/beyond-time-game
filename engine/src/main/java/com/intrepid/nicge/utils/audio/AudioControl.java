@@ -15,10 +15,10 @@ package com.intrepid.nicge.utils.audio;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.intrepid.nicge.content.AssetManager;
-import com.intrepid.nicge.content.Resource;
-import com.intrepid.nicge.theater.Updatable;
+import com.intrepid.nicge.content.IResource;
+import com.intrepid.nicge.theater.IUpdatable;
 
-public final class AudioControl implements Updatable
+public final class AudioControl implements IUpdatable
 {
     // ****************************************************************************************
     // Const Fields
@@ -44,7 +44,7 @@ public final class AudioControl implements Updatable
     // Methods
     // ****************************************************************************************
     public void playSound(
-            Resource< Sound > soundResource,
+            IResource< Sound > soundResource,
             AssetManager assetManager )
     {
         playSound( SoundPriority.MIDDLE, soundResource, assetManager );
@@ -52,7 +52,7 @@ public final class AudioControl implements Updatable
 
     public void playSound(
             SoundPriority sp,
-            Resource< Sound > soundResource,
+            IResource< Sound > soundResource,
             AssetManager assetManager )
     {
         SoundPack soundPack = new SoundPack( soundResource );
@@ -68,7 +68,7 @@ public final class AudioControl implements Updatable
     }
 
     public void setMusicBoardFrom(
-            Resource< Music > musicResource,
+            IResource< Music > musicResource,
             AssetManager assetManager )
     {
         musicPack = new MusicPack( musicResource );

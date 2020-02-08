@@ -17,17 +17,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Json;
-import com.intrepid.nicge.theater.Displayable;
+import com.intrepid.nicge.theater.IDisplayable;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.animation.AnimationInfo;
 import com.intrepid.nicge.utils.animation.AnimationPack;
 import com.intrepid.nicge.utils.animation.AnimationPackInfo;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
-import com.intrepid.nicge.utils.threads.ThreadRunnable;
+import com.intrepid.nicge.utils.threads.IThreadRunnable;
 import com.intrepid.studio.enviroment.Enviroment;
 import com.intrepid.studio.kernel.Studio;
 
-public class ReadSentinel implements ThreadRunnable {
+public class ReadSentinel implements IThreadRunnable
+{
 
 	// ****************************************************************************************
 	// Const Fields
@@ -96,7 +97,8 @@ public class ReadSentinel implements ThreadRunnable {
 	// ****************************************************************************************
 	// Patterns
 	// ****************************************************************************************
-	private class ShowAnimation implements Displayable {
+	private class ShowAnimation implements IDisplayable
+    {
 		private float elapsedTime;
 		private String name;
 		private Animation animation;

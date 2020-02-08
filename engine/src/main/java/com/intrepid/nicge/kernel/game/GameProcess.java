@@ -49,9 +49,9 @@ public enum GameProcess implements IProcessExecution
     @Override
     public void execute()
     {
-        double ti = Game.time.getSystemMicroTime();
+        double ti = Game.time.getSystemMilliTime();
         processExecution.execute();
-        double tf = Game.time.getSystemMicroTime();
+        double tf = Game.time.getSystemMilliTime();
         executionTime = tf - ti;
     }
 

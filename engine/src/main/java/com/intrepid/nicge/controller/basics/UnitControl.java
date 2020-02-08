@@ -12,8 +12,9 @@
  */
 package com.intrepid.nicge.controller.basics;
 
-import com.intrepid.nicge.theater.Controlable;
-import com.intrepid.nicge.theater.Updatable;
+import com.intrepid.nicge.theater.IControllable;
+import com.intrepid.nicge.theater.IUpdatable;
 
-public interface UnitControl extends Updatable, Controlable {
+public interface UnitControl extends IUpdatable, IControllable
+{
 }

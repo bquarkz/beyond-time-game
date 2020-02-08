@@ -15,9 +15,9 @@ package com.intrepid.game.system.sheet;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.intrepid.nicge.theater.Updatable;
+import com.intrepid.nicge.theater.IUpdatable;
 
-public class AttributeManager implements Updatable
+public class AttributeManager implements IUpdatable
 {
     // ****************************************************************************************
     // Const Fields

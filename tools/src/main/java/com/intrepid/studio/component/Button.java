@@ -22,7 +22,7 @@ import com.intrepid.nicge.ui.IComponent;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 import com.intrepid.nicge.utils.graphics.TextureWorks;
 import com.intrepid.nicge.utils.threads.ThreadExecutor;
-import com.intrepid.nicge.utils.threads.ThreadRunnable;
+import com.intrepid.nicge.utils.threads.IThreadRunnable;
 
 public class Button implements IComponent {
 	// ****************************************************************************************
@@ -49,9 +49,9 @@ public class Button implements IComponent {
 	private BitmapFont bitmapFont;
 	private int diffx;
 	private int diffy;
-	private ThreadRunnable[] commands;
+	private IThreadRunnable[] commands;
 	private boolean cmdLockSystem;
-	private Future< ThreadRunnable > execute;
+	private Future< IThreadRunnable > execute;
 	private boolean lockedIn;
     private int cmdIndex;
 
@@ -63,15 +63,15 @@ public class Button implements IComponent {
 	}
 
     Button( int x, int y, int width, int height, String text,
-            ThreadRunnable command,
+            IThreadRunnable command,
             boolean cmdLockSystem ) {
-        this( x, y, width, height, text, cmdLockSystem, new ThreadRunnable[] { command } );
+        this( x, y, width, height, text, cmdLockSystem, new IThreadRunnable[] { command } );
     }
 
 	Button( int x, int y, int width, int height,
 			String text,
 			boolean cmdLockSystem,
-			ThreadRunnable[] commands
+			IThreadRunnable[] commands
 			 ) {
  		this.x = x;
 		this.y = y;
@@ -151,7 +151,7 @@ public class Button implements IComponent {
 				lockedIn = true;
 				execute = new ThreadExecutor().execute( commands[ cmdIndex++ ] );
 			} else {
-			    for( ThreadRunnable command : commands ) {
+			    for( IThreadRunnable command : commands ) {
 			        command.run();
 			    }
 			}

@@ -13,16 +13,16 @@
 package com.intrepid.nicge.theater;
 
 import com.intrepid.nicge.content.AssetManager;
-import com.intrepid.nicge.content.Loadable;
+import com.intrepid.nicge.content.ILoadable;
 import com.intrepid.nicge.kernel.game.Game;
-import com.intrepid.nicge.theater.courtain.Curtain;
-import com.intrepid.nicge.theater.courtain.CurtainCondition;
-import com.intrepid.nicge.theater.courtain.CurtainLayer;
-import com.intrepid.nicge.theater.courtain.CurtainManager;
-import com.intrepid.nicge.theater.scene.Scene;
+import com.intrepid.nicge.theater.curtain.Curtain;
+import com.intrepid.nicge.theater.curtain.CurtainCondition;
+import com.intrepid.nicge.theater.curtain.CurtainLayer;
+import com.intrepid.nicge.theater.curtain.CurtainManager;
+import com.intrepid.nicge.theater.scene.IScene;
 import com.intrepid.nicge.utils.IProcessExecution;
 import com.intrepid.nicge.utils.fsmachine.FSMachine;
-import com.intrepid.nicge.utils.fsmachine.FSMachineDefinition;
+import com.intrepid.nicge.utils.fsmachine.IFSMachineDefinition;
 import com.intrepid.nicge.utils.fsmachine.exceptions.EFSMachineStop;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
@@ -43,17 +43,17 @@ public final class Theater
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
-    private static FSMachine< Scene > fsMachine;
+    private static FSMachine< IScene > fsMachine;
     private static StageHand stageHand;
     private static CurtainManager curtainManager;
-    private static Class< ? extends Scene > sceneClassToChange;
+    private static Class< ? extends IScene > sceneClassToChange;
     private static GraphicsBatch stageBatch;
 
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
     public Theater(
-            FSMachineDefinition< Scene > fsMachineDef,
+            IFSMachineDefinition< IScene > fsMachineDef,
             AssetManager assetManager )
     {
         Theater.fsMachine = new FSMachine<>( fsMachineDef );
@@ -72,7 +72,7 @@ public final class Theater
     }
 
     public final void changeScene(
-            Class< ? extends Scene > sceneClass,
+            Class< ? extends IScene > sceneClass,
             Curtain curtain )
     {
         if( curtain == null )
@@ -96,9 +96,9 @@ public final class Theater
         }
     }
 
-    private final void __changeScene( Class< ? extends Scene > sceneClass )
+    private final void __changeScene( Class< ? extends IScene > sceneClass )
     {
-        final Loadable dependencies = Game.common.getDependencies( sceneClass );
+        final ILoadable dependencies = Game.common.getDependencies( sceneClass );
         Theater.stageHand.loadResourcesFrom( dependencies );
         sceneClassToChange = sceneClass;
         Theater.curtainManager.closeCommand( CurtainLayer.MAIN );
@@ -181,7 +181,7 @@ public final class Theater
                     Theater.fsMachine.switchTo( sceneClassToChange );
 
                     // graphics batch configuration for the new scene
-                    Scene scene = Theater.fsMachine.getDefinition().get( sceneClassToChange );
+                    IScene scene = Theater.fsMachine.getDefinition().get( sceneClassToChange );
                     scene.configureGraphicsBatch( stageBatch );
 
                     Theater.curtainManager.openCommand( CurtainLayer.MAIN );

@@ -12,12 +12,12 @@
  */
 package com.intrepid.nicge.utils.fsmachine.exceptions;
 
-import com.intrepid.nicge.utils.fsmachine.FiniteState;
+import com.intrepid.nicge.utils.fsmachine.IFiniteState;
 
 public class REFiniteStateDontHaveDefaultConstructor extends RuntimeException {
 	private static final long serialVersionUID = 4284025395997879936L;
 
-	public REFiniteStateDontHaveDefaultConstructor( Class< ? extends FiniteState > classState ) {
+	public REFiniteStateDontHaveDefaultConstructor( Class< ? extends IFiniteState > classState ) {
 		super( "The class state: " + classState.getName() +
 			  "; dont have the default constructor.\n" );
 	}

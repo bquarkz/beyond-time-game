@@ -40,7 +40,7 @@ public class Button implements IComponent
     private Runnable supportRunner;
     private Runnable actionRunner;
 
-    private float elapsedTime;
+    private float elapsedTimeInMilli;
 
     private Animation idle;
     private Animation mouserOverMe;
@@ -101,7 +101,7 @@ public class Button implements IComponent
 
         if( isMouseOverMe )
         {
-            elapsedTime = 0;
+            elapsedTimeInMilli = 0;
             if( button == BUTTON_ACTION )
             {
                 isActionClicked = true;
@@ -127,7 +127,7 @@ public class Button implements IComponent
         {
             if( isMouseOverMe && isActionClicked )
             {
-                elapsedTime = 0;
+                elapsedTimeInMilli = 0;
                 isActionActive = true;
             }
             else
@@ -142,7 +142,7 @@ public class Button implements IComponent
         {
             if( isMouseOverMe && isSupportActive )
             {
-                elapsedTime = 0;
+                elapsedTimeInMilli = 0;
                 isSupportActive = true;
             }
             else
@@ -157,7 +157,7 @@ public class Button implements IComponent
     @Override
     public void update()
     {
-        elapsedTime += Game.time.getRawDeltaTime();
+        elapsedTimeInMilli += Game.time.getGdxRawDeltaTime();
 
         if( isActionActive )
         {
@@ -179,19 +179,22 @@ public class Button implements IComponent
     @Override
     public void display( GraphicsBatch batch )
     {
-        TextureRegion tr = ( idle != null ? idle.getKeyFrame( elapsedTime ) : null );
+        TextureRegion tr = idle != null
+                ? idle.getKeyFrame( elapsedTimeInMilli )
+                : null;
+
         if( mouserOverMe != null && isMouseOverMe )
         {
-            tr = mouserOverMe.getKeyFrame( elapsedTime );
+            tr = mouserOverMe.getKeyFrame( elapsedTimeInMilli );
         }
 
         if( actionClicked != null && isActionClicked )
         {
-            tr = actionClicked.getKeyFrame( elapsedTime );
+            tr = actionClicked.getKeyFrame( elapsedTimeInMilli );
         }
         else if( supportClicked != null && isSupportClicked )
         {
-            tr = supportClicked.getKeyFrame( elapsedTime );
+            tr = supportClicked.getKeyFrame( elapsedTimeInMilli );
         }
 
         if( tr != null )

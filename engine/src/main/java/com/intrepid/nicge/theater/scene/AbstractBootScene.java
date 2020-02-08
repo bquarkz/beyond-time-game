@@ -13,11 +13,12 @@
 package com.intrepid.nicge.theater.scene;
 
 import com.intrepid.nicge.kernel.game.Game;
-import com.intrepid.nicge.theater.courtain.Curtain;
-import com.intrepid.nicge.theater.courtain.DefaultCurtain;
+import com.intrepid.nicge.theater.curtain.Curtain;
+import com.intrepid.nicge.theater.curtain.DefaultCurtain;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
-public abstract class AbstractBootScene implements Scene {
+public abstract class AbstractBootScene implements IScene
+{
 	// ****************************************************************************************
 	// Const Fields
 	// ****************************************************************************************
@@ -39,7 +40,7 @@ public abstract class AbstractBootScene implements Scene {
 	// ****************************************************************************************
 	// Methods
 	// ****************************************************************************************
-	public abstract Class<? extends Scene> getStartScene();
+	public abstract Class<? extends IScene > getStartScene();
 	
 	@Override
 	public final void start() {

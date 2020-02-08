@@ -19,7 +19,7 @@ import java.util.Map;
 import com.intrepid.nicge.utils.fsmachine.exceptions.REConsistenceError;
 import com.intrepid.nicge.utils.fsmachine.exceptions.REFiniteStateNotFound;
 
-public class HashFSMachineDefinition< T extends FiniteState >
+public class HashFSMachineDefinition< T extends IFiniteState >
 		extends AbstractFSMachineDefinition< T > {
 	// ****************************************************************************************
 	// Const Fields

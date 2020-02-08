@@ -12,8 +12,8 @@
  */
 package com.intrepid.nicge.controller.basics;
 
-import com.intrepid.nicge.theater.Controlable;
-import com.intrepid.nicge.theater.Updatable;
+import com.intrepid.nicge.theater.IControllable;
+import com.intrepid.nicge.theater.IUpdatable;
 
 public abstract class AbstractPad implements UnitControl, Pad {
 	// ****************************************************************************************
@@ -58,14 +58,14 @@ public abstract class AbstractPad implements UnitControl, Pad {
 
 	@Override
 	public void captureControl() {
-		for( Controlable c : units ) {
+		for( IControllable c : units ) {
 			c.captureControl();
 		}
 	}
 
 	@Override
 	public void update() {
-		for( Updatable u : units ) {
+		for( IUpdatable u : units ) {
 			u.update();
 		}
 	}

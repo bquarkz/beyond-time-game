@@ -36,17 +36,18 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.utils.Json;
-import com.intrepid.nicge.utils.FileExec;
+import com.intrepid.nicge.utils.IFileExec;
 import com.intrepid.nicge.utils.JsonHelper;
 import com.intrepid.nicge.utils.RootContent;
 import com.intrepid.nicge.utils.animation.AnimationInfo;
 import com.intrepid.nicge.utils.animation.AnimationInfoFactory;
 import com.intrepid.nicge.utils.animation.AnimationPackInfo;
 import com.intrepid.nicge.utils.logger.Log;
-import com.intrepid.nicge.utils.threads.ThreadRunnable;
+import com.intrepid.nicge.utils.threads.IThreadRunnable;
 import com.intrepid.studio.kernel.Designs;
 
-public class GenerateAnimationPackInfo implements ThreadRunnable {
+public class GenerateAnimationPackInfo implements IThreadRunnable
+{
 	// ****************************************************************************************
 	// Const Fields
 	// ****************************************************************************************
@@ -69,7 +70,7 @@ public class GenerateAnimationPackInfo implements ThreadRunnable {
 	// Methods
 	// ****************************************************************************************
 	private void generateNewAnimationInfo( Json json ) {
-		rootContent.foreachFilesInAllRootDirectories( new FileExec() {
+		rootContent.foreachFilesInAllRootDirectories( new IFileExec() {
 			@Override
 			public void runOver( final FileHandle fHandle ) {
 				if( fHandle.extension().equals( NEW_EXTENSION ) ) {
@@ -100,7 +101,7 @@ public class GenerateAnimationPackInfo implements ThreadRunnable {
 	}
 	
 	private void createMapGroupTagResource() {
-		rootContent.foreachFilesInAllRootDirectories( new FileExec() {
+		rootContent.foreachFilesInAllRootDirectories( new IFileExec() {
 			@Override
 			public void runOver( final FileHandle fHandle ) {
 				if( fHandle.name().equals( GROUP_TAG ) ) {

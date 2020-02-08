@@ -14,7 +14,7 @@ package com.intrepid.nicge.content;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.intrepid.nicge.utils.animation.AnimationPack;
-import com.intrepid.nicge.utils.konstants.ResourcesPath;
+import com.intrepid.nicge.utils.konstants.IResourcesPath;
 
 public final class ResourceFactory
 {
@@ -38,21 +38,21 @@ public final class ResourceFactory
     // ****************************************************************************************
     // Methods
     // ****************************************************************************************
-    private static final < T > Resource< T > register(
+    private static final < T > IResource< T > register(
             String name,
             Class< T > resourceClass )
     {
         return new ResourceWrapper<>( counter_id++, name, resourceClass );
     }
 
-    public static final Resource< Texture > registerTexture( String name )
+    public static final IResource< Texture > registerTexture( String name )
     {
-        return register( ResourcesPath.TEXTURES_PATH + name, Texture.class );
+        return register( IResourcesPath.TEXTURES_PATH + name, Texture.class );
     }
 
-    public static final Resource< AnimationPack > registerAnimationPack( String name )
+    public static final IResource< AnimationPack > registerAnimationPack( String name )
     {
-        return register( ResourcesPath.ANIMATION_PACK_INFO_PATH + name, AnimationPack.class );
+        return register( IResourcesPath.ANIMATION_PACK_INFO_PATH + name, AnimationPack.class );
     }
 
 //	public static final Resource< DynamicDependencyPack > registerDynamicDependencyPack( String name ) {

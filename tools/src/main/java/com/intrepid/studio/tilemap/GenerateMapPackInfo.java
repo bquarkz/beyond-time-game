@@ -31,20 +31,21 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.intrepid.nicge.content.DynamicDependencyPack;
 import com.intrepid.nicge.entities.Entity;
-import com.intrepid.nicge.utils.FileExec;
+import com.intrepid.nicge.utils.IFileExec;
 import com.intrepid.nicge.utils.JsonHelper;
 import com.intrepid.nicge.utils.RootContent;
 import com.intrepid.nicge.utils.map.EntityPosition;
 import com.intrepid.nicge.utils.map.MapPackInfo;
 import com.intrepid.nicge.utils.map.ShapeCollisionType;
 import com.intrepid.nicge.utils.map.SoloType;
-import com.intrepid.nicge.utils.threads.ThreadRunnable;
+import com.intrepid.nicge.utils.threads.IThreadRunnable;
 import com.intrepid.studio.kernel.Constants;
 import com.intrepid.studio.kernel.Designs;
 import com.intrepid.studio.kernel.Studio;
 import com.intrepid.studio.utilz.tiled.TiledReader;
 
-public class GenerateMapPackInfo implements ThreadRunnable {
+public class GenerateMapPackInfo implements IThreadRunnable
+{
     // ****************************************************************************************
     // Const Fields
     // ****************************************************************************************
@@ -127,7 +128,7 @@ public class GenerateMapPackInfo implements ThreadRunnable {
     public boolean executeThread() {
         final Json json = JsonHelper.getJson();
 
-        rootContent.foreachFileInRootDirectory( WORKDIR_TILEMAP_JSON_MAP, new FileExec() {
+        rootContent.foreachFileInRootDirectory( WORKDIR_TILEMAP_JSON_MAP, new IFileExec() {
             @Override
             public void runOver( final FileHandle fHandle ) {
                 final String filename = fHandle.name();

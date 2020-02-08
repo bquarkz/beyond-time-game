@@ -16,11 +16,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.intrepid.nicge.content.AssetManager;
-import com.intrepid.nicge.content.Loadable;
-import com.intrepid.nicge.content.Resource;
+import com.intrepid.nicge.content.ILoadable;
+import com.intrepid.nicge.content.IResource;
 import com.intrepid.nicge.utils.logger.Log;
 
-final class StageHand implements Updatable
+final class StageHand implements IUpdatable
 {
     // ****************************************************************************************
     // Const Fields
@@ -31,8 +31,8 @@ final class StageHand implements Updatable
     // ****************************************************************************************
     private final AssetManager assetManager;
     private boolean needToUnLoad;
-    private Loadable toLoad;
-    private Loadable assetsLoaded;
+    private ILoadable toLoad;
+    private ILoadable assetsLoaded;
 
 //	DEBUG
 //	private int counter;
@@ -61,9 +61,9 @@ final class StageHand implements Updatable
 
         if( ( assetsLoaded != null ) && ( needToUnLoad ) )
         {
-            final Set< Resource< ? > > resources = new HashSet<>();
+            final Set< IResource< ? > > resources = new HashSet<>();
             assetsLoaded.captureResources( resources );
-            for( Resource< ? > resource : resources )
+            for( IResource< ? > resource : resources )
             {
                 assetManager.unload( resource.getPath() );
             }
@@ -77,9 +77,9 @@ final class StageHand implements Updatable
         }
     }
 
-    public void loadResourcesFrom( Loadable toLoad )
+    public void loadResourcesFrom( ILoadable toLoad )
     {
-        final Set< Resource< ? > > resources = new HashSet<>();
+        final Set< IResource< ? > > resources = new HashSet<>();
         toLoad.captureResources( resources );
 
         if( resources.isEmpty() )
@@ -90,7 +90,7 @@ final class StageHand implements Updatable
         }
 
         // keep it for testing and protection...
-        for( Resource< ? > resource : resources )
+        for( IResource< ? > resource : resources )
         {
             if( resource == null )
             {

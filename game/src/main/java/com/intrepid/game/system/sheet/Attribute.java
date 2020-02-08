@@ -15,9 +15,9 @@ package com.intrepid.game.system.sheet;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.intrepid.nicge.theater.Updatable;
+import com.intrepid.nicge.theater.IUpdatable;
 
-public class Attribute implements Updatable
+public class Attribute implements IUpdatable
 {
     // ****************************************************************************************
     // Const Fields

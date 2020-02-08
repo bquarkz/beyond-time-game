@@ -20,13 +20,14 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
-import com.intrepid.nicge.utils.FileExec;
+import com.intrepid.nicge.utils.IFileExec;
 import com.intrepid.nicge.utils.RootContent;
-import com.intrepid.nicge.utils.threads.ThreadRunnable;
+import com.intrepid.nicge.utils.threads.IThreadRunnable;
 import com.intrepid.studio.kernel.Designs;
 import com.intrepid.studio.kernel.Studio;
 
-public class TileSetGutter implements ThreadRunnable {
+public class TileSetGutter implements IThreadRunnable
+{
     // ****************************************************************************************
     // Const Fields
     // ****************************************************************************************
@@ -151,7 +152,7 @@ public class TileSetGutter implements ThreadRunnable {
     @Override
     public boolean executeThread()
     {
-        rootContent.foreachFileInRootDirectory( WORKDIR_TILEMAP_TILESET, new FileExec() {
+        rootContent.foreachFileInRootDirectory( WORKDIR_TILEMAP_TILESET, new IFileExec() {
             @Override
             public void runOver( final FileHandle fHandle ) {
                 String filename = fHandle.name();

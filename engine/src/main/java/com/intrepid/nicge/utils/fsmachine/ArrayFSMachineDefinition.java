@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.Array;
 import com.intrepid.nicge.utils.fsmachine.exceptions.REConsistenceError;
 import com.intrepid.nicge.utils.fsmachine.exceptions.REFiniteStateNotFound;
 
-public class ArrayFSMachineDefinition< T extends FiniteState >
+public class ArrayFSMachineDefinition< T extends IFiniteState >
 		extends AbstractFSMachineDefinition< T > {
 	// ****************************************************************************************
 	// Const Fields
@@ -47,7 +47,7 @@ public class ArrayFSMachineDefinition< T extends FiniteState >
 	@Override
 	protected void internal__registerState( T finiteState ) {
 		// verify if the states have the same type
-		for( FiniteState state : states ) {
+		for( IFiniteState state : states ) {
 			if( state.getClass() == finiteState.getClass() ) {
 				throw new REConsistenceError();	
 			}
@@ -58,7 +58,7 @@ public class ArrayFSMachineDefinition< T extends FiniteState >
 	
 	@Override
 	public boolean contains( Class< ? extends T > tClass ) {
-		for( FiniteState state : states ) {
+		for( IFiniteState state : states ) {
 			if( state.getClass() == tClass ) {
 				return true;
 			}
@@ -79,7 +79,7 @@ public class ArrayFSMachineDefinition< T extends FiniteState >
 		return states.size;
 	}
 	
-	public FiniteState get( int index ) {
+	public IFiniteState get( int index ) {
 		try{
 			return states.get( index );
 		} catch( IndexOutOfBoundsException e ) {

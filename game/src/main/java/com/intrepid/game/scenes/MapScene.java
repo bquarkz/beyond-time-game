@@ -14,16 +14,15 @@ package com.intrepid.game.scenes;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.intrepid.game.Resources;
-import com.intrepid.game.courtains.AllCurtains;
+import com.intrepid.game.curtains.AllCurtains;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.theater.cameras.SeekerCamera;
 import com.intrepid.nicge.theater.scene.GameScene;
-import com.intrepid.nicge.theater.scene.Scene;
+import com.intrepid.nicge.theater.scene.IScene;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
-import org.bquarkz.beyondtime.simulator.Simulation;
 
 @GameScene
-public class MapScene implements Scene
+public class MapScene implements IScene
 {
     // ****************************************************************************************
     // Const Fields
@@ -57,7 +56,7 @@ public class MapScene implements Scene
     {
         Game.util.addDebugMessage( "SCENE", " MAP SCENE - " + c++ );
 
-        if( c == 500 )
+        if( c == 150 )
         {
             Game.scene.change( CombatScene.class, AllCurtains.IMAGE_FADE );
         }
@@ -114,8 +113,7 @@ public class MapScene implements Scene
     @Override
     public void simulation()
     {
-        Game.util.addDebugMessage( "LAST LOOP TIME",
-                String.format( "%.2f", Game.time.getLastLoopTime() ) );
+        Game.util.addDebugMessage( "LAST LOOP TIME", Game.time.getLastLoopTime() + "ns" );
     }
 
     // ****************************************************************************************

@@ -19,7 +19,7 @@ import java.util.List;
 import com.intrepid.game.system.campaing.GroupInfo;
 import com.intrepid.game.system.sheet.Sheet;
 import com.intrepid.nicge.utils.containers.Stack;
-import com.intrepid.nicge.utils.readonlycollections.ReadOnlyList;
+import com.intrepid.nicge.utils.readonlycollections.IReadOnlyList;
 
 public class ActionQueue
 {
@@ -32,7 +32,7 @@ public class ActionQueue
     // Common Fields
     // ****************************************************************************************
     private final Stack< Sheet > actionSheets;
-    private ReadOnlyList< ActionDetails > actionDetails;
+    private IReadOnlyList< ActionDetails > actionDetails;
 
     // ****************************************************************************************
     // Constructors
@@ -46,8 +46,8 @@ public class ActionQueue
     // Factories
     // ****************************************************************************************
     public static ActionQueue create(
-            ReadOnlyList< Sheet > players,
-            ReadOnlyList< Sheet > enemies
+            IReadOnlyList< Sheet > players,
+            IReadOnlyList< Sheet > enemies
     )
     {
         ActionQueue o = new ActionQueue();
@@ -61,7 +61,7 @@ public class ActionQueue
         {
             actionDetails.add( new ActionDetails( sheet ) );
         }
-        o.actionDetails = ReadOnlyList.wrap( actionDetails );
+        o.actionDetails = IReadOnlyList.wrap( actionDetails );
 
         return o;
     }

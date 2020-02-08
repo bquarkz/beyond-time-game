@@ -17,7 +17,8 @@ import java.util.Set;
 
 import com.intrepid.nicge.kernel.game.Game;
 
-public abstract class DependencyResource implements Loadable {
+public abstract class DependencyResource implements ILoadable
+{
     // ****************************************************************************************
     // Const Fields
     // ****************************************************************************************
@@ -25,7 +26,7 @@ public abstract class DependencyResource implements Loadable {
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
-    private Set< Resource< ? > > resources;
+    private Set< IResource< ? > > resources;
 
     // ****************************************************************************************
     // Constructors
@@ -38,27 +39,27 @@ public abstract class DependencyResource implements Loadable {
     // ****************************************************************************************
     // Methods
     // ****************************************************************************************
-    protected abstract void setDependencies( Set< Resource< ? > > resources );
+    protected abstract void setDependencies( Set< IResource< ? > > resources );
     
     @Override
-    public void captureResources( Set< Resource< ? > > resources ) {
-        for( Resource< ? > resource : this.resources ) {
+    public void captureResources( Set< IResource< ? > > resources ) {
+        for( IResource< ? > resource : this.resources ) {
             resources.add( resource );
         }
     }
     
     protected final void captureResourcesFrom(
             Class< ? > clazz,
-            Set< Resource< ? > > resources
+            Set< IResource< ? > > resources
             ) {
         
-        Loadable dependencies = Game.common.getDependencies( clazz );
+        ILoadable dependencies = Game.common.getDependencies( clazz );
         dependencies.captureResources( resources );
     }
     
     protected final void captureResourcesFrom(
             DynamicDependencyPack pack,
-            Set< Resource< ? > > resources
+            Set< IResource< ? > > resources
             ) {
         
         for( Class< ? > clazz : pack.getDynamicDependencies() ) {

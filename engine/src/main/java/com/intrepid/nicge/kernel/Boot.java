@@ -14,10 +14,10 @@ package com.intrepid.nicge.kernel;
 
 import java.util.Set;
 
-import com.intrepid.nicge.content.Resource;
+import com.intrepid.nicge.content.IResource;
 
 public interface Boot< T extends AppConfiguration > {
-	void loader( Set< Resource< ? > > resources );
+	void loader( Set< IResource< ? > > resources );
 	void initialization();
 	T getConfig();
 }

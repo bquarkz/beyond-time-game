@@ -14,7 +14,7 @@ package com.intrepid.nicge.utils.audio;
 
 import com.badlogic.gdx.audio.Sound;
 import com.intrepid.nicge.content.AssetManager;
-import com.intrepid.nicge.content.Resource;
+import com.intrepid.nicge.content.IResource;
 
 public class SoundPack
 {
@@ -29,13 +29,13 @@ public class SoundPack
 	private float volume;
 	private float pan;
 	private float pitch;
-	private Resource< Sound > resource;
+	private IResource< Sound > resource;
 	private long soundID;
 
 	// ****************************************************************************************
 	// Constructors
 	// ****************************************************************************************
-	public SoundPack( Resource< Sound > resource, float volume, float pan, float pitch ) {
+	public SoundPack( IResource< Sound > resource, float volume, float pan, float pitch ) {
 		sound = null;
 		setVolume( volume );
 		setPan( pan );
@@ -43,7 +43,7 @@ public class SoundPack
 		this.resource = resource;
 	}
 	
-	public SoundPack( Resource< Sound > resource ) {
+	public SoundPack( IResource< Sound > resource ) {
 		this( resource, 1.0f, 0.0f, 1.0f );
 	}
 
@@ -81,7 +81,7 @@ public class SoundPack
 		return pitch;
 	}
 	
-	public Resource< Sound > getResource() {
+	public IResource< Sound > getResource() {
 		return resource;
 	}
 	

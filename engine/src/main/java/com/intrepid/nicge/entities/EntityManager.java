@@ -14,11 +14,11 @@ package com.intrepid.nicge.entities;
 
 import java.util.List;
 
-import com.intrepid.nicge.theater.Displayable;
-import com.intrepid.nicge.theater.Updatable;
+import com.intrepid.nicge.theater.IDisplayable;
+import com.intrepid.nicge.theater.IUpdatable;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
-public class EntityManager implements Updatable, Displayable
+public class EntityManager implements IUpdatable, IDisplayable
 {
     // ****************************************************************************************
     // Const Fields

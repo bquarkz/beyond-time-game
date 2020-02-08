@@ -89,12 +89,12 @@ public class Log
         return handlers;
     }
 
-    public static final Logger from( Object object )
+    public static final ILogger from( Object object )
     {
         return Log.from( object.getClass() );
     }
 
-    public static final Logger from( Class< ? > clazz )
+    public static final ILogger from( Class< ? > clazz )
     {
         if( !Log.loggers.containsKey( clazz.getName() ) )
         {

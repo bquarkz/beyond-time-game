@@ -93,7 +93,7 @@ public final class RootContent
 
     public void foreachFileInRootDirectory(
             String[] rootPaths,
-            FileExec fileExec )
+            IFileExec fileExec )
     {
         for( String rootPath : rootPaths )
         {
@@ -103,7 +103,7 @@ public final class RootContent
 
     public void foreachFileInRootDirectory(
             String rootDirectoryPath,
-            FileExec fileExec )
+            IFileExec fileExec )
     {
         ContentSet contentSet = rootContentMap.get( rootDirectoryPath );
         if( contentSet == null )
@@ -116,7 +116,7 @@ public final class RootContent
 
     protected void foreachFileInRootDirectory(
             ContentSet cSet,
-            FileExec fileExec )
+            IFileExec fileExec )
     {
         for( FileHandle contentDirectories : cSet.getDirectories() )
         {
@@ -137,7 +137,7 @@ public final class RootContent
         }
     }
 
-    public void foreachFilesInAllRootDirectories( FileExec fileExec )
+    public void foreachFilesInAllRootDirectories( IFileExec fileExec )
     {
         for( ContentSet cSet : rootContentMap.values() )
         {

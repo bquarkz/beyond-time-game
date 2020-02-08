@@ -12,7 +12,7 @@
  */
 package com.intrepid.nicge.utils.pool.exceptions;
 
-import com.intrepid.nicge.utils.pool.Poolable;
+import com.intrepid.nicge.utils.pool.IPoolable;
 import com.intrepid.nicge.utils.pool.PoolableWrapper;
 
 public class EPoolableNotFoundInPool extends RuntimeException {
@@ -28,7 +28,7 @@ public class EPoolableNotFoundInPool extends RuntimeException {
 	// ****************************************************************************************
 	// Constructors
 	// ****************************************************************************************
-	public EPoolableNotFoundInPool(PoolableWrapper< ? extends Poolable > poolable) {
+	public EPoolableNotFoundInPool(PoolableWrapper< ? extends IPoolable > poolable) {
 		super( "Poolable: " + poolable.get().getClass().getName() + "; dont exist in Pool" );
 	}
 

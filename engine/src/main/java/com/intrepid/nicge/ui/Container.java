@@ -14,8 +14,10 @@ package com.intrepid.nicge.ui;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
+import com.intrepid.nicge.theater.IUpdatable;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
 public class Container implements IComponent
@@ -58,24 +60,14 @@ public class Container implements IComponent
 
     public void disable( IComponent component )
     {
-        ComponentControl cc = getComponents().get( component );
-        if( cc == null )
-        {
-            return;
-        }
-
-        cc.getConfig().setEnabled( false );
+        Optional.ofNullable( getComponents().get( component ) )
+                .ifPresent( cc -> cc.getConfig().setEnabled( false ) );
     }
 
     public void enable( IComponent component )
     {
-        ComponentControl cc = getComponents().get( component );
-        if( cc == null )
-        {
-            return;
-        }
-
-        cc.getConfig().setEnabled( true );
+        Optional.ofNullable( getComponents().get( component ) )
+                .ifPresent( cc -> cc.getConfig().setEnabled( true ) );
     }
 
     @Override
@@ -107,7 +99,7 @@ public class Container implements IComponent
     @Override
     public void update()
     {
-        runOverAllEnabled( o -> o.update() );
+        runOverAllEnabled( IUpdatable::update );
     }
 
     protected void runOverAllEnabled( Consumer< IComponent > consumer )

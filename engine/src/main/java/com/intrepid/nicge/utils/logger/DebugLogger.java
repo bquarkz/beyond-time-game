@@ -21,7 +21,8 @@ import java.util.logging.Level;
  * 
  * @author NiltonRogerio
  */
-public final class DebugLogger implements Logger {
+public final class DebugLogger implements ILogger
+{
 	// ****************************************************************************************
 	// Const Fields
 	// ****************************************************************************************
