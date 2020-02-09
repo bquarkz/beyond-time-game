@@ -23,8 +23,8 @@ import com.intrepid.nicge.controller.joystick.JoystickMap;
 import com.intrepid.nicge.controller.joystick.JoystickPad;
 import com.intrepid.nicge.controller.keyboard.KeyboardMap;
 import com.intrepid.nicge.controller.keyboard.KeyboardPad;
-import com.intrepid.nicge.theater.IControllable;
-import com.intrepid.nicge.theater.IUpdatable;
+import com.intrepid.nicge.kernel.IControllable;
+import com.intrepid.nicge.kernel.IUpdatable;
 
 public class ControllerManager implements IUpdatable, IControllable
 {
@@ -169,9 +169,9 @@ public class ControllerManager implements IUpdatable, IControllable
     }
 
     @Override
-    public void captureControl()
+    public void inputControlLogic()
     {
-        unitControl.captureControl();
+        unitControl.inputControlLogic();
     }
 
     @Override

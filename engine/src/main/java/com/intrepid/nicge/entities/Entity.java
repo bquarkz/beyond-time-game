@@ -13,8 +13,8 @@
 package com.intrepid.nicge.entities;
 
 import com.badlogic.gdx.math.Vector2;
-import com.intrepid.nicge.theater.IDisplayable;
-import com.intrepid.nicge.theater.IUpdatable;
+import com.intrepid.nicge.kernel.IDisplayable;
+import com.intrepid.nicge.kernel.IUpdatable;
 
 public interface Entity
         extends Comparable< Entity >, IUpdatable, IDisplayable

@@ -12,7 +12,6 @@
  */
 package com.intrepid.nicge.theater.curtain;
 
-import com.intrepid.nicge.kernel.AppConfiguration;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.theater.cameras.Camera;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
@@ -28,7 +27,7 @@ public class CurtainManager
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
-    private Curtain[] layers;
+    private Curtain[] curtains;
     private boolean isInTransition;
 
     private final GraphicsBatch batch;
@@ -39,13 +38,9 @@ public class CurtainManager
     // ****************************************************************************************
     public CurtainManager()
     {
-        this.layers = new Curtain[ CurtainLayer.values().length ];
+        curtains = new Curtain[ CurtainLayer.values().length ];
         isInTransition = false;
-
-        AppConfiguration gameCfg = Game.common.getGameConfiguration();
-        int nativeResolutionWidth = gameCfg.getNativeResolutionWidth();
-        int nativeResolutionHeight = gameCfg.getNativeResolutionHeight();
-        camera = new Camera( nativeResolutionWidth, nativeResolutionHeight );
+        camera = Game.graphics.newNativeCamera();
         batch = new GraphicsBatch();
         batch.setProjectionMatrix( camera.combined );
     }
@@ -53,81 +48,81 @@ public class CurtainManager
     // ****************************************************************************************
     // Methods
     // ****************************************************************************************
+    private void update( CurtainLayer layer )
+    {
+        getCurtain( layer ).ifPresent( curtain -> {
+            boolean isTransitionFinished = curtain.isTransitionFinished();
+            isInTransition |= isTransitionFinished;
+            if( !isTransitionFinished )
+            {
+                curtain.update();
+            }
+        } );
+    }
+
     public void update()
     {
         camera.update();
-
-		if( !isInTransition )
-		{
-			return;
-		}
-
-        for( Curtain curtain : layers )
+        if( !isInTransition )
         {
-            if( curtain != null )
-            {
-                boolean courtainTransitionCondition = curtain.isTransitionFinished();
-                isInTransition |= courtainTransitionCondition;
-                if( !courtainTransitionCondition )
-                {
-                    curtain.update();
-                }
-            }
+            return;
         }
+
+        update( CurtainLayer.MAIN );
+        update( CurtainLayer.HUD_INTERFACE );
+        update( CurtainLayer.BEHIND );
     }
 
-    private void displayMainCurtain()
+    private void display( CurtainLayer layer )
     {
-        Curtain curtain = layers[ CurtainLayer.MAIN.getPosition() ];
-        if( curtain != null )
-        {
-            curtain.display( batch );
-        }
-    }
-
-    private void displayCurtain( Curtain curtain )
-    {
-        if( curtain != null )
-        {
-            boolean courtainTransitionCondition = curtain.isTransitionFinished();
-            if( !courtainTransitionCondition )
-            {
-                curtain.display( batch );
-            }
-        }
+        getCurtain( layer )
+                .filter( curtain -> !curtain.isTransitionFinished() )
+                .ifPresent( curtain -> curtain.display( batch ) );
     }
 
     public void display()
     {
-		if( !isInTransition )
-		{
-			return;
-		}
-		// following sequence are very VERY important
+        if( !isInTransition )
+        {
+            return;
+        }
+
+        // following sequence are very VERY important
         // the main curtain should be last one
         batch.begin();
-        displayCurtain( layers[ CurtainLayer.BEHAIND.getPosition() ] );
-        displayCurtain( layers[ CurtainLayer.HUD_INTERFACE.getPosition() ] );
-        displayMainCurtain();
+        display( CurtainLayer.BEHIND );
+        display( CurtainLayer.HUD_INTERFACE );
+        getCurtain( CurtainLayer.MAIN ).ifPresent( curtain -> curtain.display( batch ) );
         batch.end();
     }
 
-    public void closeCommand( CurtainLayer layer )
+    private void openCommand( CurtainLayer layer )
     {
         isInTransition = true;
-        layers[ layer.getPosition() ].initRunBeforeCloseCommand();
-        layers[ layer.getPosition() ].closeCommand();
+        getCurtain( layer ).ifPresent( Curtain::openCommand );
     }
 
-    public void openCommand( CurtainLayer layer )
+    private void closeCommand( CurtainLayer layer )
     {
         isInTransition = true;
-        layers[ layer.getPosition() ].openCommand();
+        getCurtain( layer ).ifPresent( curtain -> {
+            curtain.initRunBeforeCloseCommand();
+            curtain.closeCommand();
+        } );
     }
 
-    public void isTransitionFinished( CurtainLayer layer )
+    public void openCommand()
     {
-        layers[ layer.getPosition() ].isTransitionFinished();
+        openCommand( CurtainLayer.MAIN );
+        openCommand( CurtainLayer.HUD_INTERFACE );
+        openCommand( CurtainLayer.BEHIND );
+    }
+
+    public void closeCommand()
+    {
+        closeCommand( CurtainLayer.BEHIND );
+        closeCommand( CurtainLayer.HUD_INTERFACE );
+        closeCommand( CurtainLayer.MAIN );
     }
 
     // ****************************************************************************************
@@ -137,12 +132,12 @@ public class CurtainManager
             CurtainLayer layer,
             Curtain curtain )
     {
-        layers[ layer.getPosition() ] = curtain;
+        curtains[ layer.getPosition() ] = curtain;
     }
 
     public Optional< Curtain > getCurtain( CurtainLayer layer )
     {
-        return Optional.ofNullable( layers[ layer.getPosition() ] );
+        return Optional.ofNullable( curtains[ layer.getPosition() ] );
     }
 
     public boolean isInTransition()

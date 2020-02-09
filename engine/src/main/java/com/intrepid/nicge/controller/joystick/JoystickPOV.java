@@ -47,7 +47,7 @@ public class JoystickPOV implements POV {
 	}
 	
 	@Override
-	public void captureControl() {
+	public void inputControlLogic() {
 		this.direction = this.inspect.getPOV( code );
 	}
 

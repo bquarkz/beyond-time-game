@@ -10,13 +10,18 @@
  * The code was written based on study principles and can be enjoyed for
  * all community without problems.
  */
-package com.intrepid.nicge.ui;
+package com.intrepid.nicge.gui;
 
+import java.util.Collection;
 import java.util.function.Consumer;
 
+import com.intrepid.nicge.kernel.IDisplayable;
+import com.intrepid.nicge.kernel.IMouseControllable;
+import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
-final public class ComponentControl implements Comparable< ComponentControl >
+final public class ComponentWrapper
+        implements Comparable< ComponentWrapper >, IMouseControllable, IUpdatable, IDisplayable
 {
     // ****************************************************************************************
     // Const Fields
@@ -27,46 +32,41 @@ final public class ComponentControl implements Comparable< ComponentControl >
     // ****************************************************************************************
     private final Integer id;
     private final IComponent component;
-    private final ComponentConfig config;
+    private final ComponentParameters componentParameters;
 
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
-    protected ComponentControl(
+    protected ComponentWrapper(
             Integer id,
             IComponent component )
     {
         this.id = id;
         this.component = component;
-        this.config = new ComponentConfig();
-        this.component.setComponentControl( this );
+        this.componentParameters = new ComponentParameters();
+        this.component.setParent( this );
     }
 
     // ****************************************************************************************
     // Factories
     // ****************************************************************************************
-    public static ComponentControl create(
+    public static < C extends  IComponent > ComponentWrapper create(
             Integer id,
-            IComponent component )
+            C component )
     {
-        ComponentControl o = new ComponentControl( id, component );
-        return o;
+        return new ComponentWrapper( id, component );
     }
 
     // ****************************************************************************************
     // Methods
     // ****************************************************************************************
     static void runIfEnabled(
-            Iterable< ComponentControl > components,
+            Collection< ComponentWrapper > components,
             Consumer< IComponent > consumer )
     {
-        for( ComponentControl cc : components )
-        {
-            if( cc.getConfig().isEnabled() )
-            {
-                consumer.accept( cc.getComponent() );
-            }
-        }
+        components.stream()
+                  .filter( cc -> cc.getComponentParameters().isEnabled() )
+                  .forEach( cc -> consumer.accept( cc.getComponent() ) );
     }
 
     @Override
@@ -93,7 +93,7 @@ final public class ComponentControl implements Comparable< ComponentControl >
         {
             return false;
         }
-        ComponentControl other = (ComponentControl)obj;
+        ComponentWrapper other = (ComponentWrapper)obj;
         if( id == null )
         {
             if( other.id != null )
@@ -109,16 +109,18 @@ final public class ComponentControl implements Comparable< ComponentControl >
     }
 
     @Override
-    public int compareTo( ComponentControl cc )
+    public int compareTo( ComponentWrapper that )
     {
-        return getConfig().getLayer().compareTo( cc.getConfig().getLayer() );
+        return this.getId().compareTo( that.getId() );
     }
 
+    @Override
     public void display( GraphicsBatch batch )
     {
         getComponent().display( batch );
     }
 
+    @Override
     public void checkMouseOver(
             int screenX,
             int screenY )
@@ -126,6 +128,7 @@ final public class ComponentControl implements Comparable< ComponentControl >
         getComponent().checkMouseOver( screenX, screenY );
     }
 
+    @Override
     public void mouseButtonPressed(
             int screenX,
             int screenY,
@@ -134,6 +137,7 @@ final public class ComponentControl implements Comparable< ComponentControl >
         getComponent().mouseButtonPressed( screenX, screenY, button );
     }
 
+    @Override
     public void mouseButtonUnPressed(
             int screenX,
             int screenY,
@@ -142,6 +146,7 @@ final public class ComponentControl implements Comparable< ComponentControl >
         getComponent().mouseButtonUnPressed( screenX, screenY, button );
     }
 
+    @Override
     public void update()
     {
         getComponent().update();
@@ -160,9 +165,9 @@ final public class ComponentControl implements Comparable< ComponentControl >
         return component;
     }
 
-    public ComponentConfig getConfig()
+    public ComponentParameters getComponentParameters()
     {
-        return config;
+        return componentParameters;
     }
 
     // ****************************************************************************************

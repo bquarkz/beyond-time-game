@@ -17,9 +17,9 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.intrepid.nicge.theater.IDisplayable;
+import com.intrepid.nicge.kernel.IDisplayable;
 import com.intrepid.nicge.theater.cameras.Camera;
-import com.intrepid.nicge.ui.IComponent;
+import com.intrepid.nicge.gui.IComponent;
 import com.intrepid.nicge.utils.IProcessExecution;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 import com.intrepid.studio.kernel.Studio;

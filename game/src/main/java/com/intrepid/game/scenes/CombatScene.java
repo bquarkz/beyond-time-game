@@ -12,17 +12,18 @@
  */
 package com.intrepid.game.scenes;
 
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.intrepid.game.Resources;
 import com.intrepid.game.curtains.AllCurtains;
+import com.intrepid.nicge.gui.Windows;
+import com.intrepid.nicge.gui.WindowsManager;
+import com.intrepid.nicge.gui.WindowsParameters;
+import com.intrepid.nicge.gui.controls.Button;
 import com.intrepid.nicge.kernel.game.Game;
-import com.intrepid.nicge.theater.cameras.SeekerCamera;
+import com.intrepid.nicge.theater.cameras.Camera;
 import com.intrepid.nicge.theater.scene.GameScene;
 import com.intrepid.nicge.theater.scene.IScene;
-import com.intrepid.nicge.ui.Button;
-import com.intrepid.nicge.ui.Environment;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.animation.AnimationPack;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
@@ -30,7 +31,8 @@ import com.intrepid.nicge.utils.timer.Timer;
 import org.bquarkz.beyondtime.simulator.Simulation;
 
 @GameScene
-public class CombatScene implements IScene
+public class CombatScene
+        implements IScene
 {
     // ****************************************************************************************
     // Const Fields
@@ -43,8 +45,8 @@ public class CombatScene implements IScene
     // Common Fields
     // ****************************************************************************************
     private int c;
-    private SeekerCamera seekerCamera;
-    private Environment environment;
+    private Camera camera;
+    private WindowsManager xwManager;
     private Simulation simulation;
 
     private Timer timer;
@@ -77,9 +79,14 @@ public class CombatScene implements IScene
         b.setSupportClicked( sclicked );
         b.setScreenPosition( 250, 150 );
         b.setSize( 32, 32 );
-        environment = Environment.create();
-        environment.addComponent( b );
-        Gdx.input.setInputProcessor( environment );
+        b.setActionRun( () -> Game.scene.change( MapScene.class, AllCurtains.IMAGE_FADE ) );
+
+        final Windows w = new Windows( new WindowsParameters( 150, 120, 300, 150, false, Color.BROWN, Color.FIREBRICK ) );
+        w.addComponent( b );
+
+        xwManager = WindowsManager.create();
+        xwManager.addComponent( w );
+        Gdx.input.setInputProcessor( xwManager );
 
         timer = new Timer();
         timer.start();
@@ -89,6 +96,8 @@ public class CombatScene implements IScene
     public void update()
     {
         timer.update();
+        xwManager.update();
+
         Game.util.addDebugMessage( "SCENE",
                 "COUNTER: " + c,
                 "TIMER: " + timer.getTotalTime_s() + "s",
@@ -96,31 +105,19 @@ public class CombatScene implements IScene
                         .report()
                         .periodControl()
                         .currentPeriodPercent() ) );
-
-        if( c++ == 890 || timer.getTotalTime_s() > 15 )
-        {
-            Game.scene.change( MapScene.class, AllCurtains.IMAGE_FADE );
-        }
-
-        environment.update();
     }
 
     @Override
     public void display( GraphicsBatch batch )
     {
-        batch.begin();
-        environment.display( batch );
-        batch.end();
+        xwManager.display();
     }
 
     @Override
     public void configureGraphicsBatch( GraphicsBatch stageBatch )
     {
-        int nativeResolutionWidth = Game.common.getGameConfiguration().getNativeResolutionWidth();
-        int nativeResolutionHeight = Game.common.getGameConfiguration().getNativeResolutionHeight();
-        seekerCamera = new SeekerCamera( nativeResolutionWidth, nativeResolutionHeight );
-
-        stageBatch.setProjectionMatrix( seekerCamera.combined );
+        camera = Game.graphics.newNativeCamera();
+        stageBatch.setProjectionMatrix( camera.combined );
     }
 
     @Override
@@ -139,7 +136,7 @@ public class CombatScene implements IScene
     }
 
     @Override
-    public void captureControl()
+    public void inputControlLogic()
     {
     }
 

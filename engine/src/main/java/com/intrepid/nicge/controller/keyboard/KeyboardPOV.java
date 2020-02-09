@@ -58,7 +58,7 @@ public class KeyboardPOV implements POV {
 	}
 
 	@Override
-	public void captureControl() {
+	public void inputControlLogic() {
 		up = this.inspect.getKey( upCode );
 		down = this.inspect.getKey( downCode );
 		left = this.inspect.getKey( leftCode );

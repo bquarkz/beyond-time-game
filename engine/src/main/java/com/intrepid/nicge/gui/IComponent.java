@@ -10,12 +10,14 @@
  * The code was written based on study principles and can be enjoyed for
  * all community without problems.
  */
-package com.intrepid.nicge.ui;
+package com.intrepid.nicge.gui;
 
-import com.intrepid.nicge.theater.IDisplayable;
-import com.intrepid.nicge.theater.IUpdatable;
+import com.intrepid.nicge.kernel.IDisplayable;
+import com.intrepid.nicge.kernel.IMouseControllable;
+import com.intrepid.nicge.kernel.IUpdatable;
 
-public interface IComponent extends IMouseControl, IUpdatable, IDisplayable
+public interface IComponent
+        extends IMouseControllable, IUpdatable, IDisplayable
 {
     // ****************************************************************************************
     // Constants
@@ -24,9 +26,8 @@ public interface IComponent extends IMouseControl, IUpdatable, IDisplayable
     // ****************************************************************************************
     // Contracts
     // ****************************************************************************************
-    void setComponentControl( ComponentControl componentControl );
-
-    ComponentControl getComponentControl();
+    void setParent( ComponentWrapper parent );
+    ComponentWrapper getParent();
 
     // ****************************************************************************************
     // Default methods

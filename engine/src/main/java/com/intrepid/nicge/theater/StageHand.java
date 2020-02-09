@@ -18,6 +18,7 @@ import java.util.Set;
 import com.intrepid.nicge.content.AssetManager;
 import com.intrepid.nicge.content.ILoadable;
 import com.intrepid.nicge.content.IResource;
+import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.utils.logger.Log;
 
 final class StageHand implements IUpdatable

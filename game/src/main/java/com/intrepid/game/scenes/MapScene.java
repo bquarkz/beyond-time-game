@@ -97,7 +97,7 @@ public class MapScene implements IScene
     }
 
     @Override
-    public void captureControl()
+    public void inputControlLogic()
     {
     }
 

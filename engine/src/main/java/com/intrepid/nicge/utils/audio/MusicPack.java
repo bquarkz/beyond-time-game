@@ -16,7 +16,7 @@ import com.badlogic.gdx.audio.Music;
 import com.intrepid.nicge.content.AssetManager;
 import com.intrepid.nicge.content.IResource;
 import com.intrepid.nicge.kernel.game.Game;
-import com.intrepid.nicge.theater.IUpdatable;
+import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.utils.pool.PoolableWrapper;
 import com.intrepid.nicge.utils.timer.Timer;
 

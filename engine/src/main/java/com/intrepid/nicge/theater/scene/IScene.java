@@ -12,10 +12,10 @@
  */
 package com.intrepid.nicge.theater.scene;
 
-import com.intrepid.nicge.theater.IControllable;
-import com.intrepid.nicge.theater.IDisplayable;
-import com.intrepid.nicge.theater.ISimulation;
-import com.intrepid.nicge.theater.IUpdatable;
+import com.intrepid.nicge.kernel.IControllable;
+import com.intrepid.nicge.kernel.IDisplayable;
+import com.intrepid.nicge.kernel.ISimulation;
+import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.utils.fsmachine.IFiniteState;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 

@@ -29,6 +29,7 @@ import com.intrepid.nicge.kernel.Application;
 import com.intrepid.nicge.kernel.KernelScreenVariables;
 import com.intrepid.nicge.kernel.ScreenInfo;
 import com.intrepid.nicge.theater.Theater;
+import com.intrepid.nicge.theater.cameras.Camera;
 import com.intrepid.nicge.theater.curtain.Curtain;
 import com.intrepid.nicge.theater.curtain.CurtainLayer;
 import com.intrepid.nicge.theater.curtain.CurtainManager;
@@ -374,6 +375,23 @@ public final class Game implements Application
         public static int getFPS()
         {
             return Gdx.graphics.getFramesPerSecond();
+        }
+
+        public static int getScreenWidth()
+        {
+            return Gdx.graphics.getWidth();
+        }
+
+        public static int getScreenHeight()
+        {
+            return Gdx.graphics.getHeight();
+        }
+
+        public static Camera newNativeCamera()
+        {
+            int nativeResolutionWidth = Game.common.getGameConfiguration().getNativeResolutionWidth();
+            int nativeResolutionHeight = Game.common.getGameConfiguration().getNativeResolutionHeight();
+            return new Camera( nativeResolutionWidth, nativeResolutionHeight );
         }
     }
 

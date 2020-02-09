@@ -61,7 +61,7 @@ public abstract class AbstractBootScene implements IScene
 	}
 
 	@Override
-	public final void captureControl() {
+	public final void inputControlLogic() {
 	}
 
 	@Override

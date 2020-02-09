@@ -90,7 +90,7 @@ public final class JoystickButton implements GamePadButton
     }
 
     @Override
-    public void captureControl()
+    public void inputControlLogic()
     {
         if( inspect.getButton( code ) )
         {

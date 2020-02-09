@@ -10,14 +10,17 @@
  * The code was written based on study principles and can be enjoyed for
  * all community without problems.
  */
-package com.intrepid.nicge.ui;
+package com.intrepid.nicge.gui.controls;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.intrepid.nicge.gui.ComponentWrapper;
+import com.intrepid.nicge.gui.IControl;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
-public class Button implements IComponent
+public class Button
+        implements IControl
 {
     // ****************************************************************************************
     // Const Fields
@@ -37,16 +40,16 @@ public class Button implements IComponent
     private boolean isActionActive;
     private boolean isSupportClicked;
     private boolean isSupportActive;
-    private Runnable supportRunner;
-    private Runnable actionRunner;
+    private IButtonAction supportRunner;
+    private IButtonAction actionRunner;
 
-    private float elapsedTimeInMilli;
+    private float elapsedTime_s;
 
     private Animation idle;
     private Animation mouserOverMe;
     private Animation actionClicked;
     private Animation supportClicked;
-    private ComponentControl componentControl;
+    private ComponentWrapper parent;
 
     // ****************************************************************************************
     // Constructors
@@ -58,6 +61,8 @@ public class Button implements IComponent
         this.isActionActive = false;
         this.isSupportClicked = false;
         this.isSupportActive = false;
+        this.actionRunner = () -> {};
+        this.supportRunner = () -> {};
     }
 
     // ****************************************************************************************
@@ -65,9 +70,7 @@ public class Button implements IComponent
     // ****************************************************************************************
     public static Button create()
     {
-        Button o = new Button();
-
-        return o;
+        return new Button();
     }
 
     // ****************************************************************************************
@@ -101,7 +104,7 @@ public class Button implements IComponent
 
         if( isMouseOverMe )
         {
-            elapsedTimeInMilli = 0;
+            elapsedTime_s = 0;
             if( button == BUTTON_ACTION )
             {
                 isActionClicked = true;
@@ -127,7 +130,7 @@ public class Button implements IComponent
         {
             if( isMouseOverMe && isActionClicked )
             {
-                elapsedTimeInMilli = 0;
+                elapsedTime_s = 0;
                 isActionActive = true;
             }
             else
@@ -142,7 +145,7 @@ public class Button implements IComponent
         {
             if( isMouseOverMe && isSupportActive )
             {
-                elapsedTimeInMilli = 0;
+                elapsedTime_s = 0;
                 isSupportActive = true;
             }
             else
@@ -157,22 +160,18 @@ public class Button implements IComponent
     @Override
     public void update()
     {
-        elapsedTimeInMilli += Game.time.getGdxRawDeltaTime_s();
+        elapsedTime_s += Game.time.getGdxRawDeltaTime_s();
 
         if( isActionActive )
         {
-            if( actionRunner != null )
-            {
-                actionRunner.run();
-            }
+            isActionActive = false;
+            actionRunner.takeAction();
         }
 
         if( isSupportActive )
         {
-            if( supportRunner != null )
-            {
-                supportRunner.run();
-            }
+            isSupportActive = false;
+            supportRunner.takeAction();
         }
     }
 
@@ -180,21 +179,21 @@ public class Button implements IComponent
     public void display( GraphicsBatch batch )
     {
         TextureRegion tr = idle != null
-                ? idle.getKeyFrame( elapsedTimeInMilli )
+                ? idle.getKeyFrame( elapsedTime_s )
                 : null;
 
         if( mouserOverMe != null && isMouseOverMe )
         {
-            tr = mouserOverMe.getKeyFrame( elapsedTimeInMilli );
+            tr = mouserOverMe.getKeyFrame( elapsedTime_s );
         }
 
         if( actionClicked != null && isActionClicked )
         {
-            tr = actionClicked.getKeyFrame( elapsedTimeInMilli );
+            tr = actionClicked.getKeyFrame( elapsedTime_s );
         }
         else if( supportClicked != null && isSupportClicked )
         {
-            tr = supportClicked.getKeyFrame( elapsedTimeInMilli );
+            tr = supportClicked.getKeyFrame( elapsedTime_s );
         }
 
         if( tr != null )
@@ -222,12 +221,12 @@ public class Button implements IComponent
         this.height = height;
     }
 
-    final public void setSupportRun( Runnable supportRunner )
+    final public void setSupportRun( IButtonAction supportRunner )
     {
         this.supportRunner = supportRunner;
     }
 
-    final public void setActionRun( Runnable actionRunner )
+    final public void setActionRun( IButtonAction actionRunner )
     {
         this.actionRunner = actionRunner;
     }
@@ -253,18 +252,23 @@ public class Button implements IComponent
     }
 
     @Override
-    final public void setComponentControl( ComponentControl componentControl )
+    final public void setParent( ComponentWrapper parent )
     {
-        this.componentControl = componentControl;
+        this.parent = parent;
     }
 
     @Override
-    public ComponentControl getComponentControl()
+    public ComponentWrapper getParent()
     {
-        return componentControl;
+        return parent;
     }
 
     // ****************************************************************************************
     // Patterns
     // ****************************************************************************************
+    @FunctionalInterface
+    public interface IButtonAction
+    {
+        void takeAction();
+    }
 }

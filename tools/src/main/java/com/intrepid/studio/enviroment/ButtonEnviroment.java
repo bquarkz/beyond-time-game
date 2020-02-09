@@ -15,7 +15,7 @@ package com.intrepid.studio.enviroment;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.intrepid.nicge.ui.IComponent;
+import com.intrepid.nicge.gui.IComponent;
 import com.intrepid.studio.animation.GenerateAnimationPackInfo;
 import com.intrepid.studio.component.ButtonFactory;
 import com.intrepid.studio.tilemap.GenerateMapPackInfo;

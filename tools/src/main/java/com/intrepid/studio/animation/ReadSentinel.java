@@ -17,7 +17,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Json;
-import com.intrepid.nicge.theater.IDisplayable;
+import com.intrepid.nicge.kernel.IDisplayable;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.animation.AnimationInfo;
 import com.intrepid.nicge.utils.animation.AnimationPack;

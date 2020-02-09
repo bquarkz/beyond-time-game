@@ -10,9 +10,9 @@
  * The code was written based on study principles and can be enjoyed for
  * all comunity without problems.
  */
-package com.intrepid.nicge.theater;
+package com.intrepid.nicge.kernel;
 
-public interface IControllable
+public interface IUpdatable
 {
-    void captureControl();
+    void update();
 }

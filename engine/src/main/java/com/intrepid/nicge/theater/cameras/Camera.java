@@ -3,10 +3,10 @@
  *
  * @author "Nilton R Constantino"
  * aKa bQUARKz <niltonrc@gmail, bquarkz@gmail.com>
- *
+ * <p>
  * Everything about the respective software copyright can be found in the
  * "LICENSE" file included in the project source tree.
- *
+ * <p>
  * The code was written based on study principles and can be enjoyed for
  * all comunity without problems.
  */
@@ -14,44 +14,50 @@ package com.intrepid.nicge.theater.cameras;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
-public class Camera extends OrthographicCamera {
-	// ****************************************************************************************
-	// Const Fields
-	// ****************************************************************************************
+public class Camera extends OrthographicCamera
+{
+    // ****************************************************************************************
+    // Const Fields
+    // ****************************************************************************************
 
-	// ****************************************************************************************
-	// Common Fields
-	// ****************************************************************************************
-	private int nativeResolutionWidth;
-	private int nativeResolutionHeight;
+    // ****************************************************************************************
+    // Common Fields
+    // ****************************************************************************************
+    private int nativeResolutionWidth;
+    private int nativeResolutionHeight;
 
-	// ****************************************************************************************
-	// Constructors
-	// ****************************************************************************************
-	public Camera( int nativeResolutionWidth, int nativeResolutionHeight ) {
-		this.nativeResolutionWidth = nativeResolutionWidth;
-		this.nativeResolutionHeight = nativeResolutionHeight;
+    // ****************************************************************************************
+    // Constructors
+    // ****************************************************************************************
+    public Camera(
+            int nativeResolutionWidth,
+            int nativeResolutionHeight )
+    {
+        this.nativeResolutionWidth = nativeResolutionWidth;
+        this.nativeResolutionHeight = nativeResolutionHeight;
 
-		setToOrtho( false, nativeResolutionWidth, nativeResolutionHeight );
-	}
+        setToOrtho( false, nativeResolutionWidth, nativeResolutionHeight );
+    }
 
 
-	// ****************************************************************************************
-	// Methods
-	// ****************************************************************************************
-	
-	// ****************************************************************************************
-	// Getters And Setters Methods
-	// ****************************************************************************************
-	public int getNativeResolutionWidth() {
-		return nativeResolutionWidth;
-	}
+    // ****************************************************************************************
+    // Methods
+    // ****************************************************************************************
 
-	public int getNativeResolutionHeight() {
-		return nativeResolutionHeight;
-	}
+    // ****************************************************************************************
+    // Getters And Setters Methods
+    // ****************************************************************************************
+    public int getNativeResolutionWidth()
+    {
+        return nativeResolutionWidth;
+    }
 
-	// ****************************************************************************************
-	// Patterns
-	// ****************************************************************************************
+    public int getNativeResolutionHeight()
+    {
+        return nativeResolutionHeight;
+    }
+
+    // ****************************************************************************************
+    // Patterns
+    // ****************************************************************************************
 }

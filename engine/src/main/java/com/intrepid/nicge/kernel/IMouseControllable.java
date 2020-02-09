@@ -10,9 +10,9 @@
  * The code was written based on study principles and can be enjoyed for
  * all community without problems.
  */
-package com.intrepid.nicge.ui;
+package com.intrepid.nicge.kernel;
 
-public interface IMouseControl
+public interface IMouseControllable
 {
     // ****************************************************************************************
     // Constants

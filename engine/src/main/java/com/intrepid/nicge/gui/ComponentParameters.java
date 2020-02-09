@@ -10,9 +10,9 @@
  * The code was written based on study principles and can be enjoyed for
  * all community without problems.
  */
-package com.intrepid.nicge.ui;
+package com.intrepid.nicge.gui;
 
-final class ComponentConfig
+final class ComponentParameters
 {
     // ****************************************************************************************
     // Const Fields
@@ -22,15 +22,13 @@ final class ComponentConfig
     // Common Fields
     // ****************************************************************************************
     private boolean enabled;
-    private Integer layer;
 
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
-    public ComponentConfig()
+    public ComponentParameters()
     {
         this.enabled = true;
-        this.layer = Environment.LAYER_MIDDLE;
     }
 
     // ****************************************************************************************
@@ -54,16 +52,6 @@ final class ComponentConfig
         this.enabled = disabled;
     }
 
-    public Integer getLayer()
-    {
-        return layer;
-    }
-
-    public void setLayer( Integer layer )
-    {
-        this.layer = layer;
-    }
-    
     // ****************************************************************************************
     // Patterns
     // ****************************************************************************************

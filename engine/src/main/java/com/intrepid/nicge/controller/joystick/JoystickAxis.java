@@ -48,7 +48,7 @@ public class JoystickAxis implements Axis {
 	// Methods
 	// ****************************************************************************************
 	@Override
-	public void captureControl() {
+	public void inputControlLogic() {
 		 float temp = inspect.getAxis( code );
 		 
 		 if( ( temp > capZone ) || ( temp < -capZone ) ) {

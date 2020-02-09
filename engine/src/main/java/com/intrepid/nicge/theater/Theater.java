@@ -82,7 +82,7 @@ public final class Theater
 
         if( Theater.fsMachine.getDefinition().contains( sceneClass ) )
         {
-        	// load current curtain...
+            // load current curtain...
             changeMainCurtain( curtain );
             // ...and after send command to change a scene
             __changeScene( sceneClass );
@@ -96,12 +96,12 @@ public final class Theater
         }
     }
 
-    private final void __changeScene( Class< ? extends IScene > sceneClass )
+    private void __changeScene( Class< ? extends IScene > sceneClass )
     {
         final ILoadable dependencies = Game.common.getDependencies( sceneClass );
         Theater.stageHand.loadResourcesFrom( dependencies );
         sceneClassToChange = sceneClass;
-        Theater.curtainManager.closeCommand( CurtainLayer.MAIN );
+        Theater.curtainManager.closeCommand();
     }
 
     // ****************************************************************************************
@@ -138,7 +138,7 @@ public final class Theater
         @Override
         public void execute()
         {
-            Theater.fsMachine.getActualFiniteState().captureControl();
+            Theater.fsMachine.getActualFiniteState().inputControlLogic();
         }
     }
 
@@ -173,7 +173,6 @@ public final class Theater
                     // it is a complete scene change
                     Theater.stageHand.update();
                     Theater.curtainManager.update();
-                    return;
                 }
                 else
                 {
@@ -181,13 +180,14 @@ public final class Theater
                     Theater.fsMachine.switchTo( sceneClassToChange );
 
                     // graphics batch configuration for the new scene
-                    IScene scene = Theater.fsMachine.getDefinition().get( sceneClassToChange );
+                    final IScene scene = Theater.fsMachine.getDefinition().get( sceneClassToChange );
                     scene.configureGraphicsBatch( stageBatch );
 
-                    Theater.curtainManager.openCommand( CurtainLayer.MAIN );
+                    Theater.curtainManager.openCommand();
                     sceneClassToChange = null;
-                    return;
                 }
+
+                return;
             }
 
             Theater.fsMachine.getActualFiniteState().update();

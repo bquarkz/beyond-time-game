@@ -78,7 +78,7 @@ public class KeyboardButton implements GamePadButton {
 	}
 	
 	@Override
-	public void captureControl() {
+	public void inputControlLogic() {
 		if( inspect.getKey( code ) ) {
 			press();
 		} else {

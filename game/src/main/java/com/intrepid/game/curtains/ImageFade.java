@@ -23,7 +23,8 @@ import com.intrepid.nicge.theater.curtain.AbstractCurtain;
 import com.intrepid.nicge.theater.curtain.CurtainCondition;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
-class ImageFade extends AbstractCurtain
+class ImageFade
+        extends AbstractCurtain
 {
     // ****************************************************************************************
     // Const Fields
@@ -66,7 +67,7 @@ class ImageFade extends AbstractCurtain
     @Override
     protected void openingUpdate()
     {
-        alpha -= 0.01;
+        alpha -= 0.05f;
 		if( alpha <= 0.0f )
 		{
 			status = CurtainCondition.OPENED;
@@ -92,7 +93,6 @@ class ImageFade extends AbstractCurtain
     @Override
     protected void openedDisplay( GraphicsBatch batch )
     {
-
     }
 
     private void showCurtain( GraphicsBatch batch )

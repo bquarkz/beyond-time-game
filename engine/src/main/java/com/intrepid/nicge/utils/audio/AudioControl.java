@@ -16,7 +16,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.intrepid.nicge.content.AssetManager;
 import com.intrepid.nicge.content.IResource;
-import com.intrepid.nicge.theater.IUpdatable;
+import com.intrepid.nicge.kernel.IUpdatable;
 
 public final class AudioControl implements IUpdatable
 {

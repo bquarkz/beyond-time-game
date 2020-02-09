@@ -10,17 +10,18 @@
  * The code was written based on study principles and can be enjoyed for
  * all community without problems.
  */
-package com.intrepid.nicge.ui;
+package com.intrepid.nicge.gui;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import com.intrepid.nicge.theater.IUpdatable;
+import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
-public class Container implements IComponent
+public class ComponentContainer< C extends IComponent >
+        implements IComponent
 {
     // ****************************************************************************************
     // Const Fields
@@ -29,15 +30,21 @@ public class Container implements IComponent
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
-    private final Map< Integer, ComponentControl > components;
-    private ComponentControl componentControl;
+    private final Map< Integer, ComponentWrapper > components;
+    private ComponentWrapper parent;
 
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
-    protected Container()
+    protected ComponentContainer()
+    {
+        this( null );
+    }
+
+    protected ComponentContainer( ComponentWrapper parent )
     {
         this.components = new HashMap<>();
+        this.parent = parent;
     }
 
     // ****************************************************************************************
@@ -47,27 +54,27 @@ public class Container implements IComponent
     // ****************************************************************************************
     // Methods
     // ****************************************************************************************
-    public Integer addComponent( IComponent component )
+    public Integer addComponent( C component )
     {
         int id = getComponents().size();
-        ComponentControl cc = ComponentControl.create( id, component );
-        component.setComponentControl( cc );
+        ComponentWrapper cc = ComponentWrapper.create( id, component );
+        component.setParent( cc );
         getComponents().put( cc.getId(), cc );
-        cc.getConfig().setEnabled( true );
+        cc.getComponentParameters().setEnabled( true );
 
         return cc.getId();
     }
 
-    public void disable( IComponent component )
+    public void disable( C component )
     {
         Optional.ofNullable( getComponents().get( component ) )
-                .ifPresent( cc -> cc.getConfig().setEnabled( false ) );
+                .ifPresent( cc -> cc.getComponentParameters().setEnabled( false ) );
     }
 
-    public void enable( IComponent component )
+    public void enable( C component )
     {
         Optional.ofNullable( getComponents().get( component ) )
-                .ifPresent( cc -> cc.getConfig().setEnabled( true ) );
+                .ifPresent( cc -> cc.getComponentParameters().setEnabled( true ) );
     }
 
     @Override
@@ -104,33 +111,33 @@ public class Container implements IComponent
 
     protected void runOverAllEnabled( Consumer< IComponent > consumer )
     {
-        ComponentControl.runIfEnabled( getComponents().values(), consumer );
+        ComponentWrapper.runIfEnabled( getComponents().values(), consumer );
     }
 
     @Override
     public void display( GraphicsBatch batch )
     {
-        components.values().forEach( cc -> cc.display( batch ) );
+        getComponents().values().forEach( cc -> cc.display( batch ) );
+    }
+
+    @Override
+    public void setParent( ComponentWrapper parent )
+    {
+        this.parent = parent;
+    }
+
+    @Override
+    public ComponentWrapper getParent()
+    {
+        return parent;
     }
 
     // ****************************************************************************************
     // Getters And Setters Methods
     // ****************************************************************************************
-    protected Map< Integer, ComponentControl > getComponents()
+    protected Map< Integer, ComponentWrapper > getComponents()
     {
         return components;
-    }
-
-    @Override
-    public void setComponentControl( ComponentControl componentControl )
-    {
-        this.componentControl = componentControl;
-    }
-
-    @Override
-    public ComponentControl getComponentControl()
-    {
-        return componentControl;
     }
 
     // ****************************************************************************************

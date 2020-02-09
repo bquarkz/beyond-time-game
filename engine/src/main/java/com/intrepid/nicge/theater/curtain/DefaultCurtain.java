@@ -17,7 +17,8 @@ import java.util.Set;
 import com.intrepid.nicge.content.IResource;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
-public class DefaultCurtain extends AbstractCurtain
+public class DefaultCurtain
+		extends AbstractCurtain
 {
 	// ****************************************************************************************
 	// Const Fields

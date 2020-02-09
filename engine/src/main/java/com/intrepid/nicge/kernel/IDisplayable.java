@@ -10,9 +10,11 @@
  * The code was written based on study principles and can be enjoyed for
  * all comunity without problems.
  */
-package com.intrepid.nicge.theater;
+package com.intrepid.nicge.kernel;
 
-public interface IUpdatable
+import com.intrepid.nicge.utils.graphics.GraphicsBatch;
+
+public interface IDisplayable
 {
-    void update();
+    void display( GraphicsBatch batch );
 }

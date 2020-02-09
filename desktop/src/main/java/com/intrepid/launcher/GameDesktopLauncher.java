@@ -62,8 +62,8 @@ public class GameDesktopLauncher extends AbstractLauncher< GameBoot >
         gcb.setWindowResolutionWidth( windowResolutionWidth );
         gcb.setWindowResolutionHeight( windowResolutionHeight );
 
-		int nrscl = 3;
-//        int nrscl = 1;
+//		int nrscl = 3;
+        int nrscl = 1;
 
         gcb.setNativeResolutionWidth( windowResolutionWidth / nrscl ); // by 4 = 480
         gcb.setNativeResolutionHeight( windowResolutionHeight / nrscl ); // by 4 = 270

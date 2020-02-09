@@ -13,8 +13,8 @@
 package com.intrepid.nicge.theater.curtain;
 
 import com.intrepid.nicge.content.ILoadable;
-import com.intrepid.nicge.theater.IDisplayable;
-import com.intrepid.nicge.theater.IUpdatable;
+import com.intrepid.nicge.kernel.IDisplayable;
+import com.intrepid.nicge.kernel.IUpdatable;
 
 public interface Curtain extends IUpdatable, IDisplayable, ILoadable
 {

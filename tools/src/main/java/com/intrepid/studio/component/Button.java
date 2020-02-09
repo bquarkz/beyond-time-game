@@ -17,8 +17,8 @@ import java.util.concurrent.Future;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.intrepid.nicge.ui.ComponentControl;
-import com.intrepid.nicge.ui.IComponent;
+import com.intrepid.nicge.gui.ComponentWrapper;
+import com.intrepid.nicge.gui.IComponent;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 import com.intrepid.nicge.utils.graphics.TextureWorks;
 import com.intrepid.nicge.utils.threads.ThreadExecutor;
@@ -221,14 +221,14 @@ public class Button implements IComponent {
 	}
 
     @Override
-    public void setComponentControl( ComponentControl componentControl )
+    public void setParent( ComponentWrapper parent )
     {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public ComponentControl getComponentControl()
+    public ComponentWrapper getParent()
     {
         // TODO Auto-generated method stub
         return null;

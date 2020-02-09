@@ -14,8 +14,8 @@ package com.intrepid.nicge.entities;
 
 import java.util.List;
 
-import com.intrepid.nicge.theater.IDisplayable;
-import com.intrepid.nicge.theater.IUpdatable;
+import com.intrepid.nicge.kernel.IDisplayable;
+import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
 public class EntityManager implements IUpdatable, IDisplayable

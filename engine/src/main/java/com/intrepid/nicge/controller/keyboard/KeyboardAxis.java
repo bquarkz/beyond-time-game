@@ -44,7 +44,7 @@ public class KeyboardAxis implements Axis {
 	// Methods
 	// ****************************************************************************************
 	@Override
-	public void captureControl() {
+	public void inputControlLogic() {
 		boolean pos = inspect.getKey( posCode );
 		boolean neg = inspect.getKey( negCode );
 		

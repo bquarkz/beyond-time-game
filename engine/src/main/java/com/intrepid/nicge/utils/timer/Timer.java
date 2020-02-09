@@ -1,7 +1,7 @@
 package com.intrepid.nicge.utils.timer;
 
 import com.intrepid.nicge.kernel.game.Game;
-import com.intrepid.nicge.theater.IUpdatable;
+import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.utils.pool.IPoolable;
 
 public class Timer implements IUpdatable, IPoolable
