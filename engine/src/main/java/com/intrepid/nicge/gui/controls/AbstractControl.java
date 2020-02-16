@@ -1,11 +1,10 @@
 package com.intrepid.nicge.gui.controls;
 
 import com.intrepid.nicge.gui.ComponentWrapper;
-import com.intrepid.nicge.gui.IStyle;
-import com.intrepid.nicge.utils.graphics.GraphicsBatch;
+import com.intrepid.nicge.gui.IControl;
 
-public class Label
-    extends AbstractControl
+public abstract class AbstractControl
+    implements IControl
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
@@ -19,16 +18,13 @@ public class Label
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private ComponentWrapper parent;
-    private final IStyle style;
-    private final String label;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Label( IStyle style, String label )
+    protected AbstractControl()
     {
-        this.style = style;
-        this.label = label;
+        this.parent = null;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,38 +38,6 @@ public class Label
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    public void display( GraphicsBatch batch )
-    {
-    }
-
-    @Override
-    public void checkMouseOver(
-            int screenX,
-            int screenY )
-    {
-    }
-
-    @Override
-    public void mouseButtonPressed(
-            int screenX,
-            int screenY,
-            int button )
-    {
-    }
-
-    @Override
-    public void mouseButtonUnPressed(
-            int screenX,
-            int screenY,
-            int button )
-    {
-    }
-
-    @Override
-    public void update()
-    {
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns

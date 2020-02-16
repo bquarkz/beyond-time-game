@@ -31,10 +31,10 @@ class ImageFade
     // ****************************************************************************************
     private static final Random RANDOM = new Random( System.currentTimeMillis() );
     private static final Resources.Textures[] TEXTURES = new Resources.Textures[]{
-            Resources.Textures.GREEN_COUTAIN,
-            Resources.Textures.RED_COUTAIN,
-            Resources.Textures.BLUE_COUTAIN,
-            Resources.Textures.PURPLE_COUTAIN
+            Resources.Textures.GREEN_CURTAIN,
+            Resources.Textures.RED_CURTAIN,
+            Resources.Textures.BLUE_CURTAIN,
+            Resources.Textures.PURPLE_CURTAIN
     };
 
     // ****************************************************************************************
@@ -122,7 +122,7 @@ class ImageFade
     }
 
     @Override
-    public final void captureResources( Set< IResource< ? > > resources )
+    public final void injectResourcesOn( Set< IResource< ? > > resources )
     {
         for( Resources.Textures texture : TEXTURES )
         {

@@ -1,20 +1,19 @@
 package com.intrepid.nicge.gui;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.intrepid.nicge.kernel.IDisplayable;
-import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.kernel.game.Game;
+import com.intrepid.nicge.utils.containers.TopTailList;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 import com.intrepid.nicge.utils.graphics.TextureWorks;
 
-public class Windows
-    extends ComponentContainer< IControl >
-    implements IUpdatable, IDisplayable
+public abstract class Window
+    extends ComponentContainer
+    implements IComponent
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final int TITLE_SIZE = 10;
+    private static final int TITLE_SIZE = 30;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Special Fields And Injections
@@ -23,18 +22,20 @@ public class Windows
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private final WindowsParameters xwParameters;
+    private final WindowParameters xwParameters;
     private final Texture titleTexture;
     private final Texture bodyTexture;
+    private final TopTailList.Node< Window > node;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Windows( WindowsParameters wp )
+    public Window( WindowParameters wp )
     {
-        this.xwParameters = new WindowsParameters( wp );
+        this.xwParameters = new WindowParameters( wp );
         this.titleTexture = TextureWorks.createTexture( wp.getWidth(), TITLE_SIZE, wp.getTitleColor() );
         this.bodyTexture = TextureWorks.createTexture( wp.getWidth(), wp.getHeight() - TITLE_SIZE, wp.getBodyColor() );
+        this.node = new TopTailList.Node<>( this );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,10 +45,18 @@ public class Windows
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Getters And Setters
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public TopTailList.Node< Window > getNode()
+    {
+        return node;
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void loadAssets()
+    {
+    }
+
     @Override
     public final void display( GraphicsBatch batch )
     {
@@ -58,6 +67,17 @@ public class Windows
         batch.draw( bodyTexture, xwParameters.getX(), yCorrection1 );
         super.display( batch );
     }
+
+    public void enable()
+    {
+        getComponents().values().forEach( c -> c.getComponentParameters().setEnabled( true ) );
+    }
+
+    public void disable()
+    {
+        getComponents().values().forEach( c -> c.getComponentParameters().setEnabled( false ) );
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns

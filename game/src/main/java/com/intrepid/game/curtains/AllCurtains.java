@@ -62,8 +62,8 @@ public enum AllCurtains implements Curtain
     }
 
     @Override
-    public final void captureResources( Set< IResource< ? > > resources )
+    public final void injectResourcesOn( Set< IResource< ? > > resources )
     {
-        curtain.captureResources( resources );
+        curtain.injectResourcesOn( resources );
     }
 }

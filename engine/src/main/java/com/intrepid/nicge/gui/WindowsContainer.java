@@ -1,11 +1,13 @@
-package com.intrepid.nicge.gui.controls;
+package com.intrepid.nicge.gui;
 
-import com.intrepid.nicge.gui.ComponentWrapper;
-import com.intrepid.nicge.gui.IStyle;
+import com.intrepid.nicge.utils.containers.TopTailList;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
-public class Label
-    extends AbstractControl
+import java.util.Iterator;
+
+class WindowsContainer
+        extends ComponentContainer
+        implements Iterable< Window >
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
@@ -18,17 +20,14 @@ public class Label
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private ComponentWrapper parent;
-    private final IStyle style;
-    private final String label;
+    private final TopTailList< Window > windows;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Label( IStyle style, String label )
+    public WindowsContainer()
     {
-        this.style = style;
-        this.label = label;
+        this.windows = new TopTailList<>();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,37 +41,37 @@ public class Label
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    protected void enable( ComponentWrapper wrapper )
+    {
+        if( wrapper == null ) return;
+        wrapper.enable();
+        ( (Window)wrapper.getComponent() ).enable();
+    }
+
+    @Override
+    protected void disable( ComponentWrapper wrapper )
+    {
+        if( wrapper == null ) return;
+        wrapper.disable();
+        ( (Window)wrapper.getComponent() ).disable();
+    }
+
+    public TopTailList< Window > getWindows()
+    {
+        return windows;
+    }
+
+    public Iterator< Window > iterator()
+    {
+        return windows.iterator();
+    }
+
     @Override
     public void display( GraphicsBatch batch )
     {
-    }
-
-    @Override
-    public void checkMouseOver(
-            int screenX,
-            int screenY )
-    {
-    }
-
-    @Override
-    public void mouseButtonPressed(
-            int screenX,
-            int screenY,
-            int button )
-    {
-    }
-
-    @Override
-    public void mouseButtonUnPressed(
-            int screenX,
-            int screenY,
-            int button )
-    {
-    }
-
-    @Override
-    public void update()
-    {
+        windows.forEach( window -> window.display( batch ) );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

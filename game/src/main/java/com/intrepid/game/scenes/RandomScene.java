@@ -22,7 +22,7 @@ import com.intrepid.nicge.theater.scene.IScene;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
 @GameScene
-public class MapScene implements IScene
+public class RandomScene implements IScene
 {
     // ****************************************************************************************
     // Const Fields
@@ -37,7 +37,7 @@ public class MapScene implements IScene
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
-    public MapScene()
+    public RandomScene()
     {
         c = 0;
     }
@@ -58,14 +58,14 @@ public class MapScene implements IScene
 
         if( c == 150 )
         {
-            Game.scene.change( CombatScene.class, AllCurtains.IMAGE_FADE );
+            Game.scene.change( SimulationScene.class, AllCurtains.IMAGE_FADE );
         }
     }
 
     @Override
     public void display( GraphicsBatch batch )
     {
-        Texture texture = Game.common.getAsset( Resources.Textures.FUNDO2 );
+        Texture texture = Game.common.getAsset( Resources.Textures.BACK_GROUND );
         batch.begin();
         batch.draw( texture, 0, 0 );
         batch.end();

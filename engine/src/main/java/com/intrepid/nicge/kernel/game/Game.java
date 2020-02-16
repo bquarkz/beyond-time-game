@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics.DisplayMode;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
@@ -25,6 +26,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.intrepid.nicge.content.AssetManager;
 import com.intrepid.nicge.content.ILoadable;
 import com.intrepid.nicge.content.IResource;
+import com.intrepid.nicge.gui.WindowsManager;
 import com.intrepid.nicge.kernel.Application;
 import com.intrepid.nicge.kernel.KernelScreenVariables;
 import com.intrepid.nicge.kernel.ScreenInfo;
@@ -336,6 +338,11 @@ public final class Game implements Application
                 throw new RuntimeException( "[ FATAL ] >> " + message + " <<" );
             }
             return dependencies;
+        }
+
+        public static void setInputProcessor( InputProcessor inputProcessor )
+        {
+            Gdx.input.setInputProcessor( inputProcessor );
         }
     }
 

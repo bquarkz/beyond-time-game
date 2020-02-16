@@ -16,6 +16,9 @@ import com.intrepid.nicge.kernel.IDisplayable;
 import com.intrepid.nicge.kernel.IMouseControllable;
 import com.intrepid.nicge.kernel.IUpdatable;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 public interface IComponent
         extends IMouseControllable, IUpdatable, IDisplayable
 {
@@ -26,12 +29,18 @@ public interface IComponent
     // ****************************************************************************************
     // Contracts
     // ****************************************************************************************
-    void setParent( ComponentWrapper parent );
-    ComponentWrapper getParent();
 
     // ****************************************************************************************
     // Default methods
     // ****************************************************************************************
+    default void setParent( IComponent parent )
+    {
+    }
+
+    default Optional< IComponent > getParent()
+    {
+        return Optional.empty();
+    }
 
     // ****************************************************************************************
     // Static Methods

@@ -63,7 +63,7 @@ final class StageHand implements IUpdatable
         if( ( assetsLoaded != null ) && ( needToUnLoad ) )
         {
             final Set< IResource< ? > > resources = new HashSet<>();
-            assetsLoaded.captureResources( resources );
+            assetsLoaded.injectResourcesOn( resources );
             for( IResource< ? > resource : resources )
             {
                 assetManager.unload( resource.getPath() );
@@ -81,7 +81,7 @@ final class StageHand implements IUpdatable
     public void loadResourcesFrom( ILoadable toLoad )
     {
         final Set< IResource< ? > > resources = new HashSet<>();
-        toLoad.captureResources( resources );
+        toLoad.injectResourcesOn( resources );
 
         if( resources.isEmpty() )
         {

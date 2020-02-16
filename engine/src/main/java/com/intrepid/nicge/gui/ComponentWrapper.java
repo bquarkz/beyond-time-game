@@ -12,16 +12,16 @@
  */
 package com.intrepid.nicge.gui;
 
+import com.intrepid.nicge.utils.graphics.GraphicsBatch;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.Collection;
+import java.util.Optional;
 import java.util.function.Consumer;
 
-import com.intrepid.nicge.kernel.IDisplayable;
-import com.intrepid.nicge.kernel.IMouseControllable;
-import com.intrepid.nicge.kernel.IUpdatable;
-import com.intrepid.nicge.utils.graphics.GraphicsBatch;
-
-final public class ComponentWrapper
-        implements Comparable< ComponentWrapper >, IMouseControllable, IUpdatable, IDisplayable
+public class ComponentWrapper
+        implements Comparable< ComponentWrapper >, IComponent
 {
     // ****************************************************************************************
     // Const Fields
@@ -70,42 +70,31 @@ final public class ComponentWrapper
     }
 
     @Override
-    public int hashCode()
+    public boolean equals( Object o )
     {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ( ( id == null ) ? 0 : id.hashCode() );
-        return result;
-    }
-
-    @Override
-    public boolean equals( Object obj )
-    {
-        if( this == obj )
+        if( this == o )
         {
             return true;
         }
-        if( obj == null )
+
+        if( o == null || getClass() != o.getClass() )
         {
             return false;
         }
-        if( getClass() != obj.getClass() )
-        {
-            return false;
-        }
-        ComponentWrapper other = (ComponentWrapper)obj;
-        if( id == null )
-        {
-            if( other.id != null )
-            {
-                return false;
-            }
-        }
-        else if( !id.equals( other.id ) )
-        {
-            return false;
-        }
-        return true;
+
+        ComponentWrapper that = (ComponentWrapper)o;
+
+        return new EqualsBuilder()
+                .append( id, that.id )
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return new HashCodeBuilder( 17, 37 )
+                .append( id )
+                .toHashCode();
     }
 
     @Override
@@ -150,6 +139,28 @@ final public class ComponentWrapper
     public void update()
     {
         getComponent().update();
+    }
+
+    @Override
+    final public void setParent( IComponent parent )
+    {
+        this.component.setParent( parent );
+    }
+
+    @Override
+    public Optional< IComponent > getParent()
+    {
+        return component.getParent();
+    }
+
+    public void enable()
+    {
+        componentParameters.setEnabled( true );
+    }
+
+    public void disable()
+    {
+        componentParameters.setEnabled( false );
     }
 
     // ****************************************************************************************

@@ -76,7 +76,7 @@ public class DefaultCurtain
 	}
 
 	@Override
-	public void captureResources( Set< IResource< ? > > resources ) {
+	public void injectResourcesOn( Set< IResource< ? > > resources ) {
 	}
 
 	// ****************************************************************************************

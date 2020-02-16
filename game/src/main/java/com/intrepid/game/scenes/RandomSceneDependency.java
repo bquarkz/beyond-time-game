@@ -19,8 +19,8 @@ import com.intrepid.nicge.content.Dependency;
 import com.intrepid.nicge.content.DependencyResource;
 import com.intrepid.nicge.content.IResource;
 
-@Dependency( MapScene.class )
-public class MapSceneDependency extends DependencyResource
+@Dependency( RandomScene.class )
+public class RandomSceneDependency extends DependencyResource
 {
     // ****************************************************************************************
     // Const Fields
@@ -40,8 +40,7 @@ public class MapSceneDependency extends DependencyResource
     @Override
     protected void setDependencies( Set< IResource< ? > > resources )
     {
-        resources.add( Resources.Textures.FUNDO2 );
-        resources.add( Resources.Textures.OUTRO_LOGO );
+        resources.add( Resources.Textures.BACK_GROUND );
     }
 
     // ****************************************************************************************

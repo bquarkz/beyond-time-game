@@ -12,16 +12,17 @@
  */
 package com.intrepid.nicge.gui;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
-
 import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
-public class ComponentContainer< C extends IComponent >
-        implements IComponent
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+
+public class ComponentContainer
+    implements IComponent
 {
     // ****************************************************************************************
     // Const Fields
@@ -31,7 +32,8 @@ public class ComponentContainer< C extends IComponent >
     // Common Fields
     // ****************************************************************************************
     private final Map< Integer, ComponentWrapper > components;
-    private ComponentWrapper parent;
+    private final AtomicInteger currentId;
+    private IComponent parent;
 
     // ****************************************************************************************
     // Constructors
@@ -44,6 +46,7 @@ public class ComponentContainer< C extends IComponent >
     protected ComponentContainer( ComponentWrapper parent )
     {
         this.components = new HashMap<>();
+        this.currentId = new AtomicInteger( 0 );
         this.parent = parent;
     }
 
@@ -54,27 +57,59 @@ public class ComponentContainer< C extends IComponent >
     // ****************************************************************************************
     // Methods
     // ****************************************************************************************
-    public Integer addComponent( C component )
-    {
-        int id = getComponents().size();
-        ComponentWrapper cc = ComponentWrapper.create( id, component );
-        component.setParent( cc );
-        getComponents().put( cc.getId(), cc );
-        cc.getComponentParameters().setEnabled( true );
 
-        return cc.getId();
+    public Optional< IComponent > getComponent( int id )
+    {
+        return Optional
+                .ofNullable( getComponents().get( id ) )
+                .map( ComponentWrapper::getComponent );
     }
 
-    public void disable( C component )
+    public int size()
     {
-        Optional.ofNullable( getComponents().get( component ) )
-                .ifPresent( cc -> cc.getComponentParameters().setEnabled( false ) );
+        return components.size();
     }
 
-    public void enable( C component )
+    public < C extends IComponent > Bundle< C > addComponent( C component )
     {
-        Optional.ofNullable( getComponents().get( component ) )
-                .ifPresent( cc -> cc.getComponentParameters().setEnabled( true ) );
+        int id = currentId.addAndGet( 1 );
+        ComponentWrapper wrapper = ComponentWrapper.create( id, component );
+        component.setParent( this );
+        getComponents().put( wrapper.getId(), wrapper );
+        wrapper.getComponentParameters().setEnabled( false );
+        return new Bundle<>( wrapper.getId(), component );
+    }
+
+    public void disable( Bundle< ? > cBundle )
+    {
+        disable( cBundle.getId() );
+    }
+
+    public void disable( int id )
+    {
+        disable( getComponents().get( id ) );
+    }
+
+    protected void disable( ComponentWrapper wrapper )
+    {
+        if( wrapper == null ) return;
+        wrapper.disable();
+    }
+
+    public void enable( Bundle< ? > cBundle )
+    {
+        enable( cBundle.getId() );
+    }
+
+    public void enable( int id )
+    {
+        enable( getComponents().get( id ) );
+    }
+
+    protected void enable( ComponentWrapper wrapper )
+    {
+        if( wrapper == null ) return;
+        wrapper.enable();
     }
 
     @Override
@@ -121,15 +156,26 @@ public class ComponentContainer< C extends IComponent >
     }
 
     @Override
-    public void setParent( ComponentWrapper parent )
+    public void setParent( IComponent parent )
     {
         this.parent = parent;
+        getComponents().values().forEach( cc -> cc.setParent( parent ) );
     }
 
     @Override
-    public ComponentWrapper getParent()
+    public Optional< IComponent > getParent()
     {
-        return parent;
+        return Optional.ofNullable( parent );
+    }
+
+    public void enable()
+    {
+        getComponents().values().forEach( c -> c.getComponentParameters().setEnabled( true ) );
+    }
+
+    public void disable()
+    {
+        getComponents().values().forEach( c -> c.getComponentParameters().setEnabled( false ) );
     }
 
     // ****************************************************************************************

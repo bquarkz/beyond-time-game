@@ -12,12 +12,12 @@
  */
 package com.intrepid.studio.component;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.intrepid.nicge.gui.ComponentWrapper;
 import com.intrepid.nicge.gui.IComponent;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 import com.intrepid.nicge.utils.graphics.TextureWorks;
@@ -221,17 +221,14 @@ public class Button implements IComponent {
 	}
 
     @Override
-    public void setParent( ComponentWrapper parent )
+    public void setParent( IComponent parent )
     {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
-    public ComponentWrapper getParent()
+    public Optional< IComponent > getParent()
     {
-        // TODO Auto-generated method stub
-        return null;
+    	return Optional.empty();
     }
 
 }

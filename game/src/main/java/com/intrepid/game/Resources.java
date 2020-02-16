@@ -22,16 +22,11 @@ public class Resources
 {
     public enum Textures implements IResource< Texture >
     {
-        BADLOGIC_LOGO( "badlogic.jpg" ),
-        OUTRO_LOGO( "badlogic_other.jpg" ),
-        FUNDO2( "fundo2.png" ),
-        TESTE_CARGA_01( "teste.carga.01.jpg" ),
-        TESTE_CARGA_02( "teste.carga.02.jpg" ),
-        TESTE_CARGA_03( "teste.carga.03.jpg" ),
-        GREEN_COUTAIN( "GreenCourtain.png" ),
-        BLUE_COUTAIN( "BlueCourtain.png" ),
-        RED_COUTAIN( "RedCourtain.png" ),
-        PURPLE_COUTAIN( "PurpleCourtain.png" ),
+        BACK_GROUND( "background.png" ),
+        GREEN_CURTAIN( "GreenCurtain.png" ),
+        BLUE_CURTAIN( "BlueCurtain.png" ),
+        RED_CURTAIN( "RedCurtain.png" ),
+        PURPLE_CURTAIN( "PurpleCurtain.png" ),
         ;
 
         private IResource< Texture > resource;

@@ -16,5 +16,10 @@ import java.util.Set;
 
 public interface ILoadable
 {
-    void captureResources( Set< IResource< ? > > resources );
+    static ILoadable with( final Set< IResource< ? > > fullSetResources )
+    {
+        return resources -> resources.addAll( fullSetResources );
+    }
+
+    void injectResourcesOn( Set< IResource< ? > > resources );
 }

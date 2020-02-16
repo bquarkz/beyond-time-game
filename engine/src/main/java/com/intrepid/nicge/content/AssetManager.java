@@ -77,7 +77,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager
 
     public < T > T get( IResource< T > resource )
     {
-        return (T)this.get( resource.getPath(), resource.getResourceClass() );
+        return get( resource.getPath(), resource.getResourceClass() );
     }
 
     public void load( IResource< ? > resource )
@@ -89,7 +89,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager
     {
         for( IResource< ? > resource : resources )
         {
-            this.load( resource.getPath(), resource.getResourceClass() );
+            load( resource.getPath(), resource.getResourceClass() );
         }
     }
 

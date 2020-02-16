@@ -1,11 +1,8 @@
-package com.intrepid.nicge.gui.controls;
+package com.intrepid.nicge.gui;
 
-import com.intrepid.nicge.gui.ComponentWrapper;
-import com.intrepid.nicge.gui.IStyle;
-import com.intrepid.nicge.utils.graphics.GraphicsBatch;
+import com.badlogic.gdx.graphics.Color;
 
-public class Label
-    extends AbstractControl
+public class WindowParameters
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
@@ -18,17 +15,38 @@ public class Label
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private ComponentWrapper parent;
-    private final IStyle style;
-    private final String label;
+    private int x;
+    private int y;
+    private int width;
+    private int height;
+    private boolean scrollable;
+    private final Color titleColor;
+    private final Color bodyColor;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Label( IStyle style, String label )
+    public WindowParameters( WindowParameters p )
     {
-        this.style = style;
-        this.label = label;
+        this( p.x, p.y, p.width, p.height, p.scrollable, Color.BLACK, Color.WHITE );
+    }
+
+    public WindowParameters(
+            int x,
+            int y,
+            int width,
+            int height,
+            boolean scrollable,
+            Color titleColor,
+            Color bodyColor )
+    {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.scrollable = scrollable;
+        this.titleColor = titleColor;
+        this.bodyColor = bodyColor;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,42 +56,44 @@ public class Label
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Getters And Setters
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public int getX()
+    {
+        return x;
+    }
+
+    public int getY()
+    {
+        return y;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public boolean isScrollable()
+    {
+        return scrollable;
+    }
+
+    public Color getTitleColor()
+    {
+        return titleColor;
+    }
+
+    public Color getBodyColor()
+    {
+        return bodyColor;
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    public void display( GraphicsBatch batch )
-    {
-    }
-
-    @Override
-    public void checkMouseOver(
-            int screenX,
-            int screenY )
-    {
-    }
-
-    @Override
-    public void mouseButtonPressed(
-            int screenX,
-            int screenY,
-            int button )
-    {
-    }
-
-    @Override
-    public void mouseButtonUnPressed(
-            int screenX,
-            int screenY,
-            int button )
-    {
-    }
-
-    @Override
-    public void update()
-    {
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns

@@ -46,7 +46,7 @@ public class BeyondTimeGame implements GameBoot
         Log.from( BeyondTimeGame.class ).info( "loading assets" );
         for( Curtain curtain : AllCurtains.values() )
         {
-            curtain.captureResources( resources );
+            curtain.injectResourcesOn( resources );
         }
     }
 

@@ -13,14 +13,12 @@
 package com.intrepid.nicge.gui.controls;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.intrepid.nicge.gui.ComponentWrapper;
-import com.intrepid.nicge.gui.IControl;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
 public class Button
-        implements IControl
+        extends AbstractControl
 {
     // ****************************************************************************************
     // Const Fields
@@ -31,8 +29,8 @@ public class Button
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
-    private float x;
-    private float y;
+    private int x;
+    private int y;
     private int width;
     private int height;
     private boolean isMouseOverMe;
@@ -49,7 +47,6 @@ public class Button
     private Animation mouserOverMe;
     private Animation actionClicked;
     private Animation supportClicked;
-    private ComponentWrapper parent;
 
     // ****************************************************************************************
     // Constructors
@@ -206,8 +203,8 @@ public class Button
     // Getters And Setters Methods
     // ****************************************************************************************
     final public void setScreenPosition(
-            float x,
-            float y )
+            int x,
+            int y )
     {
         this.x = x;
         this.y = y;
@@ -249,18 +246,6 @@ public class Button
     final public void setMouserOverMe( Animation mouserOverMe )
     {
         this.mouserOverMe = mouserOverMe;
-    }
-
-    @Override
-    final public void setParent( ComponentWrapper parent )
-    {
-        this.parent = parent;
-    }
-
-    @Override
-    public ComponentWrapper getParent()
-    {
-        return parent;
     }
 
     // ****************************************************************************************

@@ -15,10 +15,7 @@ package com.intrepid.nicge.content;
 public interface IResource< T >
 {
     int getResourceId();
-
     String getPath();
-
     Class< T > getResourceClass();
-
     T getAsset();
 }

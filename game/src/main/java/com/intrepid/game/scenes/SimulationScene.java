@@ -12,26 +12,22 @@
  */
 package com.intrepid.game.scenes;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.intrepid.game.Resources;
-import com.intrepid.game.curtains.AllCurtains;
-import com.intrepid.nicge.gui.Windows;
+import com.intrepid.game.gui.FreakWindows;
+import com.intrepid.nicge.gui.Bundle;
+import com.intrepid.nicge.gui.Window;
 import com.intrepid.nicge.gui.WindowsManager;
-import com.intrepid.nicge.gui.WindowsParameters;
-import com.intrepid.nicge.gui.controls.Button;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.theater.cameras.Camera;
 import com.intrepid.nicge.theater.scene.GameScene;
 import com.intrepid.nicge.theater.scene.IScene;
-import com.intrepid.nicge.utils.animation.Animation;
-import com.intrepid.nicge.utils.animation.AnimationPack;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 import com.intrepid.nicge.utils.timer.Timer;
 import org.bquarkz.beyondtime.simulator.Simulation;
 
 @GameScene
-public class CombatScene
+public class SimulationScene
         implements IScene
 {
     // ****************************************************************************************
@@ -46,8 +42,9 @@ public class CombatScene
     // ****************************************************************************************
     private int c;
     private Camera camera;
-    private WindowsManager xwManager;
+    private WindowsManager windowsManager;
     private Simulation simulation;
+    private Texture background;
 
     private Timer timer;
 
@@ -61,42 +58,24 @@ public class CombatScene
     @Override
     public void start()
     {
-        c = 0;
-
-        simulation = new Simulation();
-
-        AnimationPack pack = Game.common.getAsset( Resources.Animations.SENTINEL );
-
-        Animation idle = pack.get( "sentinel.move.down" );
-        Animation over = pack.get( "sentinel.move.up" );
-        Animation aclicked = pack.get( "sentinel.move.left" );
-        Animation sclicked = pack.get( "sentinel.move.right" );
-
-        Button b = Button.create();
-        b.setIdle( idle );
-        b.setMouserOverMe( over );
-        b.setActionClicked( aclicked );
-        b.setSupportClicked( sclicked );
-        b.setScreenPosition( 250, 150 );
-        b.setSize( 32, 32 );
-        b.setActionRun( () -> Game.scene.change( MapScene.class, AllCurtains.IMAGE_FADE ) );
-
-        final Windows w = new Windows( new WindowsParameters( 150, 120, 300, 150, false, Color.BROWN, Color.FIREBRICK ) );
-        w.addComponent( b );
-
-        xwManager = WindowsManager.create();
-        xwManager.addComponent( w );
-        Gdx.input.setInputProcessor( xwManager );
+        windowsManager = WindowsManager.create();
+        Bundle< Window > freakWindow = windowsManager.addComponent( new FreakWindows() );
+        freakWindow.getComponent().loadAssets();
+        windowsManager.openWindow( freakWindow );
 
         timer = new Timer();
         timer.start();
+
+        simulation = new Simulation();
+        c = 0;
+        background = Game.common.getAsset( Resources.Textures.BACK_GROUND );
     }
 
     @Override
     public void update()
     {
         timer.update();
-        xwManager.update();
+        windowsManager.update();
 
         Game.util.addDebugMessage( "SCENE",
                 "COUNTER: " + c,
@@ -110,7 +89,11 @@ public class CombatScene
     @Override
     public void display( GraphicsBatch batch )
     {
-        xwManager.display();
+        batch.begin();
+        batch.draw( background, 250, 150 );
+        batch.end();
+
+        windowsManager.display();
     }
 
     @Override

@@ -19,8 +19,8 @@ import com.intrepid.nicge.content.Dependency;
 import com.intrepid.nicge.content.DependencyResource;
 import com.intrepid.nicge.content.IResource;
 
-@Dependency( CombatScene.class )
-public class CombatSceneDependency extends DependencyResource
+@Dependency( SimulationScene.class )
+public class SimulationSceneDependency extends DependencyResource
 {
     // ****************************************************************************************
     // Const Fields
@@ -40,12 +40,8 @@ public class CombatSceneDependency extends DependencyResource
     @Override
     protected void setDependencies( Set< IResource< ? > > resources )
     {
-        resources.add( Resources.Textures.BADLOGIC_LOGO );
         resources.add( Resources.Animations.SENTINEL );
-
-        resources.add( Resources.Textures.TESTE_CARGA_01 );
-        resources.add( Resources.Textures.TESTE_CARGA_02 );
-        resources.add( Resources.Textures.TESTE_CARGA_03 );
+        resources.add( Resources.Textures.BACK_GROUND );
     }
 
     // ****************************************************************************************

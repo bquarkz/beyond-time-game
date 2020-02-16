@@ -1,8 +1,6 @@
 package com.intrepid.nicge.gui;
 
-import com.badlogic.gdx.graphics.Color;
-
-public class WindowsParameters
+public class Bundle< C extends IComponent >
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
@@ -15,39 +13,21 @@ public class WindowsParameters
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private int x;
-    private int y;
-    private int width;
-    private int height;
-    private boolean scrollable;
-    private final Color titleColor;
-    private final Color bodyColor;
+    private final int id;
+    private final C component;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public WindowsParameters( WindowsParameters p )
+
+    public Bundle(
+            int id,
+            C component )
     {
-        this( p.x, p.y, p.width, p.height, p.scrollable, Color.BLACK, Color.WHITE );
+        this.id = id;
+        this.component = component;
     }
 
-    public WindowsParameters(
-            int x,
-            int y,
-            int width,
-            int height,
-            boolean scrollable,
-            Color titleColor,
-            Color bodyColor )
-    {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.scrollable = scrollable;
-        this.titleColor = titleColor;
-        this.bodyColor = bodyColor;
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Factories
@@ -56,39 +36,15 @@ public class WindowsParameters
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Getters And Setters
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public int getX()
+
+    public int getId()
     {
-        return x;
+        return id;
     }
 
-    public int getY()
+    public C getComponent()
     {
-        return y;
-    }
-
-    public int getWidth()
-    {
-        return width;
-    }
-
-    public int getHeight()
-    {
-        return height;
-    }
-
-    public boolean isScrollable()
-    {
-        return scrollable;
-    }
-
-    public Color getTitleColor()
-    {
-        return titleColor;
-    }
-
-    public Color getBodyColor()
-    {
-        return bodyColor;
+        return component;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

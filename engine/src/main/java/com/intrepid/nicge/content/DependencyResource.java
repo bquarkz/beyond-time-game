@@ -3,10 +3,10 @@
  *
  * @author "Nilton R Constantino"
  * aKa bQUARKz <niltonrc@gmail, bquarkz@gmail.com>
- *
+ * <p>
  * Everything about the respective software copyright can be found in the
  * "LICENSE" file included in the project source tree.
- *
+ * <p>
  * The code was written based on study principles and can be enjoyed for
  * all community without problems.
  */
@@ -31,7 +31,8 @@ public abstract class DependencyResource implements ILoadable
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
-    public DependencyResource() {
+    public DependencyResource()
+    {
         resources = new HashSet<>();
         setDependencies( resources );
     }
@@ -40,29 +41,29 @@ public abstract class DependencyResource implements ILoadable
     // Methods
     // ****************************************************************************************
     protected abstract void setDependencies( Set< IResource< ? > > resources );
-    
+
     @Override
-    public void captureResources( Set< IResource< ? > > resources ) {
-        for( IResource< ? > resource : this.resources ) {
-            resources.add( resource );
-        }
+    public void injectResourcesOn( Set< IResource< ? > > resources )
+    {
+        resources.addAll( this.resources );
     }
-    
+
     protected final void captureResourcesFrom(
             Class< ? > clazz,
-            Set< IResource< ? > > resources
-            ) {
-        
+            Set< IResource< ? > > resources )
+    {
+
         ILoadable dependencies = Game.common.getDependencies( clazz );
-        dependencies.captureResources( resources );
+        dependencies.injectResourcesOn( resources );
     }
-    
+
     protected final void captureResourcesFrom(
             DynamicDependencyPack pack,
-            Set< IResource< ? > > resources
-            ) {
-        
-        for( Class< ? > clazz : pack.getDynamicDependencies() ) {
+            Set< IResource< ? > > resources )
+    {
+
+        for( Class< ? > clazz : pack.getDynamicDependencies() )
+        {
             captureResourcesFrom( clazz, resources );
         }
     }

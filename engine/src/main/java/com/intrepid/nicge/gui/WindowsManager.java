@@ -7,7 +7,9 @@ import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.theater.cameras.Camera;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
-public class WindowsManager
+import java.util.Optional;
+
+public final class WindowsManager
     implements InputProcessor, IMouseControllable, IUpdatable
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,16 +23,16 @@ public class WindowsManager
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private final ComponentContainer< Windows > container;
+    private final WindowsContainer windowsContainer;
     private final GraphicsBatch gBatch;
     private final Camera camera;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    protected WindowsManager()
+    private WindowsManager()
     {
-        this.container = new ComponentContainer<>();
+        this.windowsContainer = new WindowsContainer();
         this.camera = Game.graphics.newNativeCamera();
         this.gBatch = new GraphicsBatch();
         this.gBatch.setProjectionMatrix( this.camera.combined );
@@ -41,7 +43,9 @@ public class WindowsManager
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static WindowsManager create()
     {
-        return new WindowsManager();
+        final WindowsManager windowsManager = new WindowsManager();
+        Game.common.setInputProcessor( windowsManager );
+        return windowsManager;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,21 +55,6 @@ public class WindowsManager
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Integer addComponent( Windows xwin )
-    {
-        return container.addComponent( xwin );
-    }
-
-    public void disable( Windows xwin )
-    {
-        container.disable( xwin );
-    }
-
-    public void enable( Windows xwin )
-    {
-        container.enable( xwin );
-    }
-
     private int getXCorrection( int screenX )
     {
         int nativeWidth = Game.common.getGameConfiguration().getNativeResolutionWidth();
@@ -167,7 +156,7 @@ public class WindowsManager
     public void display()
     {
         gBatch.begin();
-        container.display( gBatch );
+        windowsContainer.display( gBatch );
         gBatch.end();
     }
 
@@ -176,7 +165,7 @@ public class WindowsManager
             int screenX,
             int screenY )
     {
-        container.checkMouseOver( screenX, screenY );
+        windowsContainer.checkMouseOver( screenX, screenY );
     }
 
     @Override
@@ -185,7 +174,7 @@ public class WindowsManager
             int screenY,
             int button )
     {
-        container.mouseButtonPressed( screenX, screenY, button );
+        windowsContainer.mouseButtonPressed( screenX, screenY, button );
     }
 
     @Override
@@ -194,14 +183,28 @@ public class WindowsManager
             int screenY,
             int button )
     {
-        container.mouseButtonUnPressed( screenX, screenY, button );
+        windowsContainer.mouseButtonUnPressed( screenX, screenY, button );
     }
 
     @Override
     public void update()
     {
         camera.update();
-        container.update();
+        windowsContainer.update();
+    }
+
+    public void openWindow( Bundle< Window > windowBundle )
+    {
+        final Optional< IComponent > component = windowsContainer.getComponent( windowBundle.getId() );
+        if( !component.isPresent() ) return;
+        final Window window = (Window)component.get();
+        windowsContainer.getWindows().push( window.getNode() );
+        windowsContainer.enable( windowBundle );
+    }
+
+    public Bundle< Window > addComponent( Window window )
+    {
+        return windowsContainer.addComponent( window );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
