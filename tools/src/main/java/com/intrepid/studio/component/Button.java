@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.intrepid.nicge.gui.IComponent;
+import com.intrepid.nicge.kernel.game.GameDebugVariables;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 import com.intrepid.nicge.utils.graphics.TextureWorks;
 import com.intrepid.nicge.utils.threads.ThreadExecutor;
@@ -198,6 +199,15 @@ public class Button implements IComponent {
 		
 		bitmapFont.setColor( color.font );
 		bitmapFont.draw( batch, text, x + diffx, y + diffy );
+	}
+
+	@Override
+	public void dragged(
+			int screenX,
+			int screenY,
+			int button )
+	{
+
 	}
 
 	// ****************************************************************************************

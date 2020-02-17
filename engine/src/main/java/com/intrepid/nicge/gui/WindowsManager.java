@@ -131,6 +131,11 @@ public final class WindowsManager
             int screenY,
             int pointer )
     {
+        screenX = getXCorrection( screenX );
+        screenY = getYCorrection( screenY );
+
+        dragged( screenX, screenY, pointer );
+
         return false;
     }
 
@@ -184,6 +189,15 @@ public final class WindowsManager
             int button )
     {
         windowsContainer.mouseButtonUnPressed( screenX, screenY, button );
+    }
+
+    @Override
+    public void dragged(
+            int screenX,
+            int screenY,
+            int button )
+    {
+        windowsContainer.dragged( screenX, screenY, button );
     }
 
     @Override

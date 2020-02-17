@@ -54,7 +54,7 @@ public class RandomScene implements IScene
     @Override
     public void update()
     {
-        Game.util.addDebugMessage( "SCENE", " MAP SCENE - " + c++ );
+        Game.debug.addDebugMessage( "SCENE", " MAP SCENE - " + c++ );
 
         if( c == 150 )
         {
@@ -104,7 +104,7 @@ public class RandomScene implements IScene
     @Override
     public void simulation()
     {
-        Game.util.addDebugMessage( "LAST LOOP TIME", Game.time.getLastLoopTime_ns() + "ns" );
+        Game.debug.addDebugMessage( "LAST LOOP TIME", Game.time.getLastLoopTime_ns() + "ns" );
     }
 
     // ****************************************************************************************

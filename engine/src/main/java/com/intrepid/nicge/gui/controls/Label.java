@@ -71,6 +71,14 @@ public class Label
     }
 
     @Override
+    public void dragged(
+            int screenX,
+            int screenY,
+            int button )
+    {
+    }
+
+    @Override
     public void update()
     {
     }

@@ -31,8 +31,8 @@ public class ComponentContainer
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
-    private final Map< Integer, ComponentWrapper > components;
     private final AtomicInteger currentId;
+    private final Map< Integer, ComponentWrapper > components;
     private IComponent parent;
 
     // ****************************************************************************************
@@ -136,6 +136,15 @@ public class ComponentContainer
             int button )
     {
         runOverAllEnabled( o -> o.mouseButtonUnPressed( screenX, screenY, button ) );
+    }
+
+    @Override
+    public void dragged(
+            int screenX,
+            int screenY,
+            int button )
+    {
+        runOverAllEnabled( o -> o.dragged( screenX, screenY, button ) );
     }
 
     @Override

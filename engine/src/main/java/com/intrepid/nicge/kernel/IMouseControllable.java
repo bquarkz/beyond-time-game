@@ -40,6 +40,11 @@ public interface IMouseControllable
             int screenY,
             int button );
 
+    void dragged(
+            int screenX,
+            int screenY,
+            int button );
+
     // ****************************************************************************************
     // Default methods
     // ****************************************************************************************

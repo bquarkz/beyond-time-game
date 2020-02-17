@@ -136,6 +136,15 @@ public class ComponentWrapper
     }
 
     @Override
+    public void dragged(
+            int screenX,
+            int screenY,
+            int button )
+    {
+        getComponent().dragged( screenX, screenY, button );
+    }
+
+    @Override
     public void update()
     {
         getComponent().update();

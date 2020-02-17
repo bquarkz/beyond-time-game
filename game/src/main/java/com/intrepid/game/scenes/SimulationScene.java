@@ -59,9 +59,12 @@ public class SimulationScene
     public void start()
     {
         windowsManager = WindowsManager.create();
-        Bundle< Window > freakWindow = windowsManager.addComponent( new FreakWindows() );
-        freakWindow.getComponent().loadAssets();
-        windowsManager.openWindow( freakWindow );
+        Bundle< Window > freakWindow1 = windowsManager.addComponent( new FreakWindows( 50, 50 ) );
+        Bundle< Window > freakWindow2 = windowsManager.addComponent( new FreakWindows( 450, 450 ) );
+        freakWindow1.getComponent().loadAssets();
+        freakWindow2.getComponent().loadAssets();
+        windowsManager.openWindow( freakWindow1 );
+        windowsManager.openWindow( freakWindow2 );
 
         timer = new Timer();
         timer.start();
@@ -77,7 +80,7 @@ public class SimulationScene
         timer.update();
         windowsManager.update();
 
-        Game.util.addDebugMessage( "SCENE",
+        Game.debug.addDebugMessage( "SCENE",
                 "COUNTER: " + c,
                 "TIMER: " + timer.getTotalTime_s() + "s",
                 "SIMULATION-PERIOD: " + String.format( "%.2f", simulation

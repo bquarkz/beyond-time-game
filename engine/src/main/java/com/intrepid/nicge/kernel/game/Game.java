@@ -259,14 +259,9 @@ public final class Game implements Application
         }
     }
 
-    public static final class util
+    public static final class debug
     {
         private static final GameDebugVariables DEBUG_KERNEL_VARIABLES = new GameDebugVariables();
-
-        public static Reflection getReflections()
-        {
-            return Game.reflection;
-        }
 
         public static void addDebugMessage(
                 String process,
@@ -294,12 +289,20 @@ public final class Game implements Application
             Game.info.addProcessMessages( process, allMessages );
         }
 
-        public static final GameDebugVariables debug()
+        public static final GameDebugVariables kernelVariables()
         {
             return DEBUG_KERNEL_VARIABLES;
         }
+    }
 
-        public static final FileHandle getInternalFileHandle( String path )
+    public static final class util
+    {
+        public static Reflection getReflections()
+        {
+            return Game.reflection;
+        }
+
+        public static FileHandle getInternalFileHandle( String path )
         {
             return Gdx.files.internal( path );
         }

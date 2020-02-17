@@ -13,6 +13,7 @@ import com.intrepid.nicge.gui.Window;
 import com.intrepid.nicge.gui.WindowParameters;
 import com.intrepid.nicge.gui.controls.Button;
 import com.intrepid.nicge.kernel.game.Game;
+import com.intrepid.nicge.utils.MathUtils;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.animation.AnimationPack;
 
@@ -37,9 +38,9 @@ public class FreakWindows
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public FreakWindows()
+    public FreakWindows( int x, int y )
     {
-        super( new WindowParameters( 150, 120, 300, 150, false, Color.BROWN, Color.FIREBRICK ) );
+        super( new WindowParameters( MathUtils.Vector.with( x, y ), 300, 300, false, Color.BROWN, Color.FIREBRICK ) );
         button = addComponent( Button.create() );
         button.getComponent().setScreenPosition( 250, 150 );
         button.getComponent().setSize( 32, 32 );
