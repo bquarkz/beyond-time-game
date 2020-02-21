@@ -1,16 +1,17 @@
 package com.intrepid.nicge.gui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.utils.MathUtils;
 import com.intrepid.nicge.utils.MathUtils.Vector;
 
 public class WindowParameters
-    extends ComponentParameters
+        extends ComponentParameters
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static final int TITLE_SIZE = 30;
+    public static final int TITLE_SIZE = 30 * ( Game.common.getGameConfiguration().getWindowResolutionHeight() / 720 );
     private static final Color DEFAULT_TITLE_COLOR = new Color( 0xfc766aff );
     private static final Color DEFAULT_BODY_COLOR = new Color( 0x5b84b1af );
 

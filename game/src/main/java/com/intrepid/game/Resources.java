@@ -23,7 +23,8 @@ public class Resources
     public enum Textures implements IResource< Texture >
     {
         BACKGROUND( "background.png" ),
-        BLANK( "Blank.png" ),
+//        BLANK( "Blank.png" ),
+        BLANK( "BlankExplanation.png" ),
         GREEN_CURTAIN( "GreenCurtain.png" ),
         BLUE_CURTAIN( "BlueCurtain.png" ),
         RED_CURTAIN( "RedCurtain.png" ),

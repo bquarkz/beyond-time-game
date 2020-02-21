@@ -46,7 +46,7 @@ public class GameDesktopLauncher extends AbstractLauncher< GameBoot >
         GameConfigurationBuilder gcb = new GameConfigurationBuilder();
         gcb.setMouseLockedAndInvisible( false );
         gcb.setTitle( "Titulo de Teste" );
-        boolean fullScreen = true;
+        boolean fullScreen = false;
         gcb.setFullscreenMode( fullScreen );
         gcb.setResisable( false );
 

@@ -37,6 +37,7 @@ import com.intrepid.nicge.theater.curtain.CurtainLayer;
 import com.intrepid.nicge.theater.curtain.CurtainManager;
 import com.intrepid.nicge.theater.scene.IScene;
 import com.intrepid.nicge.utils.IProcessExecution;
+import com.intrepid.nicge.utils.MathUtils;
 import com.intrepid.nicge.utils.audio.AudioControl;
 import com.intrepid.nicge.utils.audio.IMusicBoard;
 import com.intrepid.nicge.utils.fsmachine.IFSMachineDefinition;

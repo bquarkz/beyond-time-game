@@ -98,15 +98,14 @@ public interface MathUtils
 			{
 				number = -1.0f;
 			}
-
             return number;
         }
 
-        static float mod( float number )
+        static float abs( float number )
         {
 			if( number < 0 )
 			{
-				number *= -1.0f;
+				return -number;
 			}
             return number;
         }
@@ -119,9 +118,25 @@ public interface MathUtils
             return gdxCoordinates( vector.getX(), vector.getY() );
         }
 
+        static int getXCorrection( final int screenX )
+        {
+            int nativeWidth = Game.common.getGameConfiguration().getNativeResolutionWidth();
+            int windowWidth = Game.common.getGameConfiguration().getWindowResolutionWidth();
+            final float correction = nativeWidth / (float)windowWidth;
+            return (int)( screenX * correction );
+        }
+
+        static int getYCorrection( final int screenY )
+        {
+            int nativeHeight = Game.common.getGameConfiguration().getNativeResolutionHeight();
+            int windowHeight = Game.common.getGameConfiguration().getWindowResolutionHeight();
+            final float correction = nativeHeight / (float)windowHeight;
+            return (int)( ( windowHeight - screenY ) * correction );
+        }
+
         static Vector gdxCoordinates( int x, int y )
         {
-            return Vector.with( x, Game.common.getGameConfiguration().getNativeResolutionHeight() - y );
+            return Vector.with( getXCorrection( x ), getYCorrection( y ) );
         }
 
         static float toPhysicsSpace( float number )

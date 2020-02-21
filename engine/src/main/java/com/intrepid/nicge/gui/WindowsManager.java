@@ -8,6 +8,7 @@ import com.intrepid.nicge.kernel.IMouseControllable;
 import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.theater.cameras.Camera;
+import com.intrepid.nicge.utils.MathUtils;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 import com.intrepid.nicge.utils.graphics.TextureWorks;
 
@@ -76,28 +77,6 @@ public final class WindowsManager
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private int getXCorrection( int screenX )
-    {
-        int nativeWidth = Game.common.getGameConfiguration().getNativeResolutionWidth();
-        int windowWidth = Game.graphics.getScreenWidth();
-
-        float correction = windowWidth / (float)nativeWidth;
-
-        return ( correction > 1 ? (int)( screenX / correction ) : screenX );
-    }
-
-    private int getYCorrection( int screenY )
-    {
-        int windowHeight = Game.graphics.getScreenHeight();
-        screenY = windowHeight - screenY;
-
-        int nativeHeight = Game.common.getGameConfiguration().getNativeResolutionHeight();
-
-        float correction = windowHeight / (float)nativeHeight;
-
-        return ( correction > 1 ? (int)( screenY / correction ) : screenY );
-    }
-
     @Override
     public boolean keyDown( int keycode )
     {
@@ -123,8 +102,8 @@ public final class WindowsManager
             int pointer,
             int button )
     {
-        screenX = getXCorrection( screenX );
-        screenY = getYCorrection( screenY );
+        screenX = MathUtils.conversion.getXCorrection( screenX );
+        screenY = MathUtils.conversion.getYCorrection( screenY );
 
         mouseButtonPressed( screenX, screenY, button );
 
@@ -138,8 +117,8 @@ public final class WindowsManager
             int pointer,
             int button )
     {
-        screenX = getXCorrection( screenX );
-        screenY = getYCorrection( screenY );
+        screenX = MathUtils.conversion.getXCorrection( screenX );
+        screenY = MathUtils.conversion.getYCorrection( screenY );
 
         mouseButtonUnPressed( screenX, screenY, button );
 
@@ -152,8 +131,8 @@ public final class WindowsManager
             int screenY,
             int pointer )
     {
-        screenX = getXCorrection( screenX );
-        screenY = getYCorrection( screenY );
+        screenX = MathUtils.conversion.getXCorrection( screenX );
+        screenY = MathUtils.conversion.getYCorrection( screenY );
 
         dragged( screenX, screenY, pointer );
 
@@ -165,8 +144,8 @@ public final class WindowsManager
             int screenX,
             int screenY )
     {
-        screenX = getXCorrection( screenX );
-        screenY = getYCorrection( screenY );
+        screenX = MathUtils.conversion.getXCorrection( screenX );
+        screenY = MathUtils.conversion.getYCorrection( screenY );
 
         checkMouseOver( screenX, screenY );
 

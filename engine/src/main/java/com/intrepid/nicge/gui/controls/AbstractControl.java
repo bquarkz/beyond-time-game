@@ -86,8 +86,6 @@ public abstract class AbstractControl
             parentPosition = Vector.ZERO;
         }
 
-        Game.debug.addDebugMessage( "Control " + getClass().getSimpleName(), "parent " + parentPosition );
-
         return parentPosition;
     }
 

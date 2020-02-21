@@ -82,7 +82,6 @@ public class SimulationScene
 
         simulation = new Simulation();
         c = 0;
-        background = Game.common.getAsset( Resources.Textures.BLANK );
     }
 
     @Override
@@ -159,8 +158,8 @@ public class SimulationScene
 
         button.setSize( 32, 32 );
         button.setRelativePosition(
-                Game.common.getGameConfiguration().getNativeResolutionWidth() - button.getParameters().getWidth() - 20,
-                Game.common.getGameConfiguration().getNativeResolutionHeight()- 20 );
+                Game.common.getGameConfiguration().getWindowResolutionWidth() - button.getParameters().getWidth() - 20,
+                Game.common.getGameConfiguration().getWindowResolutionHeight() - 20 );
         button.setActionRun( () -> Game.scene.change( RandomScene.class, AllCurtains.IMAGE_FADE ) );
         windowsManager.addCommand( button );
     }
@@ -168,6 +167,8 @@ public class SimulationScene
     @Override
     public void bindAssets()
     {
+        background = Game.common.getAsset( Resources.Textures.BLANK );
+
         AnimationPack pack = Game.common.getAsset( Resources.Animations.SENTINEL );
         Animation idle = pack.get( "sentinel.move.down" );
         Animation over = pack.get( "sentinel.move.up" );
