@@ -133,7 +133,7 @@ public class WindowParameters
 
     private Vector buildTitleBottomRightCorner()
     {
-        return MathUtils.conversion.gdxCoordinates( getPosition().getX() + getWidth(), getPosition().getY() + TITLE_SIZE );
+        return MathUtils.conversion.gdxCoordinates( getPosition().getX() + getWidth() - TITLE_SIZE, getPosition().getY() + TITLE_SIZE );
     }
 
     private Vector buildTitleTopLeftCorner()

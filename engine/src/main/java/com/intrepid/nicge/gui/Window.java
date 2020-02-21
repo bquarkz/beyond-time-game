@@ -44,9 +44,9 @@ public abstract class Window
     public Window( WindowParameters wp )
     {
         this.windowParameters = new WindowParameters( wp );
+        this.closeButton = CloseButton.create( this );
         this.node = new TopTailList.Node<>( this );
         this.couldBeDragged = false;
-        this.closeButton = CloseButton.create( this );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
