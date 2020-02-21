@@ -68,16 +68,8 @@ public abstract class Window
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public final void bindAssets()
     {
-        this.titleTexture = TextureWorks.createTexture(
-                windowParameters.getWidth(),
-                TITLE_SIZE,
-                windowParameters.getTitleColor() );
-
-        this.bodyTexture = TextureWorks.createTexture(
-                windowParameters.getWidth(),
-                windowParameters.getHeight() - TITLE_SIZE,
-                windowParameters.getBodyColor() );
-
+        this.titleTexture = TextureWorks.createTexture( 2, 2, windowParameters.getTitleColor() );
+        this.bodyTexture = TextureWorks.createTexture( 2, 2, windowParameters.getBodyColor() );
         _bindAssets();
     }
 
@@ -123,8 +115,17 @@ public abstract class Window
                 windowParameters.getWidth() + SHADOW_EXTRA_SIZE,
                 windowParameters.getHeight() + SHADOW_EXTRA_SIZE );
 
-        batch.draw( titleTexture, gdxTitleDisplayCoordinates.getX(), gdxTitleDisplayCoordinates.getY() );
-        batch.draw( bodyTexture, gdxBodyDisplayCoordinates.getX(), gdxBodyDisplayCoordinates.getY() );
+        batch.draw( titleTexture,
+                gdxTitleDisplayCoordinates.getX(),
+                gdxTitleDisplayCoordinates.getY(),
+                windowParameters.getWidth(),
+                TITLE_SIZE );
+
+        batch.draw( bodyTexture,
+                gdxBodyDisplayCoordinates.getX(),
+                gdxBodyDisplayCoordinates.getY(),
+                windowParameters.getWidth(),
+                windowParameters.getHeight() - TITLE_SIZE );
 
         super.display( batch );
     }
