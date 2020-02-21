@@ -12,7 +12,9 @@
  */
 package com.intrepid.nicge.gui;
 
-final class ComponentParameters
+import com.intrepid.nicge.utils.MathUtils.Vector;
+
+public class ComponentParameters
 {
     // ****************************************************************************************
     // Const Fields
@@ -21,6 +23,9 @@ final class ComponentParameters
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
+    private Vector position;
+    private int width;
+    private int height;
     private boolean enabled;
 
     // ****************************************************************************************
@@ -28,7 +33,15 @@ final class ComponentParameters
     // ****************************************************************************************
     public ComponentParameters()
     {
+       this( Vector.ZERO, 0, 0 );
+    }
+
+    public ComponentParameters( Vector position, int width, int height )
+    {
         this.enabled = true;
+        this.position = position;
+        this.width = width;
+        this.height = height;
     }
 
     // ****************************************************************************************
@@ -52,6 +65,35 @@ final class ComponentParameters
         this.enabled = disabled;
     }
 
+    public Vector getPosition()
+    {
+        return position;
+    }
+
+    public void setPosition( Vector position )
+    {
+        this.position = position;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public void setWidth( int width )
+    {
+        this.width = width;
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public void setHeight( int height )
+    {
+        this.height = height;
+    }
     // ****************************************************************************************
     // Patterns
     // ****************************************************************************************

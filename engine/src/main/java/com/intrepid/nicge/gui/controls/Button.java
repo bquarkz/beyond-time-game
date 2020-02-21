@@ -12,8 +12,11 @@
  */
 package com.intrepid.nicge.gui.controls;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.intrepid.nicge.kernel.game.Game;
+import com.intrepid.nicge.utils.MathUtils;
+import com.intrepid.nicge.utils.MathUtils.Vector;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
@@ -29,10 +32,6 @@ public class Button
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
-    private int x;
-    private int y;
-    private int width;
-    private int height;
     private boolean isMouseOverMe;
     private boolean isActionClicked;
     private boolean isActionActive;
@@ -78,17 +77,15 @@ public class Button
             int screenX,
             int screenY )
     {
+        int x = getParameters().getPosition().getX();
+        int y = getParameters().getPosition().getY();
+        int width = getParameters().getWidth();
+        int height = getParameters().getHeight();
+
         boolean cx = ( ( screenX >= x ) && ( screenX <= ( x + width ) ) );
         boolean cy = ( ( screenY >= y ) && ( screenY <= ( y + height ) ) );
 
-        if( cx && cy )
-        {
-            isMouseOverMe = true;
-        }
-        else
-        {
-            isMouseOverMe = false;
-        }
+        isMouseOverMe = cx && cy;
 
         return isMouseOverMe;
     }
@@ -170,6 +167,12 @@ public class Button
     @Override
     public void update()
     {
+        final Vector parentPosition = getParentPosition();
+        getParameters().setPosition( MathUtils
+                .conversion
+                .gdxCoordinates( Vector
+                        .sum( parentPosition, getRelativePosition() ) ) );
+
         elapsedTime_s += Game.time.getGdxRawDeltaTime_s();
 
         if( isActionActive )
@@ -208,29 +211,15 @@ public class Button
 
         if( tr != null )
         {
-            batch.draw( tr, x, y );
+            int x = getParameters().getPosition().getX();
+            int y = getParameters().getPosition().getY();
+            batch.draw( tr, x, y, getParameters().getWidth(), getParameters().getHeight() );
         }
     }
 
     // ****************************************************************************************
     // Getters And Setters Methods
     // ****************************************************************************************
-    final public void setScreenPosition(
-            int x,
-            int y )
-    {
-        this.x = x;
-        this.y = y;
-    }
-
-    final public void setSize(
-            int width,
-            int height )
-    {
-        this.width = width;
-        this.height = height;
-    }
-
     final public void setSupportRun( IButtonAction supportRunner )
     {
         this.supportRunner = supportRunner;
@@ -259,6 +248,26 @@ public class Button
     final public void setMouserOverMe( Animation mouserOverMe )
     {
         this.mouserOverMe = mouserOverMe;
+    }
+
+    final public void setIdle( Texture idle )
+    {
+        this.idle = new Animation( idle );
+    }
+
+    final public void setActionClicked( Texture actionClicked )
+    {
+        this.actionClicked = new Animation( actionClicked );
+    }
+
+    final public void setSupportClicked( Texture supportClicked )
+    {
+        this.supportClicked = new Animation( supportClicked );
+    }
+
+    final public void setMouserOverMe( Texture mouserOverMe )
+    {
+        this.mouserOverMe = new Animation( mouserOverMe );
     }
 
     // ****************************************************************************************

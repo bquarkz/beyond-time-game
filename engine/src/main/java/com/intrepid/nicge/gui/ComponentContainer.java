@@ -77,7 +77,7 @@ public class ComponentContainer
         ComponentWrapper wrapper = ComponentWrapper.create( id, component );
         component.setParent( this );
         getComponents().put( wrapper.getId(), wrapper );
-        wrapper.getComponentParameters().setEnabled( false );
+        wrapper.getParameters().setEnabled( false );
         return new Bundle<>( wrapper.getId(), component );
     }
 
@@ -199,17 +199,24 @@ public class ComponentContainer
 
     public void enable()
     {
-        getComponents().values().forEach( c -> c.getComponentParameters().setEnabled( true ) );
+        getComponents().values().forEach( c -> c.getParameters().setEnabled( true ) );
     }
 
     public void disable()
     {
-        getComponents().values().forEach( c -> c.getComponentParameters().setEnabled( false ) );
+        getComponents().values().forEach( c -> c.getParameters().setEnabled( false ) );
     }
 
     public void clear()
     {
         components.clear();
+    }
+
+    @Override
+    public ComponentParameters getParameters()
+    {
+        if( parent == null ) return null;
+        return parent.getParameters();
     }
 
     // ****************************************************************************************

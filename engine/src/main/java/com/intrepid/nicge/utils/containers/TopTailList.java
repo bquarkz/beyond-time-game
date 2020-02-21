@@ -71,6 +71,11 @@ public class TopTailList< C >
             top.after.before = null;
             top = top.after; // move down
         }
+        else if( top == tail )
+        {
+            top = null;
+            tail = null;
+        }
         return temp.getContent();
     }
 

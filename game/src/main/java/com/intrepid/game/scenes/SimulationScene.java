@@ -152,12 +152,12 @@ public class SimulationScene
     @Override
     public void prepareEnvironment()
     {
-        blue = windowsManager.addWindow( new BlueWindow( 50, 50 ) );
-        green = windowsManager.addWindow( new GreenWindow( 200, 200 ) );
-        red = windowsManager.addWindow( new RedWindow( 450, 450 ) );
+        blue = windowsManager.addWindow( new BlueWindow( 100, 360 ) );
+        green = windowsManager.addWindow( new GreenWindow( 450, 250 ) );
+        red = windowsManager.addWindow( new RedWindow( 800, 150 ) );
 
-        button.setScreenPosition( 250, 150 );
         button.setSize( 32, 32 );
+        button.setRelativePosition( Game.graphics.getScreenWidth() - button.getParameters().getWidth() - 20, Game.graphics.getScreenHeight() - 20 );
         button.setActionRun( () -> Game.scene.change( RandomScene.class, AllCurtains.IMAGE_FADE ) );
         windowsManager.addCommand( button );
     }

@@ -7,10 +7,10 @@ import com.intrepid.nicge.utils.MathUtils;
 import com.intrepid.nicge.utils.MathUtils.Vector;
 import com.intrepid.nicge.utils.containers.TopTailList;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
-import com.intrepid.nicge.utils.graphics.TextureWorks;
 
 import static com.intrepid.nicge.gui.WindowParameters.TITLE_SIZE;
 import static com.intrepid.nicge.gui.WindowsManager.*;
+import static com.intrepid.nicge.utils.graphics.TextureWorks.createTexture;
 
 public abstract class Window
         extends ComponentContainer
@@ -28,14 +28,11 @@ public abstract class Window
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private final WindowParameters windowParameters;
-//    private final CloseButton closeButton;
+    private final CloseButton closeButton;
     private final TopTailList.Node< Window > node;
 
     private Texture titleTexture;
     private Texture bodyTexture;
-    private Texture shadowLighterTexture;
-    private Texture shadowDarkerTexture;
-    private Texture shadowTexture;
 
     private boolean couldBeDragged;
     private Vector v0;
@@ -49,6 +46,7 @@ public abstract class Window
         this.windowParameters = new WindowParameters( wp );
         this.node = new TopTailList.Node<>( this );
         this.couldBeDragged = false;
+        this.closeButton = CloseButton.create( this );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,8 +66,10 @@ public abstract class Window
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public final void bindAssets()
     {
-        this.titleTexture = TextureWorks.createTexture( 2, 2, windowParameters.getTitleColor() );
-        this.bodyTexture = TextureWorks.createTexture( 2, 2, windowParameters.getBodyColor() );
+        titleTexture = createTexture( 2, 2, windowParameters.getTitleColor() );
+        bodyTexture = createTexture( 2, 2, windowParameters.getBodyColor() );
+        closeButton.bindAssets();
+
         _bindAssets();
     }
 
@@ -79,6 +79,7 @@ public abstract class Window
     {
         titleTexture.dispose();
         bodyTexture.dispose();
+        closeButton.unBindAssets();
 
         _unBindAssets();
     }
@@ -88,6 +89,7 @@ public abstract class Window
     @Override
     public void update()
     {
+        closeButton.update();
         super.update();
     }
 
@@ -127,6 +129,8 @@ public abstract class Window
                 windowParameters.getWidth(),
                 windowParameters.getHeight() - TITLE_SIZE );
 
+        closeButton.display( batch );
+
         super.display( batch );
     }
 
@@ -135,6 +139,8 @@ public abstract class Window
             int screenX,
             int screenY )
     {
+        closeButton.checkMouseOver( screenX, screenY );
+
         return MathUtils.gdx.checkInside(
                 windowParameters.getTitleTopLeftCorner(),
                 windowParameters.getBodyBottomRightCorner(),
@@ -147,7 +153,9 @@ public abstract class Window
             int screenY,
             int button )
     {
-        Vector vector = Vector.with( screenX, screenY );
+        closeButton.mouseButtonPressed( screenX, screenY, button );
+
+        final Vector vector = Vector.with( screenX, screenY );
         couldBeDragged = windowParameters.isInsideTitle( vector );
         if( couldBeDragged )
         {
@@ -162,6 +170,8 @@ public abstract class Window
             int screenY,
             int button )
     {
+        closeButton.mouseButtonUnPressed( screenX, screenY, button );
+
         couldBeDragged = false;
         return super.mouseButtonUnPressed( screenX, screenY, button );
     }
@@ -183,12 +193,23 @@ public abstract class Window
 
     public void enable()
     {
-        getComponents().values().forEach( c -> c.getComponentParameters().setEnabled( true ) );
+        getComponents().values().forEach( c -> c.getParameters().setEnabled( true ) );
     }
 
     public void disable()
     {
-        getComponents().values().forEach( c -> c.getComponentParameters().setEnabled( false ) );
+        getComponents().values().forEach( c -> c.getParameters().setEnabled( false ) );
+    }
+
+    @Override
+    public ComponentParameters getParameters()
+    {
+        return windowParameters;
+    }
+
+    void whenClosingDo( Button.IButtonAction buttonAction )
+    {
+        closeButton.setActionRun( buttonAction );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -197,9 +218,43 @@ public abstract class Window
     private static class CloseButton
             extends Button
     {
-        public static CloseButton create()
+        private Texture idle;
+        private Texture mouseOverMe;
+        private Texture actionClicked;
+        private Texture supportClicked;
+
+        private CloseButton( Window window )
         {
-            return new CloseButton();
+            this.setParent( window );
+        }
+
+        public static CloseButton create( Window window )
+        {
+            CloseButton closeButton = new CloseButton( window );
+            closeButton.setSize( TITLE_SIZE, TITLE_SIZE );
+            closeButton.setRelativePosition(window.getParameters().getWidth() - TITLE_SIZE, TITLE_SIZE );
+            return closeButton;
+        }
+
+        public void bindAssets()
+        {
+            idle = createTexture( 2, 2, Color.GRAY );
+            mouseOverMe = createTexture( 2, 2, Color.GREEN );
+            actionClicked = createTexture( 2, 2, Color.RED );
+            supportClicked = createTexture( 2, 2, Color.BLUE );
+
+            setIdle( idle );
+            setMouserOverMe( mouseOverMe );
+            setActionClicked( actionClicked );
+            setSupportClicked( supportClicked );
+        }
+
+        public void unBindAssets()
+        {
+            idle.dispose();
+            mouseOverMe.dispose();
+            actionClicked.dispose();
+            supportClicked.dispose();
         }
     }
 }

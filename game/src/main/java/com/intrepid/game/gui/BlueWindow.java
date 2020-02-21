@@ -14,6 +14,7 @@ import com.intrepid.nicge.gui.WindowParameters;
 import com.intrepid.nicge.gui.controls.Button;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.utils.MathUtils;
+import com.intrepid.nicge.utils.MathUtils.Vector;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.animation.AnimationPack;
 
@@ -39,7 +40,7 @@ public class BlueWindow
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public BlueWindow( int x, int y )
     {
-        super( new WindowParameters( MathUtils.Vector.with( x, y ), 300, 300 ) );
+        super( new WindowParameters( MathUtils.conversion.gdxCoordinates( x, y ), 300, 150 ) );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

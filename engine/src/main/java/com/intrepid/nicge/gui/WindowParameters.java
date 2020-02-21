@@ -5,6 +5,7 @@ import com.intrepid.nicge.utils.MathUtils;
 import com.intrepid.nicge.utils.MathUtils.Vector;
 
 public class WindowParameters
+    extends ComponentParameters
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
@@ -20,9 +21,6 @@ public class WindowParameters
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private Vector position;
-    private int width;
-    private int height;
     private boolean scrollable;
     private final Color titleColor;
     private final Color bodyColor;
@@ -46,7 +44,7 @@ public class WindowParameters
 
     public WindowParameters( WindowParameters p )
     {
-        this( p.position, p.width, p.height, p.scrollable, p.getTitleColor(), p.getBodyColor() );
+        this( p.getPosition(), p.getWidth(), p.getHeight(), p.scrollable, p.getTitleColor(), p.getBodyColor() );
     }
 
     public WindowParameters(
@@ -57,9 +55,7 @@ public class WindowParameters
             Color titleColor,
             Color bodyColor )
     {
-        this.position = Vector.with( position );
-        this.width = width;
-        this.height = height;
+        super( Vector.with( position ), width, height );
         this.scrollable = scrollable;
         this.titleColor = titleColor;
         this.bodyColor = bodyColor;
@@ -77,21 +73,6 @@ public class WindowParameters
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Getters And Setters
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Vector getPosition()
-    {
-        return position;
-    }
-
-    public int getWidth()
-    {
-        return width;
-    }
-
-    public int getHeight()
-    {
-        return height;
-    }
-
     public boolean isScrollable()
     {
         return scrollable;
@@ -142,26 +123,22 @@ public class WindowParameters
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private Vector buildBodyBottomRightCorner()
     {
-//        return Dot.with( position.getX() + width, position.getY() + height );
-        return MathUtils.conversion.gdxCoordinates( position.getX() + width, position.getY() + height );
+        return MathUtils.conversion.gdxCoordinates( getPosition().getX() + getWidth(), getPosition().getY() + getHeight() );
     }
 
     private Vector buildBodyTopLeftCorner()
     {
-//        return Dot.with( position.getX(), position.getY() + TITLE_SIZE );
-        return MathUtils.conversion.gdxCoordinates( position.getX(), position.getY() + TITLE_SIZE );
+        return MathUtils.conversion.gdxCoordinates( getPosition().getX(), getPosition().getY() + TITLE_SIZE );
     }
 
     private Vector buildTitleBottomRightCorner()
     {
-//        return Dot.with( position.getX() + width, position.getY() + TITLE_SIZE );
-        return MathUtils.conversion.gdxCoordinates( position.getX() + width, position.getY() + TITLE_SIZE );
+        return MathUtils.conversion.gdxCoordinates( getPosition().getX() + getWidth(), getPosition().getY() + TITLE_SIZE );
     }
 
     private Vector buildTitleTopLeftCorner()
     {
-//        return Dot.with( position );
-        return MathUtils.conversion.gdxCoordinates( position );
+        return MathUtils.conversion.gdxCoordinates( getPosition() );
     }
 
     public Vector getGdxTitleDisplayCoordinates()
@@ -176,19 +153,17 @@ public class WindowParameters
 
     public boolean isInsideTitle( Vector vector )
     {
-        final Vector temp = MathUtils.conversion.gdxCoordinates( vector );
         return MathUtils.gdx.checkInside( titleTopLeftCorner, titleBottomRightCorner, vector );
     }
 
     public boolean isInsideBody( Vector vector )
     {
-        //final Dot temp = MathUtils.conversion.innerCoordinates( dot );
         return MathUtils.gdx.checkInside( bodyTopLeftCorner, bodyBottomRightCorner, vector );
     }
 
     public void move( Vector distance )
     {
-        this.position = Vector.sum( position, distance );
+        this.setPosition( Vector.sum( getPosition(), distance ) );
         this.titleTopLeftCorner = buildTitleTopLeftCorner();
         this.titleBottomRightCorner = buildTitleBottomRightCorner();
         this.bodyTopLeftCorner = buildBodyTopLeftCorner();

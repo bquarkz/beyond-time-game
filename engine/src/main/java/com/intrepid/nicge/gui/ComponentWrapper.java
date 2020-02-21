@@ -18,7 +18,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ComponentWrapper
@@ -33,7 +32,6 @@ public class ComponentWrapper
     // ****************************************************************************************
     private final Integer id;
     private final IComponent component;
-    private final ComponentParameters componentParameters;
 
     // ****************************************************************************************
     // Constructors
@@ -44,7 +42,6 @@ public class ComponentWrapper
     {
         this.id = id;
         this.component = component;
-        this.componentParameters = new ComponentParameters();
         this.component.setParent( this );
     }
 
@@ -67,7 +64,7 @@ public class ComponentWrapper
     {
         return components
                 .stream()
-                .filter( cc -> cc.getComponentParameters().isEnabled() )
+                .filter( cc -> cc.getParameters().isEnabled() )
                 .map( cc -> function.apply( cc.getComponent() ) )
                 .reduce( false, ( b1, b2 ) -> b1 | b2 );
     }
@@ -167,12 +164,18 @@ public class ComponentWrapper
 
     public void enable()
     {
-        componentParameters.setEnabled( true );
+        component.getParameters().setEnabled( true );
     }
 
     public void disable()
     {
-        componentParameters.setEnabled( false );
+        component.getParameters().setEnabled( false );
+    }
+
+    @Override
+    public ComponentParameters getParameters()
+    {
+        return component.getParameters();
     }
 
     // ****************************************************************************************
@@ -186,11 +189,6 @@ public class ComponentWrapper
     public IComponent getComponent()
     {
         return component;
-    }
-
-    public ComponentParameters getComponentParameters()
-    {
-        return componentParameters;
     }
 
     // ****************************************************************************************

@@ -245,9 +245,17 @@ public final class WindowsManager
         windowsContainer.enable( windowBundle );
     }
 
+    public void closeWindow( Bundle< Window > windowBundle )
+    {
+        windowsContainer.disable( windowBundle );
+        windowsContainer.getWindows().pop();
+    }
+
     public Bundle< Window > addWindow( Window window )
     {
-        return windowsContainer.addComponent( window );
+        final Bundle< Window > windowBundle = windowsContainer.addComponent( window );
+        windowBundle.getComponent().whenClosingDo( () -> closeWindow( windowBundle ) );
+        return windowBundle;
     }
 
     public Bundle< Button > addCommand( Button command )

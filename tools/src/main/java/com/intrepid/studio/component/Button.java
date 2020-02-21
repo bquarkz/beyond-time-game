@@ -18,6 +18,7 @@ import java.util.concurrent.Future;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.intrepid.nicge.gui.ComponentParameters;
 import com.intrepid.nicge.gui.IComponent;
 import com.intrepid.nicge.kernel.game.GameDebugVariables;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
@@ -25,7 +26,8 @@ import com.intrepid.nicge.utils.graphics.TextureWorks;
 import com.intrepid.nicge.utils.threads.ThreadExecutor;
 import com.intrepid.nicge.utils.threads.IThreadRunnable;
 
-public class Button implements IComponent {
+public class Button
+		implements IComponent {
 	// ****************************************************************************************
 	// Const Fields
 	// ****************************************************************************************
@@ -105,19 +107,21 @@ public class Button implements IComponent {
 	}
 
 	@Override
-	public void checkMouseOver( int screenX, int screenY ) {
-		if( lockedIn ) return;
+	public boolean checkMouseOver( int screenX, int screenY ) {
+		if( lockedIn ) return true;
 		
 		boolean cx = ( ( screenX >= x ) && ( screenX <= ( x + width ) ) );
 		boolean cy = ( ( screenY >= y ) && ( screenY <= ( y + height ) ) );
 		
 		if( cx && cy ) mouseOverMe = true;
 		else mouseOverMe = false;
+
+		return true;
 	}
 
 	@Override
-	public void mouseButtonPressed( int screenX, int screenY, int button ) {
-		if( lockedIn ) return;
+	public boolean mouseButtonPressed( int screenX, int screenY, int button ) {
+		if( lockedIn ) return true;
 		
 		checkMouseOver( screenX, screenY );
 		
@@ -126,11 +130,12 @@ public class Button implements IComponent {
 				isClicked = true;
 			}
 		}
+		return true;
 	}
 
 	@Override
-	public void mouseButtonUnPressed( int screenX, int screenY, int button ) {
-		if( lockedIn ) return;
+	public boolean mouseButtonUnPressed( int screenX, int screenY, int button ) {
+		if( lockedIn ) return false;
 		
 		checkMouseOver( screenX, screenY );
 		
@@ -143,6 +148,8 @@ public class Button implements IComponent {
 		}
 		
 		isClicked = false;
+
+		return true;
 	}
 	
 	@Override
@@ -208,6 +215,12 @@ public class Button implements IComponent {
 			int button )
 	{
 
+	}
+
+	@Override
+	public ComponentParameters getParameters()
+	{
+		return null;
 	}
 
 	// ****************************************************************************************
