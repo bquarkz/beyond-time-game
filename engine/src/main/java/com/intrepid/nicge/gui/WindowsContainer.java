@@ -87,6 +87,16 @@ class WindowsContainer
         return false;
     }
 
+    @Override
+    public boolean checkMouseOver(
+            int screenX,
+            int screenY )
+    {
+        return runAndQuitWhen( windows.topTailIterator(),
+                        w -> w.checkMouseOver( screenX, screenY ),
+                        Window::failSafe );
+    }
+
     public TopTailList< Window > getWindows()
     {
         return windows;

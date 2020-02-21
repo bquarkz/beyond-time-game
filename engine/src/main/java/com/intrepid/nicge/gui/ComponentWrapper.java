@@ -1,4 +1,4 @@
-/**
+/*
  * Copyleft (C) 2016  Constantino, Nilton Rogerio <niltonrc@gmail.com>
  *
  * @author "Nilton R Constantino"
@@ -17,8 +17,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ComponentWrapper
         implements Comparable< ComponentWrapper >, IComponent
@@ -58,17 +61,6 @@ public class ComponentWrapper
     // ****************************************************************************************
     // Methods
     // ****************************************************************************************
-    static boolean runIfEnabled(
-            Collection< ComponentWrapper > components,
-            Function< IComponent, Boolean > function )
-    {
-        return components
-                .stream()
-                .filter( cc -> cc.getParameters().isEnabled() )
-                .map( cc -> function.apply( cc.getComponent() ) )
-                .reduce( false, ( b1, b2 ) -> b1 | b2 );
-    }
-
     @Override
     public boolean equals( Object o )
     {

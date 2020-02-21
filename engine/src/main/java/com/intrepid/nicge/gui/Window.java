@@ -66,8 +66,16 @@ public abstract class Window
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public final void bindAssets()
     {
-        titleTexture = createTexture( 2, 2, windowParameters.getTitleColor() );
-        bodyTexture = createTexture( 2, 2, windowParameters.getBodyColor() );
+        titleTexture = createTexture(
+                windowParameters.getWidth(),
+                TITLE_SIZE,
+                windowParameters.getTitleColor() );
+
+        bodyTexture = createTexture(
+                windowParameters.getWidth(),
+                windowParameters.getHeight() - TITLE_SIZE,
+                windowParameters.getBodyColor() );
+
         closeButton.bindAssets();
 
         _bindAssets();
@@ -119,19 +127,20 @@ public abstract class Window
 
         batch.draw( titleTexture,
                 gdxTitleDisplayCoordinates.getX(),
-                gdxTitleDisplayCoordinates.getY(),
-                windowParameters.getWidth(),
-                TITLE_SIZE );
+                gdxTitleDisplayCoordinates.getY() );
 
         batch.draw( bodyTexture,
                 gdxBodyDisplayCoordinates.getX(),
-                gdxBodyDisplayCoordinates.getY(),
-                windowParameters.getWidth(),
-                windowParameters.getHeight() - TITLE_SIZE );
+                gdxBodyDisplayCoordinates.getY() );
 
         closeButton.display( batch );
 
         super.display( batch );
+    }
+
+    public void failSafe()
+    {
+        closeButton.mouseIsNotOverMe();
     }
 
     @Override

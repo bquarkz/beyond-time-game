@@ -15,12 +15,11 @@ package com.intrepid.nicge.gui;
 import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ComponentContainer
     implements IComponent
@@ -167,12 +166,12 @@ public class ComponentContainer
 
     protected boolean runOverAllEnabled( Function< IComponent, Boolean > function )
     {
-        return ComponentWrapper.runIfEnabled( getComponents().values(), function );
+        return runIfEnabled( getComponents().values(), function );
     }
 
     protected boolean runOverAllEnabled( Consumer< IComponent > consumer )
     {
-        return ComponentWrapper.runIfEnabled( getComponents().values(), c -> {
+        return runIfEnabled( getComponents().values(), c -> {
             consumer.accept( c );
             return false;
         } );
@@ -217,6 +216,41 @@ public class ComponentContainer
     {
         if( parent == null ) return null;
         return parent.getParameters();
+    }
+
+    protected static boolean runIfEnabled(
+            Collection< ComponentWrapper > components,
+            Function< IComponent, Boolean > function )
+    {
+        return components
+                .stream()
+                .filter( cc -> cc.getParameters().isEnabled() )
+                .map( cc -> function.apply( cc.getComponent() ) )
+                .reduce( false, ( b1, b2 ) -> b1 | b2 );
+    }
+
+    protected static < C extends IComponent > boolean runAndQuitWhen(
+            Iterator< C > components,
+            Function< C, Boolean > function,
+            Consumer< C > failSafe )
+    {
+        boolean found = false;
+        while( components.hasNext() )
+        {
+            C component = components.next();
+            if( component.getParameters().isEnabled() )
+            {
+                if( found )
+                {
+                    failSafe.accept( component );
+                }
+                else
+                {
+                    found = function.apply( component );
+                }
+            }
+        }
+        return found;
     }
 
     // ****************************************************************************************

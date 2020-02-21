@@ -1,7 +1,7 @@
-/**
- * Copyleft (C) 2016  Constantino, Nilton Rogerio <niltonrc@gmail.com>
- *
- * @author "Nilton R Constantino"
+/*
+  Copyleft (C) 2016  Constantino, Nilton Rogerio <niltonrc@gmail.com>
+
+  @author "Nilton R Constantino"
  * aKa bQUARKz <niltonrc@gmail, bquarkz@gmail.com>
  * <p>
  * Everything about the respective software copyright can be found in the
@@ -88,6 +88,7 @@ public class SimulationScene
     @Override
     public void update()
     {
+        camera.update();
         timer.update();
         windowsManager.update();
 
@@ -157,7 +158,9 @@ public class SimulationScene
         red = windowsManager.addWindow( new RedWindow( 800, 150 ) );
 
         button.setSize( 32, 32 );
-        button.setRelativePosition( Game.graphics.getScreenWidth() - button.getParameters().getWidth() - 20, Game.graphics.getScreenHeight() - 20 );
+        button.setRelativePosition(
+                Game.common.getGameConfiguration().getNativeResolutionWidth() - button.getParameters().getWidth() - 20,
+                Game.common.getGameConfiguration().getNativeResolutionHeight()- 20 );
         button.setActionRun( () -> Game.scene.change( RandomScene.class, AllCurtains.IMAGE_FADE ) );
         windowsManager.addCommand( button );
     }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyleft (C) 2016  Constantino, Nilton Rogerio <niltonrc@gmail.com>
  *
  * @author "Nilton R Constantino"
@@ -44,29 +44,30 @@ public class GameDesktopLauncher extends AbstractLauncher< GameBoot >
         }
 
         GameConfigurationBuilder gcb = new GameConfigurationBuilder();
-        //gcb.setDynamicDependencyPack( );
         gcb.setMouseLockedAndInvisible( false );
         gcb.setTitle( "Titulo de Teste" );
-        gcb.setFullscreenMode( false );
-        gcb.setResisable( true );
+        boolean fullScreen = true;
+        gcb.setFullscreenMode( fullScreen );
+        gcb.setResisable( false );
 
-//		int windowResolutionWidth = 1920;
-//		int windowResolutionHeight = 1080;
+//        int nativeResolutionWidth = 1920;
+//        int nativeResolutionHeight = 1080;
+        int nativeResolutionWidth = 1280;
+        int nativeResolutionHeight = 720;
+        gcb.setNativeResolutionWidth( nativeResolutionWidth );
+        gcb.setNativeResolutionHeight( nativeResolutionHeight );
 
-		int windowResolutionWidth = 1280;
-		int windowResolutionHeight = 720;
-
-//        int windowResolutionWidth = 480;
-//        int windowResolutionHeight = 270;
-
-        gcb.setWindowResolutionWidth( windowResolutionWidth );
-        gcb.setWindowResolutionHeight( windowResolutionHeight );
-
-//		int nrscl = 3;
-        int nrscl = 1;
-
-        gcb.setNativeResolutionWidth( windowResolutionWidth / nrscl ); // by 4 = 480
-        gcb.setNativeResolutionHeight( windowResolutionHeight / nrscl ); // by 4 = 270
+        final float ratio;
+        if( fullScreen )
+        {
+            ratio = 1.5f;
+        }
+        else
+        {
+            ratio = 1.0f;
+        }
+        gcb.setWindowResolutionWidth( (int) (nativeResolutionWidth * ratio ) );
+        gcb.setWindowResolutionHeight( (int) ( nativeResolutionHeight * ratio ) );
 
         gcb.setBitsPerPixel( 24 );
         gcb.setFPS( 60 );
