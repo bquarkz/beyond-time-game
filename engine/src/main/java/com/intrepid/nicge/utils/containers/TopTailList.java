@@ -119,6 +119,24 @@ public class TopTailList< C >
         top = node;
     }
 
+    public void clear()
+    {
+        if( top == null ) return;
+
+        Node< C > current = top;
+        while( current.after != null )
+        {
+            current.before = null;
+            current.content = null;
+            current = current.after;
+        }
+        current.before = null;
+        current.content = null;
+
+        top = null;
+        tail = null;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,7 +192,7 @@ public class TopTailList< C >
 
     public final static class Node< C >
     {
-        private final C content;
+        private C content;
 
         private Node< C > before;
         private Node< C > after;
@@ -189,19 +207,9 @@ public class TopTailList< C >
             return before;
         }
 
-        public void setBefore( Node< C > before )
-        {
-            this.before = before;
-        }
-
         public Node< C > getAfter()
         {
             return after;
-        }
-
-        public void setAfter( Node< C > after )
-        {
-            this.after = after;
         }
 
         public C getContent()

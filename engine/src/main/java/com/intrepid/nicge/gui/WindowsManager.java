@@ -1,11 +1,15 @@
 package com.intrepid.nicge.gui;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.intrepid.nicge.gui.controls.Button;
 import com.intrepid.nicge.kernel.IMouseControllable;
 import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.theater.cameras.Camera;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
+import com.intrepid.nicge.utils.graphics.TextureWorks;
 
 import java.util.Optional;
 
@@ -15,6 +19,21 @@ public final class WindowsManager
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    static final Color SHADOW_LIGHTER_COLOR = new Color( 0, 0, 0, 0.1f );
+    static final Color SHADOW_DARKER_COLOR = new Color( 0, 0, 0, 0.3f );
+    static final Color SHADOW_COLOR = new Color( 0, 0, 0, 0.5f );
+
+    static final int SHADOW_LIGHTER_EXTRA_SIZE = 6;
+    static final int SHADOW_DARKER_EXTRA_SIZE = 4;
+    static final int SHADOW_EXTRA_SIZE = 2;
+
+    static final int SHADOW_LIGHTER_DRAW = SHADOW_LIGHTER_EXTRA_SIZE / 2;
+    static final int SHADOW_DARKER_DRAW = SHADOW_DARKER_EXTRA_SIZE / 2;
+    static final int SHADOW_DRAW = SHADOW_EXTRA_SIZE / 2;
+
+    static Texture SHADOW_LIGHTER_TEXTURE = TextureWorks.createTexture( 2, 2, SHADOW_LIGHTER_COLOR );
+    static Texture SHADOW_DARKER_TEXTURE = TextureWorks.createTexture( 2, 2, SHADOW_DARKER_COLOR );
+    static Texture SHADOW_TEXTURE = TextureWorks.createTexture( 2, 2, SHADOW_COLOR );
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Special Fields And Injections
@@ -24,6 +43,7 @@ public final class WindowsManager
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private final WindowsContainer windowsContainer;
+    private final CommandContainer commandContainer;
     private final GraphicsBatch gBatch;
     private final Camera camera;
 
@@ -33,6 +53,7 @@ public final class WindowsManager
     private WindowsManager()
     {
         this.windowsContainer = new WindowsContainer();
+        this.commandContainer = new CommandContainer();
         this.camera = Game.graphics.newNativeCamera();
         this.gBatch = new GraphicsBatch();
         this.gBatch.setProjectionMatrix( this.camera.combined );
@@ -162,6 +183,7 @@ public final class WindowsManager
     {
         gBatch.begin();
         windowsContainer.display( gBatch );
+        commandContainer.display( gBatch );
         gBatch.end();
     }
 
@@ -170,25 +192,31 @@ public final class WindowsManager
             int screenX,
             int screenY )
     {
-        return windowsContainer.checkMouseOver( screenX, screenY );
+        boolean windows = windowsContainer.checkMouseOver( screenX, screenY );
+        boolean commands = commandContainer.checkMouseOver( screenX, screenY );
+        return windows || commands;
     }
 
     @Override
-    public void mouseButtonPressed(
+    public boolean mouseButtonPressed(
             int screenX,
             int screenY,
             int button )
     {
-        windowsContainer.mouseButtonPressed( screenX, screenY, button );
+        boolean windows = windowsContainer.mouseButtonPressed( screenX, screenY, button );
+        boolean commands = commandContainer.mouseButtonPressed( screenX, screenY, button );
+        return windows || commands;
     }
 
     @Override
-    public void mouseButtonUnPressed(
+    public boolean mouseButtonUnPressed(
             int screenX,
             int screenY,
             int button )
     {
-        windowsContainer.mouseButtonUnPressed( screenX, screenY, button );
+        boolean windows = windowsContainer.mouseButtonUnPressed( screenX, screenY, button );
+        boolean commands = commandContainer.mouseButtonUnPressed( screenX, screenY, button );
+        return windows || commands;
     }
 
     @Override
@@ -205,6 +233,7 @@ public final class WindowsManager
     {
         camera.update();
         windowsContainer.update();
+        commandContainer.update();
     }
 
     public void openWindow( Bundle< Window > windowBundle )
@@ -216,9 +245,46 @@ public final class WindowsManager
         windowsContainer.enable( windowBundle );
     }
 
-    public Bundle< Window > addComponent( Window window )
+    public Bundle< Window > addWindow( Window window )
     {
         return windowsContainer.addComponent( window );
+    }
+
+    public Bundle< Button > addCommand( Button command )
+    {
+        Bundle< Button > commandBundle = commandContainer.addComponent( command );
+        commandContainer.enable( commandBundle );
+        return commandBundle;
+    }
+
+    public void bindAssets()
+    {
+        SHADOW_LIGHTER_TEXTURE = TextureWorks.createTexture( 2, 2, SHADOW_LIGHTER_COLOR );
+        SHADOW_DARKER_TEXTURE = TextureWorks.createTexture( 2, 2, SHADOW_DARKER_COLOR );
+        SHADOW_TEXTURE = TextureWorks.createTexture( 2, 2, SHADOW_COLOR );
+
+        for( ComponentWrapper component : windowsContainer.getComponents().values() )
+        {
+            ( (Window)component.getComponent() ).bindAssets();
+        }
+    }
+
+    public void unBindAssets()
+    {
+        for( ComponentWrapper component : windowsContainer.getComponents().values() )
+        {
+            ( (Window)component.getComponent() ).unBindAssets();
+        }
+
+        SHADOW_TEXTURE.dispose();
+        SHADOW_DARKER_TEXTURE.dispose();
+        SHADOW_LIGHTER_TEXTURE.dispose();
+    }
+
+    public void clear()
+    {
+        windowsContainer.clear();
+        commandContainer.clear();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

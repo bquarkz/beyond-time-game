@@ -94,7 +94,7 @@ public class Button
     }
 
     @Override
-    public void mouseButtonPressed(
+    public boolean mouseButtonPressed(
             int screenX,
             int screenY,
             int button )
@@ -113,10 +113,12 @@ public class Button
                 isSupportClicked = true;
             }
         }
+
+        return isActionActive || isSupportActive;
     }
 
     @Override
-    public void mouseButtonUnPressed(
+    public boolean mouseButtonUnPressed(
             int screenX,
             int screenY,
             int button )
@@ -124,7 +126,6 @@ public class Button
         checkMouseOver( screenX, screenY );
 
         // the component will be active for just the current cycle
-
         if( button == BUTTON_ACTION )
         {
             if( isMouseOverMe && isActionClicked )
@@ -154,6 +155,8 @@ public class Button
 
             isSupportClicked = false;
         }
+
+        return !isActionActive && !isSupportActive;
     }
 
     @Override

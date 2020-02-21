@@ -10,6 +10,8 @@ public class WindowParameters
     // Constants
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static final int TITLE_SIZE = 30;
+    private static final Color DEFAULT_TITLE_COLOR = new Color( 0xfc766aff );
+    private static final Color DEFAULT_BODY_COLOR = new Color( 0x5b84b1af );
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Special Fields And Injections
@@ -34,9 +36,17 @@ public class WindowParameters
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public WindowParameters(
+            Vector position,
+            int width,
+            int height )
+    {
+        this( position, width, height, true, DEFAULT_TITLE_COLOR, DEFAULT_BODY_COLOR );
+    }
+
     public WindowParameters( WindowParameters p )
     {
-        this( p.position, p.width, p.height, p.scrollable, Color.BLACK, Color.WHITE );
+        this( p.position, p.width, p.height, p.scrollable, p.getTitleColor(), p.getBodyColor() );
     }
 
     public WindowParameters(
@@ -154,12 +164,12 @@ public class WindowParameters
         return MathUtils.conversion.gdxCoordinates( position );
     }
 
-    public Vector getTitleDisplayCoordinates()
+    public Vector getGdxTitleDisplayCoordinates()
     {
         return MathUtils.conversion.gdxCoordinates( getPosition().getX(), ( getPosition().getY() + TITLE_SIZE ) );
     }
 
-    public Vector getBodyDisplayCoordinates()
+    public Vector getGdxBodyDisplayCoordinates()
     {
         return MathUtils.conversion.gdxCoordinates( getPosition().getX(), ( getPosition().getY() + getHeight() ) );
     }

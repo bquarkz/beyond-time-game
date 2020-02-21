@@ -107,6 +107,22 @@ public class RandomScene implements IScene
         Game.debug.addDebugMessage( "LAST LOOP TIME", Game.time.getLastLoopTime_ns() + "ns" );
     }
 
+    @Override
+    public void prepareEnvironment()
+    {
+
+    }
+
+    @Override
+    public void bindAssets()
+    {
+    }
+
+    @Override
+    public void unBindAssets()
+    {
+    }
+
     // ****************************************************************************************
     // Getters And Setters Methods
     // ****************************************************************************************

@@ -124,18 +124,20 @@ public class ComponentContainer
     }
 
     @Override
-    public void mouseButtonPressed(
+    public boolean mouseButtonPressed(
             int screenX,
             int screenY,
             int button )
     {
+
         runOverAllEnabled( o -> {
             o.mouseButtonPressed( screenX, screenY, button );
         } );
+        return false;
     }
 
     @Override
-    public void mouseButtonUnPressed(
+    public boolean mouseButtonUnPressed(
             int screenX,
             int screenY,
             int button )
@@ -143,6 +145,7 @@ public class ComponentContainer
         runOverAllEnabled( o -> {
             o.mouseButtonUnPressed( screenX, screenY, button );
         } );
+        return false;
     }
 
     @Override
@@ -175,7 +178,6 @@ public class ComponentContainer
         } );
     }
 
-
     @Override
     public void display( GraphicsBatch batch )
     {
@@ -203,6 +205,11 @@ public class ComponentContainer
     public void disable()
     {
         getComponents().values().forEach( c -> c.getComponentParameters().setEnabled( false ) );
+    }
+
+    public void clear()
+    {
+        components.clear();
     }
 
     // ****************************************************************************************

@@ -12,6 +12,7 @@
  */
 package com.intrepid.nicge.utils.animation;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
@@ -43,6 +44,11 @@ public class Animation
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
+    public Animation( Texture texture )
+    {
+        this.keyFrames = new TextureRegion[] { new TextureRegion( texture ) };
+        this.frameDuration = 0f;
+    }
 
     /** Constructor, storing the frame duration and key frames.
      *
@@ -178,6 +184,8 @@ public class Animation
      * @return current frame number */
     public int getKeyFrameIndex( float stateTime )
     {
+        if( frameDuration == 0 ) return 0;
+
         int frameNumber = (int)( stateTime / frameDuration );
 
 		if( keyFrames.length == 1 )

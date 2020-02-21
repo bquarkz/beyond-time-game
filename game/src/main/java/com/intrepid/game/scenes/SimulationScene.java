@@ -14,16 +14,20 @@ package com.intrepid.game.scenes;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.intrepid.game.Resources;
+import com.intrepid.game.curtains.AllCurtains;
 import com.intrepid.game.gui.BlueWindow;
 import com.intrepid.game.gui.GreenWindow;
 import com.intrepid.game.gui.RedWindow;
 import com.intrepid.nicge.gui.Bundle;
 import com.intrepid.nicge.gui.Window;
 import com.intrepid.nicge.gui.WindowsManager;
+import com.intrepid.nicge.gui.controls.Button;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.theater.cameras.Camera;
 import com.intrepid.nicge.theater.scene.GameScene;
 import com.intrepid.nicge.theater.scene.IScene;
+import com.intrepid.nicge.utils.animation.Animation;
+import com.intrepid.nicge.utils.animation.AnimationPack;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 import com.intrepid.nicge.utils.timer.Timer;
 import org.bquarkz.beyondtime.simulator.Simulation;
@@ -44,15 +48,24 @@ public class SimulationScene
     // ****************************************************************************************
     private int c;
     private Camera camera;
-    private WindowsManager windowsManager;
+    private final WindowsManager windowsManager;
     private Simulation simulation;
     private Texture background;
+
+    private final Button button;
+
+    private Bundle< Window > blue, red, green;
 
     private Timer timer;
 
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
+    public SimulationScene()
+    {
+        this.windowsManager = WindowsManager.create();
+        this.button = Button.create();
+    }
 
     // ****************************************************************************************
     // Methods
@@ -60,13 +73,6 @@ public class SimulationScene
     @Override
     public void start()
     {
-        windowsManager = WindowsManager.create();
-        Bundle< Window > blue = windowsManager.addComponent( new BlueWindow( 50, 50 ) );
-        Bundle< Window > green = windowsManager.addComponent( new GreenWindow( 200, 200 ) );
-        Bundle< Window > red = windowsManager.addComponent( new RedWindow( 450, 450 ) );
-        blue.getComponent().loadAssets();
-        green.getComponent().loadAssets();
-        red.getComponent().loadAssets();
         windowsManager.openWindow( blue );
         windowsManager.openWindow( red );
         windowsManager.openWindow( green );
@@ -141,6 +147,42 @@ public class SimulationScene
             simulation.step( STEP );
             lag -= OPTIMAL_TIME;
         }
+    }
+
+    @Override
+    public void prepareEnvironment()
+    {
+        blue = windowsManager.addWindow( new BlueWindow( 50, 50 ) );
+        green = windowsManager.addWindow( new GreenWindow( 200, 200 ) );
+        red = windowsManager.addWindow( new RedWindow( 450, 450 ) );
+
+        button.setScreenPosition( 250, 150 );
+        button.setSize( 32, 32 );
+        button.setActionRun( () -> Game.scene.change( RandomScene.class, AllCurtains.IMAGE_FADE ) );
+        windowsManager.addCommand( button );
+    }
+
+    @Override
+    public void bindAssets()
+    {
+        AnimationPack pack = Game.common.getAsset( Resources.Animations.SENTINEL );
+        Animation idle = pack.get( "sentinel.move.down" );
+        Animation over = pack.get( "sentinel.move.up" );
+        Animation actionClick = pack.get( "sentinel.move.left" );
+        Animation supportClick = pack.get( "sentinel.move.right" );
+        button.setIdle( idle );
+        button.setMouserOverMe( over );
+        button.setActionClicked( actionClick );
+        button.setSupportClicked( supportClick );
+
+        windowsManager.bindAssets();
+    }
+
+    @Override
+    public void unBindAssets()
+    {
+        windowsManager.unBindAssets();
+        windowsManager.clear();
     }
 
     // ****************************************************************************************

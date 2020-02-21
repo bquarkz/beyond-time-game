@@ -23,4 +23,7 @@ public interface IScene
 		extends IFiniteState, IControllable, ISimulation, IUpdatable, IDisplayable
 {
 	void configureGraphicsBatch( GraphicsBatch stageBatch );
+	void prepareEnvironment();
+    void bindAssets();
+	void unBindAssets();
 }

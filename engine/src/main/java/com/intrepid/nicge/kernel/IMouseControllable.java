@@ -30,12 +30,12 @@ public interface IMouseControllable
             int screenX,
             int screenY );
 
-    void mouseButtonPressed(
+    boolean mouseButtonPressed(
             int screenX,
             int screenY,
             int button );
 
-    void mouseButtonUnPressed(
+    boolean mouseButtonUnPressed(
             int screenX,
             int screenY,
             int button );

@@ -15,35 +15,22 @@ package com.intrepid.nicge.utils.fsmachine;
 public interface IFiniteState
 {
 	/**
-	 * Invocado quando o "state" eh selecionado do conjunto e inserido na pilha de execucao.
-	 * Nomalmente invocado apos uma chamada via "switchTo".
+	 * It is called when a "state" was selected and injected into execution pool, normally after a switchTo command
 	 */
 	void start();
 	
 	/**
-	 * Invocado quando o "state" eh removido da pilha de execucao.
-	 * Nomalmente invocado apos uma chamada via "switchTo".
+	 * It is called when a "state" was removed from execution pool, normally after a switchTo command
 	 */
 	void stop();
 	
-//	/**
-//	 * A execucao propriamente dita quando chamado de dentro da pilha de exececao.
-//	 */
-//	boolean state_onExecute();
-	
 	/**
-	 * Quando um novo "state" for chamado via "plug". E o atual for posto para "hibernar". 
+	 * Called when a new state was called via "plug" command and current one will be "hibernating" for a while.
 	 */
 	void hibernate();
 	
 	/**
-	 * Quando o "state" atual executar o "unplug". O "state" armazenado na pilha de execu��o "acorada".
+	 * When "unplug" command was called and the last state on the queue wake up again.
 	 */
 	void wakeup();
-	
-//	/**
-//	 * seta a maquina que o "state" estarah usando.
-//	 * @param machine
-//	 */
-//	void setMachine( FSMachine< ? extends FiniteState > machine );
 }

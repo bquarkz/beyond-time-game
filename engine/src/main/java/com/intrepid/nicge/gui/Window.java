@@ -2,6 +2,7 @@ package com.intrepid.nicge.gui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.intrepid.nicge.gui.controls.Button;
 import com.intrepid.nicge.utils.MathUtils;
 import com.intrepid.nicge.utils.MathUtils.Vector;
 import com.intrepid.nicge.utils.containers.TopTailList;
@@ -9,6 +10,7 @@ import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 import com.intrepid.nicge.utils.graphics.TextureWorks;
 
 import static com.intrepid.nicge.gui.WindowParameters.TITLE_SIZE;
+import static com.intrepid.nicge.gui.WindowsManager.*;
 
 public abstract class Window
         extends ComponentContainer
@@ -17,7 +19,7 @@ public abstract class Window
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final Color SHADOW_COLOR = new Color( 0, 0, 0, 0.5f );
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Special Fields And Injections
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,13 +28,14 @@ public abstract class Window
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private final WindowParameters windowParameters;
-    private final Texture titleTexture;
-    private final Texture bodyTexture;
-    private final Texture rightShadow;
-    private final Texture bottomShadow;
-
-    private final Texture debugSquare;
+//    private final CloseButton closeButton;
     private final TopTailList.Node< Window > node;
+
+    private Texture titleTexture;
+    private Texture bodyTexture;
+    private Texture shadowLighterTexture;
+    private Texture shadowDarkerTexture;
+    private Texture shadowTexture;
 
     private boolean couldBeDragged;
     private Vector v0;
@@ -40,14 +43,10 @@ public abstract class Window
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public Window( WindowParameters wp )
     {
         this.windowParameters = new WindowParameters( wp );
-        this.titleTexture = TextureWorks.createTexture( wp.getWidth(), TITLE_SIZE, wp.getTitleColor() );
-        this.bodyTexture = TextureWorks.createTexture( wp.getWidth(), wp.getHeight() - TITLE_SIZE, wp.getBodyColor() );
-        this.rightShadow = TextureWorks.createTexture( 3, wp.getHeight(), SHADOW_COLOR );
-        this.bottomShadow = TextureWorks.createTexture( wp.getWidth() - 3, 3, SHADOW_COLOR );
-        this.debugSquare = TextureWorks.createTexture( 2, 2, Color.YELLOW );
         this.node = new TopTailList.Node<>( this );
         this.couldBeDragged = false;
     }
@@ -67,7 +66,32 @@ public abstract class Window
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public abstract void loadAssets();
+    public final void bindAssets()
+    {
+        this.titleTexture = TextureWorks.createTexture(
+                windowParameters.getWidth(),
+                TITLE_SIZE,
+                windowParameters.getTitleColor() );
+
+        this.bodyTexture = TextureWorks.createTexture(
+                windowParameters.getWidth(),
+                windowParameters.getHeight() - TITLE_SIZE,
+                windowParameters.getBodyColor() );
+
+        _bindAssets();
+    }
+
+    protected abstract void _bindAssets();
+
+    public final void unBindAssets()
+    {
+        titleTexture.dispose();
+        bodyTexture.dispose();
+
+        _unBindAssets();
+    }
+
+    protected abstract void _unBindAssets();
 
     @Override
     public void update()
@@ -78,14 +102,29 @@ public abstract class Window
     @Override
     public final void display( GraphicsBatch batch )
     {
-        final Vector titleDisplayCoordinates = windowParameters.getTitleDisplayCoordinates();
-        final Vector bodyDisplayCoordinates = windowParameters.getBodyDisplayCoordinates();
+        final Vector gdxTitleDisplayCoordinates = windowParameters.getGdxTitleDisplayCoordinates();
+        final Vector gdxBodyDisplayCoordinates = windowParameters.getGdxBodyDisplayCoordinates();
 
+        batch.draw( SHADOW_LIGHTER_TEXTURE,
+                gdxBodyDisplayCoordinates.getX() - SHADOW_LIGHTER_DRAW,
+                gdxBodyDisplayCoordinates.getY() - SHADOW_LIGHTER_DRAW,
+                windowParameters.getWidth() + SHADOW_LIGHTER_EXTRA_SIZE,
+                windowParameters.getHeight() + SHADOW_LIGHTER_EXTRA_SIZE );
 
-        batch.draw( bottomShadow, bodyDisplayCoordinates.getX() + 2, bodyDisplayCoordinates.getY() - 2 );
-        batch.draw( rightShadow, bodyDisplayCoordinates.getX() + windowParameters.getWidth() - 1, bodyDisplayCoordinates.getY() - 2 );
-        batch.draw( titleTexture, titleDisplayCoordinates.getX(), titleDisplayCoordinates.getY() );
-        batch.draw( bodyTexture, bodyDisplayCoordinates.getX(), bodyDisplayCoordinates.getY() );
+        batch.draw( SHADOW_DARKER_TEXTURE,
+                gdxBodyDisplayCoordinates.getX() - SHADOW_DARKER_DRAW,
+                gdxBodyDisplayCoordinates.getY() - SHADOW_DARKER_DRAW,
+                windowParameters.getWidth() + SHADOW_DARKER_EXTRA_SIZE,
+                windowParameters.getHeight() + SHADOW_DARKER_EXTRA_SIZE );
+
+        batch.draw( SHADOW_TEXTURE,
+                gdxBodyDisplayCoordinates.getX() - SHADOW_DRAW,
+                gdxBodyDisplayCoordinates.getY() - SHADOW_DRAW,
+                windowParameters.getWidth() + SHADOW_EXTRA_SIZE,
+                windowParameters.getHeight() + SHADOW_EXTRA_SIZE );
+
+        batch.draw( titleTexture, gdxTitleDisplayCoordinates.getX(), gdxTitleDisplayCoordinates.getY() );
+        batch.draw( bodyTexture, gdxBodyDisplayCoordinates.getX(), gdxBodyDisplayCoordinates.getY() );
 
         super.display( batch );
     }
@@ -102,7 +141,7 @@ public abstract class Window
     }
 
     @Override
-    public void mouseButtonPressed(
+    public boolean mouseButtonPressed(
             int screenX,
             int screenY,
             int button )
@@ -113,17 +152,17 @@ public abstract class Window
         {
             v0 = MathUtils.conversion.gdxCoordinates( vector );
         }
-        super.mouseButtonPressed( screenX, screenY, button );
+        return super.mouseButtonPressed( screenX, screenY, button );
     }
 
     @Override
-    public void mouseButtonUnPressed(
+    public boolean mouseButtonUnPressed(
             int screenX,
             int screenY,
             int button )
     {
         couldBeDragged = false;
-        super.mouseButtonUnPressed( screenX, screenY, button );
+        return super.mouseButtonUnPressed( screenX, screenY, button );
     }
 
     @Override
@@ -154,4 +193,12 @@ public abstract class Window
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private static class CloseButton
+            extends Button
+    {
+        public static CloseButton create()
+        {
+            return new CloseButton();
+        }
+    }
 }

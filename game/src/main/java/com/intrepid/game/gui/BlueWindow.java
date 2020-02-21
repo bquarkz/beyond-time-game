@@ -33,18 +33,13 @@ public class BlueWindow
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private final Bundle< Button > button;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public BlueWindow( int x, int y )
     {
-        super( new WindowParameters( MathUtils.Vector.with( x, y ), 300, 300, false, Color.BLACK, Color.BLUE ) );
-        button = addComponent( Button.create() );
-        button.getComponent().setScreenPosition( 250, 150 );
-        button.getComponent().setSize( 32, 32 );
-        button.getComponent().setActionRun( () -> Game.scene.change( RandomScene.class, AllCurtains.IMAGE_FADE ) );
+        super( new WindowParameters( MathUtils.Vector.with( x, y ), 300, 300 ) );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,17 +54,13 @@ public class BlueWindow
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void loadAssets()
+    public void _bindAssets()
     {
-        AnimationPack pack = Game.common.getAsset( Resources.Animations.SENTINEL );
-        Animation idle = pack.get( "sentinel.move.down" );
-        Animation over = pack.get( "sentinel.move.up" );
-        Animation actionClick = pack.get( "sentinel.move.left" );
-        Animation supportClick = pack.get( "sentinel.move.right" );
-        button.getComponent().setIdle( idle );
-        button.getComponent().setMouserOverMe( over );
-        button.getComponent().setActionClicked( actionClick );
-        button.getComponent().setSupportClicked( supportClick );
+    }
+
+    @Override
+    protected void _unBindAssets()
+    {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

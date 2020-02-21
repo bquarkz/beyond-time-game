@@ -176,12 +176,16 @@ public final class Theater
                 }
                 else
                 {
+                    Theater.fsMachine.getActualFiniteState().unBindAssets();
+
                     // kick start a scene change
                     Theater.fsMachine.switchTo( sceneClassToChange );
 
                     // graphics batch configuration for the new scene
                     final IScene scene = Theater.fsMachine.getDefinition().get( sceneClassToChange );
                     scene.configureGraphicsBatch( stageBatch );
+                    scene.prepareEnvironment();
+                    scene.bindAssets();
 
                     Theater.curtainManager.openCommand();
                     sceneClassToChange = null;

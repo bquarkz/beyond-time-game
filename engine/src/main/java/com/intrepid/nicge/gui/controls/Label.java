@@ -56,19 +56,21 @@ public class Label
     }
 
     @Override
-    public void mouseButtonPressed(
+    public boolean mouseButtonPressed(
             int screenX,
             int screenY,
             int button )
     {
+        return false;
     }
 
     @Override
-    public void mouseButtonUnPressed(
+    public boolean mouseButtonUnPressed(
             int screenX,
             int screenY,
             int button )
     {
+        return false;
     }
 
     @Override

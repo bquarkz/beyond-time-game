@@ -121,21 +121,21 @@ public class ComponentWrapper
     }
 
     @Override
-    public void mouseButtonPressed(
+    public boolean mouseButtonPressed(
             int screenX,
             int screenY,
             int button )
     {
-        getComponent().mouseButtonPressed( screenX, screenY, button );
+        return getComponent().mouseButtonPressed( screenX, screenY, button );
     }
 
     @Override
-    public void mouseButtonUnPressed(
+    public boolean mouseButtonUnPressed(
             int screenX,
             int screenY,
             int button )
     {
-        getComponent().mouseButtonUnPressed( screenX, screenY, button );
+        return getComponent().mouseButtonUnPressed( screenX, screenY, button );
     }
 
     @Override
