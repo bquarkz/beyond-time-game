@@ -65,7 +65,7 @@ public class RandomScene implements IScene
     @Override
     public void display( GraphicsBatch batch )
     {
-        Texture texture = Game.common.getAsset( Resources.Textures.BACK_GROUND );
+        Texture texture = Game.common.getAsset( Resources.Textures.BACKGROUND );
         batch.begin();
         batch.draw( texture, 0, 0 );
         batch.end();

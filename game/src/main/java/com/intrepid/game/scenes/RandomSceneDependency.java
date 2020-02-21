@@ -40,7 +40,7 @@ public class RandomSceneDependency extends DependencyResource
     @Override
     protected void setDependencies( Set< IResource< ? > > resources )
     {
-        resources.add( Resources.Textures.BACK_GROUND );
+        resources.add( Resources.Textures.BACKGROUND );
     }
 
     // ****************************************************************************************

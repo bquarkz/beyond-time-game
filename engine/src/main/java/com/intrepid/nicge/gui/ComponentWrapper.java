@@ -19,6 +19,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class ComponentWrapper
         implements Comparable< ComponentWrapper >, IComponent
@@ -60,13 +61,15 @@ public class ComponentWrapper
     // ****************************************************************************************
     // Methods
     // ****************************************************************************************
-    static void runIfEnabled(
+    static boolean runIfEnabled(
             Collection< ComponentWrapper > components,
-            Consumer< IComponent > consumer )
+            Function< IComponent, Boolean > function )
     {
-        components.stream()
-                  .filter( cc -> cc.getComponentParameters().isEnabled() )
-                  .forEach( cc -> consumer.accept( cc.getComponent() ) );
+        return components
+                .stream()
+                .filter( cc -> cc.getComponentParameters().isEnabled() )
+                .map( cc -> function.apply( cc.getComponent() ) )
+                .reduce( false, ( b1, b2 ) -> b1 | b2 );
     }
 
     @Override
@@ -110,11 +113,11 @@ public class ComponentWrapper
     }
 
     @Override
-    public void checkMouseOver(
+    public boolean checkMouseOver(
             int screenX,
             int screenY )
     {
-        getComponent().checkMouseOver( screenX, screenY );
+        return getComponent().checkMouseOver( screenX, screenY );
     }
 
     @Override

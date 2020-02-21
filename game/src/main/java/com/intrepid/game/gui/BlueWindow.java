@@ -19,7 +19,7 @@ import com.intrepid.nicge.utils.animation.AnimationPack;
 
 import java.util.Set;
 
-public class FreakWindows
+public class BlueWindow
     extends Window
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,9 +38,9 @@ public class FreakWindows
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public FreakWindows( int x, int y )
+    public BlueWindow( int x, int y )
     {
-        super( new WindowParameters( MathUtils.Vector.with( x, y ), 300, 300, false, Color.BROWN, Color.FIREBRICK ) );
+        super( new WindowParameters( MathUtils.Vector.with( x, y ), 300, 300, false, Color.BLACK, Color.BLUE ) );
         button = addComponent( Button.create() );
         button.getComponent().setScreenPosition( 250, 150 );
         button.getComponent().setSize( 32, 32 );

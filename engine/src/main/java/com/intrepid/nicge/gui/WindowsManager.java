@@ -166,11 +166,11 @@ public final class WindowsManager
     }
 
     @Override
-    public void checkMouseOver(
+    public boolean checkMouseOver(
             int screenX,
             int screenY )
     {
-        windowsContainer.checkMouseOver( screenX, screenY );
+        return windowsContainer.checkMouseOver( screenX, screenY );
     }
 
     @Override

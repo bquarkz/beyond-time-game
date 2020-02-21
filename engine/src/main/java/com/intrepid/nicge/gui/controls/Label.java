@@ -48,10 +48,11 @@ public class Label
     }
 
     @Override
-    public void checkMouseOver(
+    public boolean checkMouseOver(
             int screenX,
             int screenY )
     {
+        return false;
     }
 
     @Override

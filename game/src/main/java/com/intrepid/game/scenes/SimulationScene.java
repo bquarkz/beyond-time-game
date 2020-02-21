@@ -14,7 +14,9 @@ package com.intrepid.game.scenes;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.intrepid.game.Resources;
-import com.intrepid.game.gui.FreakWindows;
+import com.intrepid.game.gui.BlueWindow;
+import com.intrepid.game.gui.GreenWindow;
+import com.intrepid.game.gui.RedWindow;
 import com.intrepid.nicge.gui.Bundle;
 import com.intrepid.nicge.gui.Window;
 import com.intrepid.nicge.gui.WindowsManager;
@@ -59,19 +61,22 @@ public class SimulationScene
     public void start()
     {
         windowsManager = WindowsManager.create();
-        Bundle< Window > freakWindow1 = windowsManager.addComponent( new FreakWindows( 50, 50 ) );
-        Bundle< Window > freakWindow2 = windowsManager.addComponent( new FreakWindows( 450, 450 ) );
-        freakWindow1.getComponent().loadAssets();
-        freakWindow2.getComponent().loadAssets();
-        windowsManager.openWindow( freakWindow1 );
-        windowsManager.openWindow( freakWindow2 );
+        Bundle< Window > blue = windowsManager.addComponent( new BlueWindow( 50, 50 ) );
+        Bundle< Window > green = windowsManager.addComponent( new GreenWindow( 200, 200 ) );
+        Bundle< Window > red = windowsManager.addComponent( new RedWindow( 450, 450 ) );
+        blue.getComponent().loadAssets();
+        green.getComponent().loadAssets();
+        red.getComponent().loadAssets();
+        windowsManager.openWindow( blue );
+        windowsManager.openWindow( red );
+        windowsManager.openWindow( green );
 
         timer = new Timer();
         timer.start();
 
         simulation = new Simulation();
         c = 0;
-        background = Game.common.getAsset( Resources.Textures.BACK_GROUND );
+        background = Game.common.getAsset( Resources.Textures.BLANK );
     }
 
     @Override
@@ -93,7 +98,7 @@ public class SimulationScene
     public void display( GraphicsBatch batch )
     {
         batch.begin();
-        batch.draw( background, 250, 150 );
+        batch.draw( background, 0, 0 );
         batch.end();
 
         windowsManager.display();

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class ComponentContainer
     implements IComponent
@@ -113,11 +114,13 @@ public class ComponentContainer
     }
 
     @Override
-    public void checkMouseOver(
+    public boolean checkMouseOver(
             int screenX,
             int screenY )
     {
-        runOverAllEnabled( o -> o.checkMouseOver( screenX, screenY ) );
+        return runOverAllEnabled( o -> {
+            return o.checkMouseOver( screenX, screenY );
+        } );
     }
 
     @Override
@@ -126,7 +129,9 @@ public class ComponentContainer
             int screenY,
             int button )
     {
-        runOverAllEnabled( o -> o.mouseButtonPressed( screenX, screenY, button ) );
+        runOverAllEnabled( o -> {
+            o.mouseButtonPressed( screenX, screenY, button );
+        } );
     }
 
     @Override
@@ -135,7 +140,9 @@ public class ComponentContainer
             int screenY,
             int button )
     {
-        runOverAllEnabled( o -> o.mouseButtonUnPressed( screenX, screenY, button ) );
+        runOverAllEnabled( o -> {
+            o.mouseButtonUnPressed( screenX, screenY, button );
+        } );
     }
 
     @Override
@@ -144,7 +151,9 @@ public class ComponentContainer
             int screenY,
             int button )
     {
-        runOverAllEnabled( o -> o.dragged( screenX, screenY, button ) );
+        runOverAllEnabled( o -> {
+            o.dragged( screenX, screenY, button );
+        } );
     }
 
     @Override
@@ -153,10 +162,19 @@ public class ComponentContainer
         runOverAllEnabled( IUpdatable::update );
     }
 
-    protected void runOverAllEnabled( Consumer< IComponent > consumer )
+    protected boolean runOverAllEnabled( Function< IComponent, Boolean > function )
     {
-        ComponentWrapper.runIfEnabled( getComponents().values(), consumer );
+        return ComponentWrapper.runIfEnabled( getComponents().values(), function );
     }
+
+    protected boolean runOverAllEnabled( Consumer< IComponent > consumer )
+    {
+        return ComponentWrapper.runIfEnabled( getComponents().values(), c -> {
+            consumer.accept( c );
+            return false;
+        } );
+    }
+
 
     @Override
     public void display( GraphicsBatch batch )

@@ -61,4 +61,21 @@ public class TopTailListTest
         Assert.assertEquals( 3, c );
     }
 
+    @Test
+    public void test()
+    {
+        final TopTailList< String > list = new TopTailList<>();
+        TopTailList.Node< String > n1 = new TopTailList.Node<>( "1" );
+        TopTailList.Node< String > n2 = new TopTailList.Node<>( "2" );
+        TopTailList.Node< String > n3 = new TopTailList.Node<>( "3" );
+        list.push( n3 );
+        list.push( n2 );
+        list.push( n1 ); // 1 was last so it is on the top
+        list.sendToTop( n2 );
+        Iterator< String > iterator = list.topTailIterator();
+        Assert.assertEquals( "2", iterator.next() );
+        Assert.assertEquals( "1", iterator.next() );
+        Assert.assertEquals( "3", iterator.next() );
+    }
+
 }

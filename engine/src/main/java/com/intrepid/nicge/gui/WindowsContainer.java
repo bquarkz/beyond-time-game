@@ -58,6 +58,35 @@ class WindowsContainer
         ( (Window)wrapper.getComponent() ).disable();
     }
 
+    @Override
+    public void mouseButtonPressed(
+            int screenX,
+            int screenY,
+            int button )
+    {
+        final Iterator< Window > iterator = getWindows().topTailIterator();
+        if( iterator.hasNext() ) // check focus first
+        {
+            final Window window = iterator.next();
+            if( window.checkMouseOver( screenX, screenY ) )
+            {
+                window.mouseButtonPressed( screenX, screenY, button );
+                return;
+            }
+        }
+
+        while( iterator.hasNext() )
+        {
+            final Window window = iterator.next();
+            if( window.checkMouseOver( screenX, screenY ) )
+            {
+                getWindows().sendToTop( window.getNode() );
+                window.mouseButtonPressed( screenX, screenY, button );
+                return;
+            }
+        }
+    }
+
     public TopTailList< Window > getWindows()
     {
         return windows;

@@ -41,7 +41,7 @@ public class SimulationSceneDependency extends DependencyResource
     protected void setDependencies( Set< IResource< ? > > resources )
     {
         resources.add( Resources.Animations.SENTINEL );
-        resources.add( Resources.Textures.BACK_GROUND );
+        resources.add( Resources.Textures.BLANK );
     }
 
     // ****************************************************************************************

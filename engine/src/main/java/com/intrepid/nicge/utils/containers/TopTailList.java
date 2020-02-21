@@ -40,7 +40,7 @@ public class TopTailList< C >
     @Override
     public Iterator< C > iterator()
     {
-        return topTailIterator();
+        return tailTopIterator();
     }
 
     public Iterator< C > topTailIterator()
@@ -98,6 +98,27 @@ public class TopTailList< C >
         }
     }
 
+    public void sendToTop( Node< C > node )
+    {
+        if( node.before == null ) return; // it is already top
+
+        if( node.after == null ) // it is last
+        {
+            node.before.after = null;
+            tail = node.before;
+        }
+        else
+        {
+            node.before.after = node.after;
+            node.after.before = node.before;
+        }
+
+        top.before = node;
+        node.after = top;
+        node.before = null;
+        top = node;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -151,7 +172,7 @@ public class TopTailList< C >
         }
     }
 
-    public static class Node< C >
+    public final static class Node< C >
     {
         private final C content;
 

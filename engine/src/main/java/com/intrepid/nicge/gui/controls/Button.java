@@ -74,7 +74,7 @@ public class Button
     // Methods
     // ****************************************************************************************
     @Override
-    public void checkMouseOver(
+    public boolean checkMouseOver(
             int screenX,
             int screenY )
     {
@@ -89,6 +89,8 @@ public class Button
         {
             isMouseOverMe = false;
         }
+
+        return isMouseOverMe;
     }
 
     @Override

@@ -11,13 +11,13 @@ import com.intrepid.nicge.utils.graphics.TextureWorks;
 import static com.intrepid.nicge.gui.WindowParameters.TITLE_SIZE;
 
 public abstract class Window
-    extends ComponentContainer
-    implements IComponent
+        extends ComponentContainer
+        implements IComponent
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    private static final Color SHADOW_COLOR = new Color( 0, 0, 0, 0.5f );
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Special Fields And Injections
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,6 +28,9 @@ public abstract class Window
     private final WindowParameters windowParameters;
     private final Texture titleTexture;
     private final Texture bodyTexture;
+    private final Texture rightShadow;
+    private final Texture bottomShadow;
+
     private final Texture debugSquare;
     private final TopTailList.Node< Window > node;
 
@@ -42,6 +45,8 @@ public abstract class Window
         this.windowParameters = new WindowParameters( wp );
         this.titleTexture = TextureWorks.createTexture( wp.getWidth(), TITLE_SIZE, wp.getTitleColor() );
         this.bodyTexture = TextureWorks.createTexture( wp.getWidth(), wp.getHeight() - TITLE_SIZE, wp.getBodyColor() );
+        this.rightShadow = TextureWorks.createTexture( 3, wp.getHeight(), SHADOW_COLOR );
+        this.bottomShadow = TextureWorks.createTexture( wp.getWidth() - 3, 3, SHADOW_COLOR );
         this.debugSquare = TextureWorks.createTexture( 2, 2, Color.YELLOW );
         this.node = new TopTailList.Node<>( this );
         this.couldBeDragged = false;
@@ -74,20 +79,26 @@ public abstract class Window
     public final void display( GraphicsBatch batch )
     {
         final Vector titleDisplayCoordinates = windowParameters.getTitleDisplayCoordinates();
-        batch.draw( titleTexture, titleDisplayCoordinates.getX(), titleDisplayCoordinates.getY() );
-
         final Vector bodyDisplayCoordinates = windowParameters.getBodyDisplayCoordinates();
+
+
+        batch.draw( bottomShadow, bodyDisplayCoordinates.getX() + 2, bodyDisplayCoordinates.getY() - 2 );
+        batch.draw( rightShadow, bodyDisplayCoordinates.getX() + windowParameters.getWidth() - 1, bodyDisplayCoordinates.getY() - 2 );
+        batch.draw( titleTexture, titleDisplayCoordinates.getX(), titleDisplayCoordinates.getY() );
         batch.draw( bodyTexture, bodyDisplayCoordinates.getX(), bodyDisplayCoordinates.getY() );
 
         super.display( batch );
     }
 
     @Override
-    public void checkMouseOver(
+    public boolean checkMouseOver(
             int screenX,
             int screenY )
     {
-        super.checkMouseOver( screenX, screenY );
+        return MathUtils.gdx.checkInside(
+                windowParameters.getTitleTopLeftCorner(),
+                windowParameters.getBodyBottomRightCorner(),
+                Vector.with( screenX, screenY ) );
     }
 
     @Override
@@ -139,7 +150,6 @@ public abstract class Window
     {
         getComponents().values().forEach( c -> c.getComponentParameters().setEnabled( false ) );
     }
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns

@@ -26,7 +26,7 @@ public interface IMouseControllable
     // ****************************************************************************************
     // Contracts
     // ****************************************************************************************
-    void checkMouseOver(
+    boolean checkMouseOver(
             int screenX,
             int screenY );
 

@@ -107,6 +107,26 @@ public class WindowParameters
         return titleBottomRightCorner;
     }
 
+    public Vector getBodyTopLeftCorner()
+    {
+        return bodyTopLeftCorner;
+    }
+
+    public void setBodyTopLeftCorner( Vector bodyTopLeftCorner )
+    {
+        this.bodyTopLeftCorner = bodyTopLeftCorner;
+    }
+
+    public Vector getBodyBottomRightCorner()
+    {
+        return bodyBottomRightCorner;
+    }
+
+    public void setBodyBottomRightCorner( Vector bodyBottomRightCorner )
+    {
+        this.bodyBottomRightCorner = bodyBottomRightCorner;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
