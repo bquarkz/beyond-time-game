@@ -1,4 +1,4 @@
-/**
+/*
  * Copyleft (C) 2016  Constantino, Nilton Rogerio <niltonrc@gmail.com>
  *
  * @author "Nilton R Constantino"
@@ -77,10 +77,10 @@ public class Button
             int screenX,
             int screenY )
     {
-        int x = getParameters().getPosition().getX();
-        int y = getParameters().getPosition().getY();
-        int width = getParameters().getWidth();
-        int height = getParameters().getHeight();
+        float x = getParameters().getPosition().getX();
+        float y = getParameters().getPosition().getY();
+        float width = getParameters().getWidth();
+        float height = getParameters().getHeight();
 
         boolean cx = ( ( screenX >= x ) && ( screenX <= ( x + width ) ) );
         boolean cy = ( ( screenY >= y ) && ( screenY <= ( y + height ) ) );
@@ -211,8 +211,8 @@ public class Button
 
         if( tr != null )
         {
-            int x = getParameters().getPosition().getX();
-            int y = getParameters().getPosition().getY();
+            float x = getParameters().getPosition().getX();
+            float y = getParameters().getPosition().getY();
             batch.draw( tr, x, y, getParameters().getWidth(), getParameters().getHeight() );
         }
     }
@@ -220,7 +220,7 @@ public class Button
     public void mouseIsNotOverMe()
     {
         isMouseOverMe = false;
-    };
+    }
 
     // ****************************************************************************************
     // Getters And Setters Methods

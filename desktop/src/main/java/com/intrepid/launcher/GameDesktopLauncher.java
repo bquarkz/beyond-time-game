@@ -12,8 +12,9 @@
  */
 package com.intrepid.launcher;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.intrepid.game.GamePackages;
@@ -37,42 +38,30 @@ public class GameDesktopLauncher extends AbstractLauncher< GameBoot >
 
     public static void main( String[] arg )
     {
-        Set< String > packages = new HashSet<>();
-        for( GamePackages gp : GamePackages.values() )
-        {
-            packages.add( gp.getPack() );
-        }
+        final Set< String > packages = Stream
+                .of( GamePackages.values() )
+                .map( GamePackages::getPackageRoot )
+                .collect( Collectors.toSet() );
 
-        GameConfigurationBuilder gcb = new GameConfigurationBuilder();
+        final GameConfigurationBuilder gcb = new GameConfigurationBuilder();
         gcb.setMouseLockedAndInvisible( false );
-        gcb.setTitle( "Titulo de Teste" );
-        boolean fullScreen = false;
-        gcb.setFullscreenMode( fullScreen );
+        gcb.setTitle( "Behind Time - Game Test" );
+        gcb.setFullscreenMode( true );
         gcb.setResisable( false );
 
-//        int nativeResolutionWidth = 1920;
-//        int nativeResolutionHeight = 1080;
-        int nativeResolutionWidth = 1280;
-        int nativeResolutionHeight = 720;
+        int nativeResolutionWidth = 1920;
+        int nativeResolutionHeight = 1080;
         gcb.setNativeResolutionWidth( nativeResolutionWidth );
         gcb.setNativeResolutionHeight( nativeResolutionHeight );
 
-        final float ratio;
-        if( fullScreen )
-        {
-            ratio = 1.5f;
-        }
-        else
-        {
-            ratio = 1.0f;
-        }
+        final float ratio = 1.0f;
         gcb.setWindowResolutionWidth( (int) (nativeResolutionWidth * ratio ) );
         gcb.setWindowResolutionHeight( (int) ( nativeResolutionHeight * ratio ) );
 
         gcb.setBitsPerPixel( 24 );
         gcb.setFPS( 60 );
-        gcb.setMMSA( 2 );
-        gcb.setVSync( false );
+        gcb.setMMSA( 16 );
+        gcb.setVSync( true );
         gcb.setClassLoadersPackages( packages );
 
         GameBoot boot = new BeyondTimeGame( gcb );

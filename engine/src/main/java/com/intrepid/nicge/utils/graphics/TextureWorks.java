@@ -19,6 +19,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
 
+import javax.sound.sampled.Line;
+
 public class TextureWorks implements Disposable
 {
     // ****************************************************************************************
@@ -67,7 +69,9 @@ public class TextureWorks implements Disposable
         Pixmap pixmap = new Pixmap( sizex, sizey, Format.RGBA8888 );
         pixmap.setColor( color );
         pixmap.fill();
-        return new Texture( pixmap );
+        final Texture texture = new Texture( pixmap );
+        texture.setFilter( Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest );
+        return texture;
     }
 
     public static Texture createQuadTexture( int size )

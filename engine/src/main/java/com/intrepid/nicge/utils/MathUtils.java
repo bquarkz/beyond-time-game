@@ -18,13 +18,13 @@ public interface MathUtils
         Vector ZERO = new Vector()
         {
             @Override
-            public int getX()
+            public float getX()
             {
                 return 0;
             }
 
             @Override
-            public int getY()
+            public float getY()
             {
                 return 0;
             }
@@ -46,18 +46,18 @@ public interface MathUtils
         }
 
 
-        static Vector with( int x, int y )
+        static Vector with( float x, float y )
         {
             return new Vector()
             {
                 @Override
-                public int getX()
+                public float getX()
                 {
                     return x;
                 }
 
                 @Override
-                public int getY()
+                public float getY()
                 {
                     return y;
                 }
@@ -70,8 +70,8 @@ public interface MathUtils
             };
         }
 
-        int getX();
-        int getY();
+        float getX();
+        float getY();
     }
 
     interface gdx
@@ -118,7 +118,7 @@ public interface MathUtils
             return gdxCoordinates( vector.getX(), vector.getY() );
         }
 
-        static int getXCorrection( final int screenX )
+        static int getXCorrection( final float screenX )
         {
             int nativeWidth = Game.common.getGameConfiguration().getNativeResolutionWidth();
             int windowWidth = Game.common.getGameConfiguration().getWindowResolutionWidth();
@@ -126,7 +126,7 @@ public interface MathUtils
             return (int)( screenX * correction );
         }
 
-        static int getYCorrection( final int screenY )
+        static int getYCorrection( final float screenY )
         {
             int nativeHeight = Game.common.getGameConfiguration().getNativeResolutionHeight();
             int windowHeight = Game.common.getGameConfiguration().getWindowResolutionHeight();
@@ -134,7 +134,7 @@ public interface MathUtils
             return (int)( ( windowHeight - screenY ) * correction );
         }
 
-        static Vector gdxCoordinates( int x, int y )
+        static Vector gdxCoordinates( float x, float y )
         {
             return Vector.with( getXCorrection( x ), getYCorrection( y ) );
         }

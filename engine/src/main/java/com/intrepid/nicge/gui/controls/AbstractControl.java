@@ -94,7 +94,7 @@ public abstract class AbstractControl
         setRelativePosition( position.getX(), position.getY() );
     }
 
-    final public void setRelativePosition( int x, int y )
+    final public void setRelativePosition( float x, float y )
     {
         this.relativePosition = Vector.with( x, y );
     }
