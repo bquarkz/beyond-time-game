@@ -1,4 +1,4 @@
-/**
+/*
  * Copyleft (C) 2016  Constantino, Nilton Rogerio <niltonrc@gmail.com>
  *
  * @author "Nilton R Constantino"
@@ -23,9 +23,9 @@ import com.intrepid.nicge.theater.scene.IScene;
 import com.intrepid.nicge.utils.fsmachine.IFSMachineDefinition;
 import com.intrepid.nicge.utils.logger.Log;
 
-public class BeyondTimeGame implements GameBoot
+public class BeyondTimeGame
+        implements GameBoot
 {
-
     private GameConfiguration gameConfiguration;
 
     public BeyondTimeGame( GameConfiguration gameConfiguration )

@@ -10,7 +10,7 @@
  * The code was written based on study principles and can be enjoyed for
  * all comunity without problems.
  */
-package com.intrepid.studio.kernel;
+package com.intrepid.studio;
 
 public class Constants {
     // please, add your way in ABSOLUTE_APP_PATH here and comment another

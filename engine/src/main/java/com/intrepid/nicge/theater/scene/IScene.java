@@ -22,8 +22,25 @@ import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 public interface IScene
 		extends IFiniteState, IControllable, ISimulation, IUpdatable, IDisplayable
 {
+	/**
+	 * A sprite batch configuration, after a scene change it will run first.
+	 */
 	void configureGraphicsBatch( GraphicsBatch stageBatch );
+
+	/**
+	 * It will be called straight forward after batch configuration.
+	 */
 	void prepareEnvironment();
+
+	/**
+	 * 	Assets already loaded, this step is just to bind assets (and in really rare cases load it).<p>
+	 * 	It will run before first scene update and after prepare environment.
+	 */
     void bindAssets();
+
+	/**
+	 * 	Unbind assets to optimise garbage collection.<p>
+	 * 	It will run after last scene update.
+	 */
 	void unBindAssets();
 }

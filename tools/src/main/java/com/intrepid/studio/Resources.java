@@ -10,25 +10,19 @@
  * The code was written based on study principles and can be enjoyed for
  * all comunity without problems.
  */
-package com.intrepid.game;
-
-import static com.intrepid.nicge.content.ResourceFactory.*;
+package com.intrepid.studio;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.intrepid.nicge.content.IResource;
 import com.intrepid.nicge.utils.animation.AnimationPack;
 
+import static com.intrepid.nicge.content.ResourceFactory.registerAnimationPack;
+import static com.intrepid.nicge.content.ResourceFactory.registerTexture;
+
 public class Resources
 {
     public enum Textures implements IResource< Texture >
     {
-        BACKGROUND( "background.png" ),
-//        BLANK( "Blank.png" ),
-        BLANK( "BlankExplanation.png" ),
-        GREEN_CURTAIN( "GreenCurtain.png" ),
-        BLUE_CURTAIN( "BlueCurtain.png" ),
-        RED_CURTAIN( "RedCurtain.png" ),
-        PURPLE_CURTAIN( "PurpleCurtain.png" ),
         ;
 
         private IResource< Texture > resource;
@@ -65,7 +59,6 @@ public class Resources
 
     public enum Animations implements IResource< AnimationPack >
     {
-        SENTINEL( "sentinel.api" ),
         ;
 
         private IResource< AnimationPack > resource;

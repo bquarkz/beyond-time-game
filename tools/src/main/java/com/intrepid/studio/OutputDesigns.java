@@ -1,4 +1,4 @@
-/**
+/*
  * Copyleft (C) 2016  Constantino, Nilton Rogerio <niltonrc@gmail.com>
  *
  * @author "Nilton R Constantino"
@@ -10,9 +10,9 @@
  * The code was written based on study principles and can be enjoyed for
  * all community without problems.
  */
-package com.intrepid.studio.kernel;
+package com.intrepid.studio;
 
-public class Designs
+public class OutputDesigns
 {
     public static final String BAR = "================================================================================================================================";
     public static final String EXOTIC_BAR = "- < - > - < - > - < - > - < - > - < - > - < - > - < - > - < - > - < - > - < - > - < - > - < - > - < - > - < - > - < - > - < - > ";
@@ -48,14 +48,15 @@ public class Designs
 
     public static String createTagForService( String serviceName )
     {
-        return new StringBuilder().append( "\n" )
-                                  .append( BAR ).append( "\n" )
-                                  .append( BUBBLE_BAR ).append( "\n" )
-                                  .append( BUBBLE_EMPTY_BAR ).append( "\n" )
-                                  .append( createLineName( serviceName, BUBBLE, BUBBLE ) ).append( "\n" )
-                                  .append( BUBBLE_EMPTY_BAR ).append( "\n" )
-                                  .append( BUBBLE_BAR ).append( "\n" )
-                                  .append( BAR ).toString();
+        return new StringBuilder()
+                .append( "\n" )
+                .append( BAR ).append( "\n" )
+                .append( BUBBLE_BAR ).append( "\n" )
+                .append( BUBBLE_EMPTY_BAR ).append( "\n" )
+                .append( createLineName( serviceName, BUBBLE, BUBBLE ) ).append( "\n" )
+                .append( BUBBLE_EMPTY_BAR ).append( "\n" )
+                .append( BUBBLE_BAR ).append( "\n" )
+                .append( BAR ).toString();
     }
 
     public static String createTagForWorkingFile( String workingFilename )

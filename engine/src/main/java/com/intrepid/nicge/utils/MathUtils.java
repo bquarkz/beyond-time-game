@@ -109,6 +109,18 @@ public interface MathUtils
 			}
             return number;
         }
+
+        static float cap( float number, float min, float max )
+        {
+            if( number > max ) return max;
+            if( number < min ) return min;
+            return number;
+        }
+
+        static float capPercentage( float number )
+        {
+            return cap( number, -1, 1 );
+        }
     }
 
     interface conversion

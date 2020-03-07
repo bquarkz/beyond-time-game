@@ -1,4 +1,4 @@
-/**
+/*
  * Copyleft (C) 2016  Constantino, Nilton Rogerio <niltonrc@gmail.com>
  *
  * @author "Nilton R Constantino"
@@ -105,7 +105,7 @@ public final class RootContent
             String rootDirectoryPath,
             IFileExec fileExec )
     {
-        ContentSet contentSet = rootContentMap.get( rootDirectoryPath );
+        final ContentSet contentSet = rootContentMap.get( rootDirectoryPath );
         if( contentSet == null )
         {
             Log.from( this ).failure( "root path: [ " + rootDirectoryPath + " ]; cannot be found" );
@@ -115,10 +115,10 @@ public final class RootContent
     }
 
     protected void foreachFileInRootDirectory(
-            ContentSet cSet,
+            ContentSet contentSet,
             IFileExec fileExec )
     {
-        for( FileHandle contentDirectories : cSet.getDirectories() )
+        for( FileHandle contentDirectories : contentSet.getDirectories() )
         {
             for( FileHandle f : contentDirectories.list() )
             {
@@ -130,7 +130,7 @@ public final class RootContent
             }
         }
 
-        for( FileHandle f : cSet.getFiles() )
+        for( FileHandle f : contentSet.getFiles() )
         {
             // All files on the root
             fileExec.runOver( f );

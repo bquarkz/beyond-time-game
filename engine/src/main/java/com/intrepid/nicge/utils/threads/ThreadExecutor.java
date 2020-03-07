@@ -1,4 +1,4 @@
-/**
+/*
  * Copyleft (C) 2016  Constantino, Nilton Rogerio <niltonrc@gmail.com>
  *
  * @author "Nilton R Constantino"
@@ -34,7 +34,7 @@ public final class ThreadExecutor implements Runnable
     // Common Fields
     // ****************************************************************************************
     private static final AtomicBoolean running = new AtomicBoolean( false );
-    private static final Map< IThreadRunnable, Future< ? > > map = new ConcurrentHashMap<>();
+    private static final Map< ITask, Future< ? > > map = new ConcurrentHashMap<>();
     private static final AtomicBoolean allTasksAreFinished = new AtomicBoolean( true );
 
 
@@ -53,10 +53,9 @@ public final class ThreadExecutor implements Runnable
     // ****************************************************************************************
     // Methods
     // ****************************************************************************************
-    @SuppressWarnings( "unchecked" )
-    public < T extends IThreadRunnable > Future< T > execute( T command )
+    public < T extends ITask > Future< Void > execute( T command )
     {
-        final Future< T > threadExecutionFuture = (Future< T >)pool.submit( command );
+        final Future< Void > threadExecutionFuture = pool.submit( command );
         ThreadExecutor.map.put( command, threadExecutionFuture );
         return threadExecutionFuture;
     }
@@ -67,14 +66,14 @@ public final class ThreadExecutor implements Runnable
         while( running.get() )
         {
             boolean allTasksCheck = true;
-            for( IThreadRunnable task : ThreadExecutor.map.keySet() )
+            for( ITask task : ThreadExecutor.map.keySet() )
             {
                 boolean taskDone = ThreadExecutor.map.get( task ).isDone();
                 allTasksCheck &= taskDone;
-				if( taskDone )
-				{
-					ThreadExecutor.map.remove( task );
-				}
+                if( taskDone )
+                {
+                    ThreadExecutor.map.remove( task );
+                }
             }
             allTasksAreFinished.set( allTasksCheck );
         }
@@ -101,9 +100,12 @@ public final class ThreadExecutor implements Runnable
         }
 
         pool.execute( () -> {
-			while( !allTasksAreFinished.get() );
-			running.set( false );
-		} );
+            while( !allTasksAreFinished.get() )
+            {
+                ;
+            }
+            running.set( false );
+        } );
     }
 
     // ****************************************************************************************
