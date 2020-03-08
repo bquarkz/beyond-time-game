@@ -1,26 +1,14 @@
-package com.intrepid.game.gui;
+package com.intrepid.studio.gui;
 
-import com.badlogic.gdx.graphics.Color;
-import com.intrepid.game.Resources;
-import com.intrepid.game.curtains.AllCurtains;
-import com.intrepid.game.scenes.RandomScene;
-import com.intrepid.game.scenes.SimulationScene;
-import com.intrepid.nicge.content.Dependency;
-import com.intrepid.nicge.content.DependencyResource;
-import com.intrepid.nicge.content.IResource;
-import com.intrepid.nicge.gui.Bundle;
 import com.intrepid.nicge.gui.Window;
 import com.intrepid.nicge.gui.WindowParameters;
-import com.intrepid.nicge.gui.controls.Button;
+import com.intrepid.nicge.gui.layouts.Layouts;
+import com.intrepid.nicge.gui.styles.Styles;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.utils.MathUtils;
-import com.intrepid.nicge.utils.animation.Animation;
-import com.intrepid.nicge.utils.animation.AnimationPack;
 
-import java.util.Set;
-
-public class RedWindow
-    extends Window
+public class WindowActions
+        extends Window
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
@@ -37,9 +25,13 @@ public class RedWindow
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public RedWindow( int x, int y )
+    public WindowActions()
     {
-        super( WindowParameters.createCommonWindow( MathUtils.Vector.with( x, y ), 300, 450 ) );
+        super( WindowParameters.createStaticWindow(
+                MathUtils.Vector.with( 1120, 10 ),
+                150,
+                Game.common.getGameConfiguration().getNativeResolutionHeight() - 20,
+                Layouts.DEFAULT ) );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,26 +45,20 @@ public class RedWindow
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     @Override
-    public void _bindAssets()
+    protected void _bindAssets()
     {
+
     }
 
     @Override
     protected void _unBindAssets()
     {
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    @Dependency( SimulationScene.class )
-    public static class FreakWindowDependency extends DependencyResource
-    {
-        @Override
-        protected void setDependencies( Set< IResource< ? > > resources )
-        {
-            resources.add( Resources.Animations.SENTINEL );
-        }
-    }
 }

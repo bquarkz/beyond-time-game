@@ -2,6 +2,8 @@ package com.intrepid.studio.scenes;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.intrepid.nicge.gui.Bundle;
+import com.intrepid.nicge.gui.Window;
 import com.intrepid.nicge.gui.WindowsManager;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.theater.cameras.Camera;
@@ -9,8 +11,9 @@ import com.intrepid.nicge.theater.scene.GameScene;
 import com.intrepid.nicge.theater.scene.IScene;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 import com.intrepid.nicge.utils.graphics.TextureWorks;
+import com.intrepid.studio.gui.WindowActions;
 
-@GameScene( start = true )
+@GameScene
 public class MainScene
     implements IScene
 {
@@ -30,13 +33,15 @@ public class MainScene
     private final Texture background;
     private final WindowsManager windowsManager;
 
+    private Bundle< Window > windowAction;
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public MainScene()
     {
-        this.background = TextureWorks.createTexture( 2, 2, Color.GRAY );
-        this.windowsManager = WindowsManager.create();
+        background = TextureWorks.createTexture( 2, 2, Color.GRAY );
+        windowsManager = WindowsManager.create();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,20 +66,21 @@ public class MainScene
     @Override
     public void prepareEnvironment()
     {
-
+        windowAction = windowsManager.addWindow( new WindowActions() );
     }
 
     @Override
     public void bindAssets()
     {
-        this.windowsManager.bindAssets();
+        windowsManager.bindAssets();
     }
 
     @Override
     public void unBindAssets()
     {
-        this.windowsManager.unBindAssets();
-        this.background.dispose();
+        windowsManager.unBindAssets();
+        windowsManager.clear();
+        background.dispose();
     }
 
     @Override
@@ -86,7 +92,8 @@ public class MainScene
     @Override
     public void update()
     {
-        this.windowsManager.update();
+        camera.update();
+        windowsManager.update();
     }
 
     @Override
@@ -109,7 +116,7 @@ public class MainScene
     @Override
     public void start()
     {
-
+        windowsManager.openWindow( windowAction );
     }
 
     @Override

@@ -143,7 +143,7 @@ public interface MathUtils
             int nativeHeight = Game.common.getGameConfiguration().getNativeResolutionHeight();
             int windowHeight = Game.common.getGameConfiguration().getWindowResolutionHeight();
             final float correction = nativeHeight / (float)windowHeight;
-            return (int)( ( windowHeight - screenY ) * correction );
+            return (int)( ( nativeHeight - screenY ) * correction );
         }
 
         static Vector gdxCoordinates( float x, float y )

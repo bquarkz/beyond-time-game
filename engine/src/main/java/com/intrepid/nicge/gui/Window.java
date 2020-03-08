@@ -43,7 +43,7 @@ public abstract class Window
 
     public Window( WindowParameters wp )
     {
-        this.windowParameters = new WindowParameters( wp );
+        this.windowParameters = WindowParameters.copy( wp );
         this.closeButton = CloseButton.create( this );
         this.node = new TopTailList.Node<>( this );
         this.couldBeDragged = false;
@@ -69,12 +69,12 @@ public abstract class Window
         titleTexture = createTexture(
                 windowParameters.getWidth(),
                 TITLE_SIZE,
-                windowParameters.getTitleColor() );
+                windowParameters.getStyle().getWindowTitleColor() );
 
         bodyTexture = createTexture(
                 windowParameters.getWidth(),
                 windowParameters.getHeight() - TITLE_SIZE,
-                windowParameters.getBodyColor() );
+                windowParameters.getStyle().getWindowBodyColor() );
 
         closeButton.bindAssets();
 
@@ -97,7 +97,10 @@ public abstract class Window
     @Override
     public void update()
     {
-        closeButton.update();
+        if( windowParameters.isCloseable() )
+        {
+            closeButton.update();
+        }
         super.update();
     }
 
@@ -133,14 +136,20 @@ public abstract class Window
                 gdxBodyDisplayCoordinates.getX(),
                 gdxBodyDisplayCoordinates.getY() );
 
-        closeButton.display( batch );
+        if( windowParameters.isCloseable() )
+        {
+            closeButton.display( batch );
+        }
 
         super.display( batch );
     }
 
     public void failSafe()
     {
-        closeButton.mouseIsNotOverMe();
+        if( windowParameters.isCloseable() )
+        {
+            closeButton.mouseIsNotOverMe();
+        }
     }
 
     @Override
@@ -148,7 +157,10 @@ public abstract class Window
             int screenX,
             int screenY )
     {
-        closeButton.checkMouseOver( screenX, screenY );
+        if( windowParameters.isCloseable() )
+        {
+            closeButton.checkMouseOver( screenX, screenY );
+        }
 
         return MathUtils.gdx.checkInside(
                 windowParameters.getTitleTopLeftCorner(),
@@ -162,14 +174,21 @@ public abstract class Window
             int screenY,
             int button )
     {
-        closeButton.mouseButtonPressed( screenX, screenY, button );
-
-        final Vector vector = Vector.with( screenX, screenY );
-        couldBeDragged = windowParameters.isInsideTitle( vector );
-        if( couldBeDragged )
+        if( windowParameters.isCloseable() )
         {
-            v0 = MathUtils.conversion.gdxCoordinates( vector );
+            closeButton.mouseButtonPressed( screenX, screenY, button );
         }
+
+        if( windowParameters.isMovable() )
+        {
+            final Vector vector = Vector.with( screenX, screenY );
+            couldBeDragged = windowParameters.isInsideTitle( vector );
+            if( couldBeDragged )
+            {
+                v0 = MathUtils.conversion.gdxCoordinates( vector );
+            }
+        }
+
         return super.mouseButtonPressed( screenX, screenY, button );
     }
 
@@ -179,7 +198,10 @@ public abstract class Window
             int screenY,
             int button )
     {
-        closeButton.mouseButtonUnPressed( screenX, screenY, button );
+        if( windowParameters.isCloseable() )
+        {
+            closeButton.mouseButtonUnPressed( screenX, screenY, button );
+        }
 
         couldBeDragged = false;
         return super.mouseButtonUnPressed( screenX, screenY, button );
@@ -191,7 +213,7 @@ public abstract class Window
             int screenY,
             int button )
     {
-        if( couldBeDragged )
+        if( windowParameters.isMovable() && couldBeDragged )
         {
             Vector vf = MathUtils.conversion.gdxCoordinates( Vector.with( screenX, screenY ) );
             windowParameters.move( Vector.subtraction( vf, v0 ) );

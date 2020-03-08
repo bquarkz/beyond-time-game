@@ -10,7 +10,7 @@
  * The code was written based on study principles and can be enjoyed for
  * all comunity without problems.
  */
-package com.intrepid.studio.animation;
+package com.intrepid.studio.utilities.animation;
 
 import static com.intrepid.studio.Constants.ABSOLUTE_RESOURCES_APINFO;
 import static com.intrepid.studio.Constants.ABSOLUTE_RESOURCES_TEXTURE;

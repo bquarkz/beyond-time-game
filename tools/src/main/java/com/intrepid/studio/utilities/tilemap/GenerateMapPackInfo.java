@@ -10,7 +10,7 @@
  * The code was written based on study principles and can be enjoyed for
  * all community without problems.
  */
-package com.intrepid.studio.tilemap;
+package com.intrepid.studio.utilities.tilemap;
 
 import static com.intrepid.studio.Constants.ABSOLUTE_RESOURCES_MPINFO;
 import static com.intrepid.studio.Constants.RESOURCES_TEXTURE;

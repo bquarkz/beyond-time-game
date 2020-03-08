@@ -10,7 +10,7 @@
  * The code was written based on study principles and can be enjoyed for
  * all community without problems.
  */
-package com.intrepid.studio.tilemap;
+package com.intrepid.studio.utilities.tilemap;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;

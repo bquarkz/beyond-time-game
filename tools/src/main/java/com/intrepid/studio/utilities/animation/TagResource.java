@@ -10,18 +10,14 @@
  * The code was written based on study principles and can be enjoyed for
  * all comunity without problems.
  */
-package com.intrepid.studio.animation;
+package com.intrepid.studio.utilities.animation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.utils.Json;
 import com.intrepid.nicge.utils.animation.AnimationInfo;
-import com.intrepid.nicge.utils.animation.AnimationPackInfo;
 
-class GroupTag
+class TagResource implements Comparable< TagResource >
 {
     // ****************************************************************************************
     // Const Fields
@@ -30,92 +26,82 @@ class GroupTag
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
-    private String name;
-    private List< TagResource > tagResources;
+    private FileHandle sai;
+    private FileHandle png;
     private Pixmap pixmap;
-    private int size;
-    private String outputTexture;
+    private AnimationInfo animationInfo;
 
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
-    public GroupTag( String name )
+    public TagResource(
+            FileHandle sai,
+            FileHandle png )
     {
-        this.name = name;
-        this.tagResources = new ArrayList<>();
-        this.size = 0;
+        this.sai = sai;
+        this.png = png;
     }
 
     // ****************************************************************************************
     // Methods
     // ****************************************************************************************
-    public void createPixmapBase( int PIXMAP_BASE_SIZE )
+    public void loadData( Json json )
     {
-        pixmap = new Pixmap( PIXMAP_BASE_SIZE, PIXMAP_BASE_SIZE, Format.RGBA8888 );
+		if( !hasData() )
+		{
+			return;
+		}
+
+        this.animationInfo = json.fromJson( AnimationInfo.class, this.sai );
+        this.pixmap = new Pixmap( this.png );
     }
 
-    public void addTagResource( TagResource tagResource )
+    @Override
+    public int compareTo( TagResource that )
     {
-        this.tagResources.add( tagResource );
-    }
-
-    public void resetSize()
-    {
-        this.size = 0;
-    }
-
-    public void addSize( int size )
-    {
-        this.size += size;
-    }
-
-    public void orderResources()
-    {
-        Collections.sort( tagResources );
-    }
-
-    public AnimationPackInfo createAnimationPackInfo()
-    {
-        final AnimationInfo[] pack = new AnimationInfo[ tagResources.size() ];
-        for( int i = 0; i < tagResources.size(); i++ )
-        {
-            pack[ i ] = tagResources.get( i ).getAnimationInfo();
-        }
-
-        return new AnimationPackInfo( pack );
+        // decrescent order
+		if( this.getPixmap().getHeight() < that.getPixmap().getHeight() )
+		{
+			return 1;
+		}
+		if( this.getPixmap().getHeight() > that.getPixmap().getHeight() )
+		{
+			return -1;
+		}
+        return 0;
     }
 
     // ****************************************************************************************
     // Getters And Setters Methods
     // ****************************************************************************************
-    public String getName()
+    public boolean hasData()
     {
-        return name;
+        return this.sai.exists() && this.png.exists();
     }
 
-    public List< TagResource > getResources()
+    public FileHandle getSai()
     {
-        return tagResources;
+        return sai;
+    }
+
+    public int getPixmapSize()
+    {
+        return pixmap.getWidth() * pixmap.getHeight();
+    }
+
+    public FileHandle getPng()
+    {
+        return png;
+    }
+
+    public AnimationInfo getAnimationInfo()
+    {
+        return animationInfo;
     }
 
     public Pixmap getPixmap()
     {
         return pixmap;
-    }
-
-    public int getSize()
-    {
-        return size;
-    }
-
-    public void setTextureOutput( String outputTexture )
-    {
-        this.outputTexture = outputTexture;
-    }
-
-    public String getTextureOutput()
-    {
-        return this.outputTexture;
     }
 
     // ****************************************************************************************

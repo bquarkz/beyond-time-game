@@ -4,6 +4,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.intrepid.nicge.gui.controls.Button;
+import com.intrepid.nicge.gui.styles.Styles;
 import com.intrepid.nicge.kernel.IMouseControllable;
 import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.kernel.game.Game;
@@ -47,17 +48,19 @@ public final class WindowsManager
     private final CommandContainer commandContainer;
     private final GraphicsBatch gBatch;
     private final Camera camera;
+    private IStyle style;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private WindowsManager()
+    private WindowsManager( IStyle style )
     {
         this.windowsContainer = new WindowsContainer();
         this.commandContainer = new CommandContainer();
         this.camera = Game.graphics.newNativeCamera();
         this.gBatch = new GraphicsBatch();
         this.gBatch.setProjectionMatrix( this.camera.combined );
+        this.style = style;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,7 +68,12 @@ public final class WindowsManager
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static WindowsManager create()
     {
-        final WindowsManager windowsManager = new WindowsManager();
+        return create( Styles.DEFAULT );
+    }
+
+    public static WindowsManager create( IStyle style )
+    {
+        final WindowsManager windowsManager = new WindowsManager( style );
         Game.common.setInputProcessor( windowsManager );
         return windowsManager;
     }
@@ -217,6 +225,7 @@ public final class WindowsManager
 
     public void openWindow( Bundle< Window > windowBundle )
     {
+        if( windowBundle == null ) return;
         final Optional< IComponent > component = windowsContainer.getComponent( windowBundle.getId() );
         if( !component.isPresent() ) return;
         final Window window = (Window)component.get();
@@ -233,6 +242,7 @@ public final class WindowsManager
     public Bundle< Window > addWindow( Window window )
     {
         final Bundle< Window > windowBundle = windowsContainer.addComponent( window );
+        ((WindowParameters)windowBundle.getComponent().getParameters()).setStyle( style );
         windowBundle.getComponent().whenClosingDo( () -> closeWindow( windowBundle ) );
         return windowBundle;
     }
