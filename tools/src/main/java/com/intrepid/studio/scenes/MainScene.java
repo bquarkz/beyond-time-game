@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.intrepid.nicge.gui.Bundle;
 import com.intrepid.nicge.gui.Window;
 import com.intrepid.nicge.gui.WindowsManager;
+import com.intrepid.nicge.gui.styles.Styles;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.theater.cameras.Camera;
 import com.intrepid.nicge.theater.scene.GameScene;
@@ -20,6 +21,7 @@ public class MainScene
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private static final Color BACKGROUND_COLOR = new Color( 0xaabfbaff );
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Special Fields And Injections
@@ -40,8 +42,8 @@ public class MainScene
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public MainScene()
     {
-        background = TextureWorks.createTexture( 2, 2, Color.GRAY );
-        windowsManager = WindowsManager.create();
+        background = TextureWorks.createTexture( 2, 2, BACKGROUND_COLOR );
+        windowsManager = WindowsManager.create( Styles.GREEN_ORANGE );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
