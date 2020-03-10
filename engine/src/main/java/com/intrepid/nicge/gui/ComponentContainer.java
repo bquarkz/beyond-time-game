@@ -77,7 +77,13 @@ public class ComponentContainer
         component.setParent( this );
         getComponents().put( wrapper.getId(), wrapper );
         wrapper.getParameters().setEnabled( false );
+        configureComponent( component );
         return new Bundle<>( wrapper.getId(), component );
+    }
+
+    protected < C extends IComponent > void configureComponent( C component )
+    {
+
     }
 
     public void disable( Bundle< ? > cBundle )
@@ -187,7 +193,7 @@ public class ComponentContainer
     public void setParent( IComponent parent )
     {
         this.parent = parent;
-        getComponents().values().forEach( cc -> cc.setParent( parent ) );
+        //getComponents().values().forEach( cc -> cc.setParent( parent ) );
     }
 
     @Override

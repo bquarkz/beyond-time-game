@@ -1,7 +1,7 @@
 package com.intrepid.nicge.gui;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.intrepid.nicge.gui.controls.AbstractControl;
 import com.intrepid.nicge.gui.controls.Button;
 import com.intrepid.nicge.utils.MathUtils;
 import com.intrepid.nicge.utils.MathUtils.Vector;
@@ -36,6 +36,7 @@ public abstract class Window
 
     private boolean couldBeDragged;
     private Vector v0;
+    private Vector relativePosition;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
@@ -47,6 +48,7 @@ public abstract class Window
         this.closeButton = CloseButton.create( this );
         this.node = new TopTailList.Node<>( this );
         this.couldBeDragged = false;
+        this.relativePosition = Vector.with( 2, TITLE_SIZE + 2 );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,30 +71,44 @@ public abstract class Window
         titleTexture = createTexture(
                 windowParameters.getWidth(),
                 TITLE_SIZE,
-                windowParameters.getStyle().getWindowTitleColor() );
-
+                windowParameters.getStyle().getWindowSchema().getTitleBarColor() );
         bodyTexture = createTexture(
                 windowParameters.getWidth(),
                 windowParameters.getHeight() - TITLE_SIZE,
-                windowParameters.getStyle().getWindowBodyColor() );
-
+                windowParameters.getStyle().getWindowSchema().getBodyBackgroundColor() );
         closeButton.bindAssets();
+        getComponents().values().forEach( cc -> {
+            if( cc.getComponent() instanceof AbstractControl )
+            {
+                ( (AbstractControl)cc.getComponent() ).bindAssets();
+            }
+        } );
 
         _bindAssets();
     }
 
-    protected abstract void _bindAssets();
+    protected void _bindAssets()
+    {
+    }
 
     public final void unBindAssets()
     {
         titleTexture.dispose();
         bodyTexture.dispose();
         closeButton.unBindAssets();
+        getComponents().values().forEach( cc -> {
+            if( cc.getComponent() instanceof AbstractControl )
+            {
+                ( (AbstractControl)cc.getComponent() ).unBindAssets();
+            }
+        } );
 
         _unBindAssets();
     }
 
-    protected abstract void _unBindAssets();
+    protected void _unBindAssets()
+    {
+    }
 
     @Override
     public void update()
@@ -161,6 +177,13 @@ public abstract class Window
         {
             closeButton.checkMouseOver( screenX, screenY );
         }
+
+        getComponents().values().forEach( cc -> {
+            if( cc.getComponent() instanceof AbstractControl )
+            {
+                cc.getComponent().checkMouseOver( screenX, screenY );
+            }
+        } );
 
         return MathUtils.gdx.checkInside(
                 windowParameters.getTitleTopLeftCorner(),
@@ -243,6 +266,24 @@ public abstract class Window
         closeButton.setActionRun( buttonAction );
     }
 
+    @Override
+    protected < C extends IComponent > void configureComponent( C component )
+    {
+        component.getParameters().setEnabled( true );
+        if( component instanceof AbstractControl )
+        {
+            AbstractControl control = (AbstractControl)component;
+            control.setRelativePosition( 2, 62 );
+            control.setSize( getParameters().getWidth() - 4, TITLE_SIZE );
+        }
+        else
+        {
+            component.getParameters().setPosition( Vector.with( 2, TITLE_SIZE + 2 ) );
+            component.getParameters().setWidth( getParameters().getWidth() - 4 );
+            component.getParameters().setHeight( TITLE_SIZE );
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -267,25 +308,32 @@ public abstract class Window
             return closeButton;
         }
 
+        @Override
         public void bindAssets()
         {
-            idle = createTexture( 2, 2, Color.GRAY );
-            mouseOverMe = createTexture( 2, 2, Color.GREEN );
-            actionClicked = createTexture( 2, 2, Color.RED );
-            supportClicked = createTexture( 2, 2, Color.BLUE );
-
-            setIdle( idle );
-            setMouserOverMe( mouseOverMe );
-            setActionClicked( actionClicked );
-            setSupportClicked( supportClicked );
+            getParent().ifPresent( parent -> {
+                IStyle style = ( (WindowParameters)parent.getParameters() ).getStyle();
+                IStyle.IButtonSchema schema = style.getWindowSchema().getCloseButtonSchema();
+                idle = createTexture( 2, 2, schema.getIDLE() );
+                mouseOverMe = createTexture( 2, 2, schema.getMouseOverMe() );
+                actionClicked = createTexture( 2, 2, schema.getActionClicked() );
+                supportClicked = createTexture( 2, 2, schema.getSupportClicked() );
+                setIdle( idle );
+                setMouserOverMe( mouseOverMe );
+                setActionClicked( actionClicked );
+                setSupportClicked( supportClicked );
+            } );
         }
 
+        @Override
         public void unBindAssets()
         {
-            idle.dispose();
-            mouseOverMe.dispose();
-            actionClicked.dispose();
-            supportClicked.dispose();
+            getParent().ifPresent( parent -> {
+                idle.dispose();
+                mouseOverMe.dispose();
+                actionClicked.dispose();
+                supportClicked.dispose();
+            } );
         }
     }
 }

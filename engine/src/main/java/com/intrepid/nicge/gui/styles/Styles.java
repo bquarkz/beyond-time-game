@@ -1,6 +1,5 @@
 package com.intrepid.nicge.gui.styles;
 
-import com.badlogic.gdx.graphics.Color;
 import com.intrepid.nicge.gui.IStyle;
 
 public enum Styles
@@ -30,16 +29,17 @@ public enum Styles
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public Color getWindowTitleColor()
+    public IButtonSchema getGeneralButtonSchema()
     {
-        return style.getWindowTitleColor();
+        return style.getGeneralButtonSchema();
     }
 
     @Override
-    public Color getWindowBodyColor()
+    public IWindowSchema getWindowSchema()
     {
-        return style.getWindowBodyColor();
+        return style.getWindowSchema();
     }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns

@@ -14,11 +14,20 @@ package com.intrepid.nicge.gui.controls;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.intrepid.nicge.gui.ComponentParameters;
+import com.intrepid.nicge.gui.IStyle;
+import com.intrepid.nicge.gui.Window;
+import com.intrepid.nicge.gui.WindowParameters;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.utils.MathUtils;
 import com.intrepid.nicge.utils.MathUtils.Vector;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
+
+import java.awt.event.WindowStateListener;
+
+import static com.intrepid.nicge.gui.WindowParameters.TITLE_SIZE;
+import static com.intrepid.nicge.utils.graphics.TextureWorks.createTexture;
 
 public class Button
         extends AbstractControl
@@ -170,8 +179,7 @@ public class Button
         final Vector parentPosition = getParentPosition();
         getParameters().setPosition( MathUtils
                 .conversion
-                .gdxCoordinates( Vector
-                        .sum( parentPosition, getRelativePosition() ) ) );
+                .gdxCoordinates( Vector.sum( parentPosition, getRelativePosition() ) ) );
 
         elapsedTime_s += Game.time.getGdxRawDeltaTime_s();
 
@@ -220,6 +228,37 @@ public class Button
     public void mouseIsNotOverMe()
     {
         isMouseOverMe = false;
+    }
+
+    @Override
+    public void bindAssets()
+    {
+        getParent().ifPresent( parent -> {
+            final ComponentParameters parameters = parent.getParameters();
+            if( parameters == null ) return;
+            if( !( parameters instanceof WindowParameters ) ) return;
+            IStyle style = ( (WindowParameters)parameters ).getStyle();
+            IStyle.IButtonSchema schema = style.getWindowSchema().getCloseButtonSchema();
+            idle = new Animation( createTexture( 2, 2, schema.getIDLE() ) );
+            mouserOverMe = new Animation( createTexture( 2, 2, schema.getMouseOverMe() ) );
+            actionClicked = new Animation( createTexture( 2, 2, schema.getActionClicked() ) );
+            supportClicked = new Animation( createTexture( 2, 2, schema.getSupportClicked() ) );
+            setIdle( idle );
+            setMouserOverMe( mouserOverMe );
+            setActionClicked( actionClicked );
+            setSupportClicked( supportClicked );
+        } );
+    }
+
+    @Override
+    public void unBindAssets()
+    {
+        getParent().ifPresent( parent -> {
+//            idle.dispose();
+//            mouserOverMe.dispose();
+//            actionClicked.dispose();
+//            supportClicked.dispose();
+        } );
     }
 
     // ****************************************************************************************

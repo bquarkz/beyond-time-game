@@ -1,11 +1,13 @@
 package com.intrepid.studio.gui;
 
+import com.intrepid.nicge.gui.Bundle;
 import com.intrepid.nicge.gui.Window;
 import com.intrepid.nicge.gui.WindowParameters;
+import com.intrepid.nicge.gui.controls.Button;
 import com.intrepid.nicge.gui.layouts.Layouts;
-import com.intrepid.nicge.gui.styles.Styles;
 import com.intrepid.nicge.kernel.game.Game;
-import com.intrepid.nicge.utils.MathUtils;
+import com.intrepid.nicge.utils.MathUtils.Vector;
+import com.intrepid.nicge.utils.logger.Log;
 
 public class WindowActions
         extends Window
@@ -21,6 +23,7 @@ public class WindowActions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private final Bundle< Button > button;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
@@ -28,10 +31,13 @@ public class WindowActions
     public WindowActions()
     {
         super( WindowParameters.createStaticWindow(
-                MathUtils.Vector.with( 1120, 10 ),
+                Vector.with( 1120, 10 ),
                 150,
                 Game.common.getGameConfiguration().getNativeResolutionHeight() - 20,
                 Layouts.DEFAULT ) );
+
+        button = addComponent( Button.create() );
+        button.getComponent().setActionRun( () -> Log.from( WindowActions.class ).info( "clicked" ) );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,18 +51,6 @@ public class WindowActions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    protected void _bindAssets()
-    {
-
-    }
-
-    @Override
-    protected void _unBindAssets()
-    {
-
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns

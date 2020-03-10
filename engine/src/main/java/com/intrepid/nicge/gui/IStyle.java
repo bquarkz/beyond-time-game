@@ -19,6 +19,21 @@ public interface IStyle
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Contracts
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    Color getWindowTitleColor();
-    Color getWindowBodyColor();
+    IButtonSchema getGeneralButtonSchema();
+    IWindowSchema getWindowSchema();
+
+    interface IWindowSchema
+    {
+        Color getTitleBarColor();
+        Color getBodyBackgroundColor();
+        IButtonSchema getCloseButtonSchema();
+    }
+
+    interface IButtonSchema
+    {
+        Color getIDLE();
+        Color getMouseOverMe();
+        Color getActionClicked();
+        Color getSupportClicked();
+    }
 }
