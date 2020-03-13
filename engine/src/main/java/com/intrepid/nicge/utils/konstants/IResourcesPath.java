@@ -18,4 +18,5 @@ public interface IResourcesPath
     String TEXTURES_PATH = RESOURCES_BASE_PATH + "textures/";
     String ANIMATION_PACK_INFO_PATH = RESOURCES_BASE_PATH + "apinfo/";
     String MAP_PACK_INFO_PATH = RESOURCES_BASE_PATH + "mpinfo/";
+    String FONT_PATH = RESOURCES_BASE_PATH + "fonts/";
 }

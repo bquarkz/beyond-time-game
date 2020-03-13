@@ -4,7 +4,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.intrepid.nicge.gui.controls.Button;
-import com.intrepid.nicge.gui.styles.Styles;
 import com.intrepid.nicge.kernel.IMouseControllable;
 import com.intrepid.nicge.kernel.IUpdatable;
 import com.intrepid.nicge.kernel.game.Game;
@@ -68,7 +67,7 @@ public final class WindowsManager
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static WindowsManager create()
     {
-        return create( Styles.DEFAULT );
+        return create( new DefaultStyle() );
     }
 
     public static WindowsManager create( IStyle style )

@@ -1,15 +1,16 @@
-package com.intrepid.nicge.gui.styles;
+package com.intrepid.nicge.gui;
 
 import com.badlogic.gdx.graphics.Color;
-import com.intrepid.nicge.gui.IStyle;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-class DefaultStyle
+public class DefaultStyle
     implements IStyle
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final Color WINDOW_TITLE_BAR_COLOR = new Color( 0xfc766aff );
+    private static final Color WINDOW_TITLE_TEXT_COLOR = new Color( 0x000000ff );
     private static final Color WINDOW_BODY_BACKGROUND_COLOR = new Color( 0x5b84b1af );
     private static final Color WINDOW_CLOSE_BUTTON_IDLE = new Color( 0x999999af );
     private static final Color WINDOW_CLOSE_BUTTON_MOUSE_OVER = new Color( 0xccccccff );
@@ -20,6 +21,7 @@ class DefaultStyle
     private static final Color GENERAL_BUTTON_MOUSE_OVER = new Color( 0xccccccff );
     private static final Color GENERAL_BUTTON_ACTION = new Color( 0xdd0055ff );
     private static final Color GENERAL_BUTTON_SUPPORT = GENERAL_BUTTON_MOUSE_OVER;
+    private static final Color GENERAL_BUTTON_TEXT_COLOR = new Color( 0x00afafff );
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,6 +56,24 @@ class DefaultStyle
     {
         return new IButtonSchema()
         {
+            @Override
+            public BitmapFont getFont()
+            {
+                return new BitmapFont();
+            }
+
+            @Override
+            public int getPadding()
+            {
+                return 10;
+            }
+
+            @Override
+            public Color getTextColor()
+            {
+                return GENERAL_BUTTON_TEXT_COLOR;
+            }
+
             @Override
             public Color getIDLE()
             {
@@ -98,10 +118,34 @@ class DefaultStyle
             }
 
             @Override
+            public Color getTitleTextColor()
+            {
+                return WINDOW_TITLE_TEXT_COLOR;
+            }
+
+            @Override
             public IButtonSchema getCloseButtonSchema()
             {
                 return new IButtonSchema()
                 {
+                    @Override
+                    public BitmapFont getFont()
+                    {
+                        return null;
+                    }
+
+                    @Override
+                    public int getPadding()
+                    {
+                        return 0;
+                    }
+
+                    @Override
+                    public Color getTextColor()
+                    {
+                        return Color.BLACK;
+                    }
+
                     @Override
                     public Color getIDLE()
                     {

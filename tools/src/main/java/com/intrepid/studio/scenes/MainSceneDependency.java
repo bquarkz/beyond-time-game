@@ -3,6 +3,7 @@ package com.intrepid.studio.scenes;
 import com.intrepid.nicge.content.Dependency;
 import com.intrepid.nicge.content.DependencyResource;
 import com.intrepid.nicge.content.IResource;
+import com.intrepid.studio.Resources;
 
 import java.util.Set;
 
@@ -43,7 +44,7 @@ public class MainSceneDependency extends DependencyResource
     @Override
     protected void setDependencies( Set< IResource< ? > > resources )
     {
-
+        resources.add( Resources.Fonts.FIRST_TEST );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

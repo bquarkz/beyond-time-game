@@ -12,11 +12,12 @@
  */
 package com.intrepid.nicge.gui.controls;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.intrepid.nicge.gui.ComponentParameters;
 import com.intrepid.nicge.gui.IStyle;
-import com.intrepid.nicge.gui.Window;
 import com.intrepid.nicge.gui.WindowParameters;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.utils.MathUtils;
@@ -24,9 +25,6 @@ import com.intrepid.nicge.utils.MathUtils.Vector;
 import com.intrepid.nicge.utils.animation.Animation;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 
-import java.awt.event.WindowStateListener;
-
-import static com.intrepid.nicge.gui.WindowParameters.TITLE_SIZE;
 import static com.intrepid.nicge.utils.graphics.TextureWorks.createTexture;
 
 public class Button
@@ -55,12 +53,21 @@ public class Button
     private Animation mouserOverMe;
     private Animation actionClicked;
     private Animation supportClicked;
+    private String label;
+    private BitmapFont font;
+    private int padding;
 
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
     protected Button()
     {
+        this( null );
+    }
+
+    protected Button( String label )
+    {
+        this.label = label;
         this.isMouseOverMe = false;
         this.isActionClicked = false;
         this.isActionActive = false;
@@ -73,9 +80,9 @@ public class Button
     // ****************************************************************************************
     // Factories
     // ****************************************************************************************
-    public static Button create()
+    public static Button create( String label )
     {
-        return new Button();
+        return new Button( label );
     }
 
     // ****************************************************************************************
@@ -222,6 +229,12 @@ public class Button
             float x = getParameters().getPosition().getX();
             float y = getParameters().getPosition().getY();
             batch.draw( tr, x, y, getParameters().getWidth(), getParameters().getHeight() );
+            if( font != null && label != null )
+            {
+                float xx = x + ( getParameters().getWidth() - label.length() * padding ) / 2.0f;
+                float yy = y + ( ( getParameters().getHeight() - font.getCapHeight() ) / 2.0f ) + padding;
+                font.draw( batch, label, xx, yy );
+            }
         }
     }
 
@@ -238,7 +251,17 @@ public class Button
             if( parameters == null ) return;
             if( !( parameters instanceof WindowParameters ) ) return;
             IStyle style = ( (WindowParameters)parameters ).getStyle();
-            IStyle.IButtonSchema schema = style.getWindowSchema().getCloseButtonSchema();
+            IStyle.IButtonSchema schema = style.getGeneralButtonSchema();
+            font = style.getGeneralButtonSchema().getFont();
+            if( font != null )
+            {
+                padding = style.getGeneralButtonSchema().getPadding();
+                final Color textColor = style.getGeneralButtonSchema().getTextColor();
+                if( textColor != null )
+                {
+                    font.setColor( textColor );
+                }
+            }
             idle = new Animation( createTexture( 2, 2, schema.getIDLE() ) );
             mouserOverMe = new Animation( createTexture( 2, 2, schema.getMouseOverMe() ) );
             actionClicked = new Animation( createTexture( 2, 2, schema.getActionClicked() ) );
@@ -264,6 +287,17 @@ public class Button
     // ****************************************************************************************
     // Getters And Setters Methods
     // ****************************************************************************************
+
+    public String getLabel()
+    {
+        return label;
+    }
+
+    public void setLabel( String label )
+    {
+        this.label = label;
+    }
+
     final public void setSupportRun( IButtonAction supportRunner )
     {
         this.supportRunner = supportRunner;

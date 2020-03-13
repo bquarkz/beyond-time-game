@@ -13,11 +13,12 @@
 package com.intrepid.studio;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.intrepid.nicge.content.IResource;
+import com.intrepid.nicge.content.ResourceFactory;
 import com.intrepid.nicge.utils.animation.AnimationPack;
 
-import static com.intrepid.nicge.content.ResourceFactory.registerAnimationPack;
-import static com.intrepid.nicge.content.ResourceFactory.registerTexture;
+import static com.intrepid.nicge.content.ResourceFactory.*;
 
 public class Resources
 {
@@ -88,6 +89,43 @@ public class Resources
 
         @Override
         public AnimationPack getAsset()
+        {
+            return resource.getAsset();
+        }
+    }
+
+    public enum Fonts implements IResource< BitmapFont >
+    {
+        FIRST_TEST( "first-test.fnt" ),
+        ;
+
+        private IResource< BitmapFont > resource;
+
+        Fonts( String name )
+        {
+            resource = registerFont( name );
+        }
+
+        @Override
+        public int getResourceId()
+        {
+            return resource.getResourceId();
+        }
+
+        @Override
+        public String getPath()
+        {
+            return resource.getPath();
+        }
+
+        @Override
+        public Class< BitmapFont > getResourceClass()
+        {
+            return resource.getResourceClass();
+        }
+
+        @Override
+        public BitmapFont getAsset()
         {
             return resource.getAsset();
         }

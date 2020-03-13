@@ -64,7 +64,7 @@ public class SimulationScene
     public SimulationScene()
     {
         this.windowsManager = WindowsManager.create();
-        this.button = Button.create();
+        this.button = Button.create( "Click Action" );
     }
 
     // ****************************************************************************************

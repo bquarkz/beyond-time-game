@@ -1,8 +1,5 @@
 package com.intrepid.nicge.gui;
 
-import com.badlogic.gdx.graphics.Color;
-import com.intrepid.nicge.gui.layouts.Layouts;
-import com.intrepid.nicge.gui.styles.Styles;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.utils.MathUtils;
 import com.intrepid.nicge.utils.MathUtils.Vector;
@@ -96,7 +93,7 @@ public class WindowParameters
                 true,
                 false,
                 false,
-                Styles.DEFAULT,
+                new DefaultStyle(),
                 layout );
     }
 
@@ -112,8 +109,8 @@ public class WindowParameters
                 true,
                 true,
                 true,
-                Styles.DEFAULT,
-                Layouts.DEFAULT );
+                new DefaultStyle(),
+                new DefaultLayout() );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

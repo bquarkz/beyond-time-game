@@ -87,10 +87,8 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager
 
     public void load( Set< IResource< ? > > resources )
     {
-        for( IResource< ? > resource : resources )
-        {
-            load( resource.getPath(), resource.getResourceClass() );
-        }
+        if( resources == null ) return;
+        resources.forEach( resource -> load( resource.getPath(), resource.getResourceClass() ) );
     }
 
     // ****************************************************************************************

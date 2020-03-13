@@ -13,6 +13,7 @@
 package com.intrepid.nicge.content;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.intrepid.nicge.utils.animation.AnimationPack;
 import com.intrepid.nicge.utils.konstants.IResourcesPath;
 
@@ -53,6 +54,11 @@ public final class ResourceFactory
     public static final IResource< AnimationPack > registerAnimationPack( String name )
     {
         return register( IResourcesPath.ANIMATION_PACK_INFO_PATH + name, AnimationPack.class );
+    }
+
+    public static final IResource< BitmapFont > registerFont( String name )
+    {
+        return register( IResourcesPath.FONT_PATH + name, BitmapFont.class );
     }
 
 //	public static final Resource< DynamicDependencyPack > registerDynamicDependencyPack( String name ) {

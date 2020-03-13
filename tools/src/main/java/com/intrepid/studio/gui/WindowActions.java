@@ -4,10 +4,11 @@ import com.intrepid.nicge.gui.Bundle;
 import com.intrepid.nicge.gui.Window;
 import com.intrepid.nicge.gui.WindowParameters;
 import com.intrepid.nicge.gui.controls.Button;
-import com.intrepid.nicge.gui.layouts.Layouts;
+import com.intrepid.studio.gui.layouts.Layouts;
 import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.utils.MathUtils.Vector;
 import com.intrepid.nicge.utils.logger.Log;
+import com.intrepid.studio.gui.styles.Styles;
 
 public class WindowActions
         extends Window
@@ -30,13 +31,17 @@ public class WindowActions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public WindowActions()
     {
-        super( WindowParameters.createStaticWindow(
+//        super( WindowParameters.createStaticWindow(
+//                Vector.with( 1120, 10 ),
+//                150,
+//                Game.common.getGameConfiguration().getNativeResolutionHeight() - 20,
+//                Layouts.DEFAULT ) );
+        super( WindowParameters.createCommonWindow(
                 Vector.with( 1120, 10 ),
                 150,
-                Game.common.getGameConfiguration().getNativeResolutionHeight() - 20,
-                Layouts.DEFAULT ) );
+                Game.common.getGameConfiguration().getNativeResolutionHeight() - 20 ) );
 
-        button = addComponent( Button.create() );
+        button = addComponent( Button.create( "Click Action" ) );
         button.getComponent().setActionRun( () -> Log.from( WindowActions.class ).info( "clicked" ) );
     }
 

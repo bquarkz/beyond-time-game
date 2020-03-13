@@ -1,6 +1,7 @@
 package com.intrepid.nicge.gui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public interface IStyle
 {
@@ -26,11 +27,15 @@ public interface IStyle
     {
         Color getTitleBarColor();
         Color getBodyBackgroundColor();
+        Color getTitleTextColor();
         IButtonSchema getCloseButtonSchema();
     }
 
     interface IButtonSchema
     {
+        BitmapFont getFont();
+        int getPadding();
+        Color getTextColor();
         Color getIDLE();
         Color getMouseOverMe();
         Color getActionClicked();
