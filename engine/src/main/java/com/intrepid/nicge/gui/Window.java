@@ -273,7 +273,7 @@ public abstract class Window
         if( component instanceof AbstractControl )
         {
             AbstractControl control = (AbstractControl)component;
-            control.setRelativePosition( 2, 62 );
+            control.setRelativePosition( 2, 30 + ( 32 * getComponents().size() ) );
             control.setSize( getParameters().getWidth() - 4, TITLE_SIZE );
         }
         else

@@ -93,19 +93,12 @@ public final class Game implements Application
 
     protected void throwUpDebugInfo()
     {
-        double control = usage.getProcessExecution( GameProcess.CONTROL );
-        double simulation = usage.getProcessExecution( GameProcess.SIMULATION );
-        double update = usage.getProcessExecution( GameProcess.UPDATE );
-        double display = usage.getProcessExecution( GameProcess.DISPLAY );
-        double audio = usage.getProcessExecution( GameProcess.AUDIO );
-
-        Game.info.addSystemInfo( "Control Capture:..(%s)", (int)control );
-        Game.info.addSystemInfo( "Simulation:.......(%s)", (int)simulation );
-        Game.info.addSystemInfo( "Update:...........(%s)", (int)update );
-        Game.info.addSystemInfo( "Display:..........(%s)", (int)display );
-        Game.info.addSystemInfo( "Audio Update:.....(%s)", (int)audio );
-
-        Game.info.addSystemInfo( "FPS: " + Game.graphics.getFPS() );
+        Game.info.addSystemInfo( "Control Capture", (float)usage.getProcessExecution( GameProcess.CONTROL ) );
+        Game.info.addSystemInfo( "Simulation", (float)usage.getProcessExecution( GameProcess.SIMULATION ) );
+        Game.info.addSystemInfo( "Update", (float)usage.getProcessExecution( GameProcess.UPDATE ) );
+        Game.info.addSystemInfo( "Display", (float)usage.getProcessExecution( GameProcess.DISPLAY ) );
+        Game.info.addSystemInfo( "Audio Update", (float)usage.getProcessExecution( GameProcess.AUDIO ) );
+        Game.info.addSystemInfo( "FPS", "" + Game.graphics.getFPS() );
         Game.info.throwUp();
     }
 
@@ -475,7 +468,7 @@ public final class Game implements Application
     {
         public static double getProcessExecution( GameProcess gp )
         {
-            return ( gp.getExecutionTime() / (double)Game.time.getLastLoopTime_ns() ) * 100.0;
+            return Math.min( gp.getExecutionTime() / (double)time.getLastLoopTime_ns(), 1.0f );
         }
     }
 

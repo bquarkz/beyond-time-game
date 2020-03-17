@@ -15,7 +15,7 @@ package com.intrepid.nicge.utils.threads;
 import java.util.concurrent.Callable;
 
 public interface ITask
-        extends Callable< Void >
+        extends Callable< TaskResult >
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Static fields
@@ -30,23 +30,30 @@ public interface ITask
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     default boolean isTaskRunning()
     {
-        return !taskRun();
+        return getTaskCompletion() < 1.0f;
     }
 
     @Override
-    default Void call() throws Exception
+    default TaskResult call()
     {
-        taskStart();
-        while( isTaskRunning() );
-        taskShutdown();
-        return null;
+        try
+        {
+            taskStart();
+            taskRun();
+            taskShutdown();
+            return new TaskResult( true, "done" );
+        }
+        catch( Exception ex )
+        {
+            return new TaskResult( false, ex.getMessage() );
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Contracts
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     void taskStart();
-    boolean taskRun();
+    void taskRun();
     void taskShutdown();
-    float taskCompleted();
+    float getTaskCompletion();
 }

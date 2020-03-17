@@ -1,25 +1,10 @@
-package com.intrepid.studio.gui;
+package com.intrepid.nicge.utils.threads;
 
-import com.badlogic.gdx.Files;
-import com.badlogic.gdx.Gdx;
-import com.intrepid.nicge.gui.Bundle;
-import com.intrepid.nicge.gui.Window;
-import com.intrepid.nicge.gui.WindowParameters;
-import com.intrepid.nicge.gui.controls.Button;
-import com.intrepid.nicge.utils.threads.ThreadExecutor;
-import com.intrepid.nicge.kernel.game.Game;
-import com.intrepid.nicge.utils.MathUtils.Vector;
-import com.intrepid.studio.gui.layouts.Layouts;
-import com.intrepid.studio.scenes.MainScene;
-import com.intrepid.studio.utilities.animation.GenerateAnimationPackInfo;
-
-public class WindowActions
-        extends Window
+public class TaskOverview
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final int WIDTH = 300;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Special Fields And Injections
@@ -28,30 +13,21 @@ public class WindowActions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private final ThreadExecutor threadExecutor;
-    private final Bundle< Button > testButton;
-    private final Bundle< Button > animationPackInfoButton;
+    private final String taskName;
+    private final float taskCompletion;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public WindowActions( MainScene mainScene )
+
+    public TaskOverview(
+            String taskName,
+            float taskCompletion )
     {
-        super( WindowParameters.createStaticWindow(
-                Vector.with( Game.common.getGameConfiguration().getNativeResolutionWidth() - WIDTH - 10, 10 ),
-                WIDTH,
-                Game.common.getGameConfiguration().getNativeResolutionHeight() - 20,
-                Layouts.DEFAULT ) );
-
-        this.threadExecutor = mainScene.getThreadExecutor();
-        this.testButton = addComponent( Button.create( "TEST BUTTON" ) );
-        this.testButton.getComponent().setActionRun( () -> threadExecutor
-                .execute( "TEST ACTION", new TestAction() ));
-
-        this.animationPackInfoButton = addComponent( Button.create( "ANIMATION PACK INFO" ) );
-        this.animationPackInfoButton.getComponent().setActionRun( () -> threadExecutor
-                .execute( "GENERATE ANIMATION PACK INFO", new GenerateAnimationPackInfo( Gdx.files ) ) );
+        this.taskName = taskName;
+        this.taskCompletion = taskCompletion;
     }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Factories
@@ -60,6 +36,17 @@ public class WindowActions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Getters And Setters
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public String getTaskName()
+    {
+        return taskName;
+    }
+
+    public float getTaskCompletion()
+    {
+        return taskCompletion;
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods

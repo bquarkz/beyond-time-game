@@ -43,7 +43,8 @@ import com.intrepid.studio.Constants;
 import com.intrepid.studio.OutputDesigns;
 import com.intrepid.studio.utilities.tiled.TiledReader;
 
-public class GenerateMapPackInfo implements ITask
+public class GenerateMapPackInfo
+        implements ITask
 {
     // ****************************************************************************************
     // Const Fields
@@ -127,7 +128,7 @@ public class GenerateMapPackInfo implements ITask
     }
 
     @Override
-    public boolean taskRun()
+    public void taskRun()
     {
         final Json json = JsonHelper.getJson();
 
@@ -153,8 +154,6 @@ public class GenerateMapPackInfo implements ITask
             JsonHelper.writeJson( getFileHandle( output ), mapPackInfo, MapPackInfo.class );
             System.out.println( "### MapPackInfo Stored on: " + output );
         } );
-
-        return true;
     }
 
     @Override
@@ -163,7 +162,7 @@ public class GenerateMapPackInfo implements ITask
     }
 
     @Override
-    public float taskCompleted()
+    public float getTaskCompletion()
     {
         return 0;
     }

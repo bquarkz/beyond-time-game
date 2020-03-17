@@ -12,6 +12,7 @@
  */
 package com.intrepid.nicge.utils.threads;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -19,28 +20,40 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import com.intrepid.nicge.utils.logger.Log;
 
-public final class ThreadExecutor implements Runnable
+public final class ThreadExecutor
+        implements Runnable
 {
     // ****************************************************************************************
     // Const Fields
     // ****************************************************************************************
-    public static final ExecutorService pool = Executors.newCachedThreadPool( new ThreadFactory() );
+    public static final ExecutorService pool = Executors
+            .newFixedThreadPool( Runtime.getRuntime().availableProcessors() + 1, new ThreadFactory() );
     private static final long TIME_OUT_IN_MILLI_SECS = 1000; //1s
 
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
-    private static final AtomicBoolean running = new AtomicBoolean( false );
-    private static final Map< ITask, Future< ? > > map = new ConcurrentHashMap<>();
-    private static final AtomicBoolean allTasksAreFinished = new AtomicBoolean( true );
-
+    private static final AtomicBoolean running;
+    private static final Map< Long, TaskBundle > map;
+    private static final AtomicBoolean allTasksAreFinished;
+    private static final AtomicLong currentId;
 
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
+    static
+    {
+        running = new AtomicBoolean( false );
+        map = new ConcurrentHashMap<>();
+        allTasksAreFinished = new AtomicBoolean( true );
+        currentId = new AtomicLong( 0 );
+    }
+
     public ThreadExecutor()
     {
         if( !running.get() )
@@ -53,11 +66,13 @@ public final class ThreadExecutor implements Runnable
     // ****************************************************************************************
     // Methods
     // ****************************************************************************************
-    public < T extends ITask > Future< Void > execute( T command )
+    public < T extends ITask > TaskBundle execute( String taskName, T command )
     {
-        final Future< Void > threadExecutionFuture = pool.submit( command );
-        ThreadExecutor.map.put( command, threadExecutionFuture );
-        return threadExecutionFuture;
+        final Future< TaskResult > threadExecutionFuture = pool.submit( command );
+        final long id = currentId.getAndIncrement();
+        final TaskBundle bundle = new TaskBundle( id, taskName, command, threadExecutionFuture );
+        ThreadExecutor.map.put( id, bundle );
+        return bundle;
     }
 
     @Override
@@ -66,13 +81,13 @@ public final class ThreadExecutor implements Runnable
         while( running.get() )
         {
             boolean allTasksCheck = true;
-            for( ITask task : ThreadExecutor.map.keySet() )
+            for( Long id : ThreadExecutor.map.keySet() )
             {
-                boolean taskDone = ThreadExecutor.map.get( task ).isDone();
+                boolean taskDone = !ThreadExecutor.map.get( id ).getTask().isTaskRunning();
                 allTasksCheck &= taskDone;
                 if( taskDone )
                 {
-                    ThreadExecutor.map.remove( task );
+                    ThreadExecutor.map.remove( id );
                 }
             }
             allTasksAreFinished.set( allTasksCheck );
@@ -100,10 +115,7 @@ public final class ThreadExecutor implements Runnable
         }
 
         pool.execute( () -> {
-            while( !allTasksAreFinished.get() )
-            {
-                ;
-            }
+            while( !allTasksAreFinished.get() );
             running.set( false );
         } );
     }
@@ -114,6 +126,18 @@ public final class ThreadExecutor implements Runnable
     public boolean isAllTasksFinished()
     {
         return allTasksAreFinished.get();
+    }
+
+    public List< TaskOverview > getTasksOverview()
+    {
+        return ThreadExecutor
+                .map
+                .keySet()
+                .stream()
+                .sorted()
+                .map( ThreadExecutor.map::get )
+                .map( bundle -> new TaskOverview( bundle.getTaskName(), bundle.getTask().getTaskCompletion() ) )
+                .collect( Collectors.toList() );
     }
 
     // ****************************************************************************************

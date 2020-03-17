@@ -24,7 +24,8 @@ import com.intrepid.studio.OutputDesigns;
 
 import static com.intrepid.studio.Constants.*;
 
-public class TileSetGutter implements ITask
+public class TileSetGutter
+        implements ITask
 {
     // ****************************************************************************************
     // Const Fields
@@ -173,7 +174,7 @@ public class TileSetGutter implements ITask
     }
 
     @Override
-    public boolean taskRun()
+    public void taskRun()
     {
         rootContent.foreachFileInRootDirectory( WORKDIR_TILEMAP_TILESET, new IFileExec()
         {
@@ -204,11 +205,10 @@ public class TileSetGutter implements ITask
                 System.out.println( "Stored on: " + outputTexture );
             }
         } );
-        return false;
     }
 
     @Override
-    public float taskCompleted()
+    public float getTaskCompletion()
     {
         return 0;
     }

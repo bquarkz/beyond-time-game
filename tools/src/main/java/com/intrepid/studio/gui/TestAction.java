@@ -1,25 +1,15 @@
 package com.intrepid.studio.gui;
 
-import com.badlogic.gdx.Files;
-import com.badlogic.gdx.Gdx;
-import com.intrepid.nicge.gui.Bundle;
-import com.intrepid.nicge.gui.Window;
-import com.intrepid.nicge.gui.WindowParameters;
-import com.intrepid.nicge.gui.controls.Button;
-import com.intrepid.nicge.utils.threads.ThreadExecutor;
-import com.intrepid.nicge.kernel.game.Game;
-import com.intrepid.nicge.utils.MathUtils.Vector;
-import com.intrepid.studio.gui.layouts.Layouts;
-import com.intrepid.studio.scenes.MainScene;
-import com.intrepid.studio.utilities.animation.GenerateAnimationPackInfo;
+import com.intrepid.nicge.utils.threads.ITask;
 
-public class WindowActions
-        extends Window
+import java.util.Random;
+
+public class TestAction
+    implements ITask
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final int WIDTH = 300;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Special Fields And Injections
@@ -28,29 +18,13 @@ public class WindowActions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private final ThreadExecutor threadExecutor;
-    private final Bundle< Button > testButton;
-    private final Bundle< Button > animationPackInfoButton;
+    private float taskCompletion;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public WindowActions( MainScene mainScene )
+    public TestAction()
     {
-        super( WindowParameters.createStaticWindow(
-                Vector.with( Game.common.getGameConfiguration().getNativeResolutionWidth() - WIDTH - 10, 10 ),
-                WIDTH,
-                Game.common.getGameConfiguration().getNativeResolutionHeight() - 20,
-                Layouts.DEFAULT ) );
-
-        this.threadExecutor = mainScene.getThreadExecutor();
-        this.testButton = addComponent( Button.create( "TEST BUTTON" ) );
-        this.testButton.getComponent().setActionRun( () -> threadExecutor
-                .execute( "TEST ACTION", new TestAction() ));
-
-        this.animationPackInfoButton = addComponent( Button.create( "ANIMATION PACK INFO" ) );
-        this.animationPackInfoButton.getComponent().setActionRun( () -> threadExecutor
-                .execute( "GENERATE ANIMATION PACK INFO", new GenerateAnimationPackInfo( Gdx.files ) ) );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,6 +38,42 @@ public class WindowActions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void taskStart()
+    {
+        taskCompletion = 0;
+    }
+
+    @Override
+    public void taskRun()
+    {
+        try
+        {
+            final Random random = new Random( System.currentTimeMillis() );
+            while( taskCompletion < 1 )
+            {
+                Thread.sleep( random.nextInt( 500 ) );
+                taskCompletion += 0.02f;
+            }
+        }
+        catch( InterruptedException e )
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void taskShutdown()
+    {
+        taskCompletion = 1.0f;
+    }
+
+    @Override
+    public float getTaskCompletion()
+    {
+        return taskCompletion;
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyleft (C) 2016  Constantino, Nilton Rogerio <niltonrc@gmail.com>
  *
  * @author "Nilton R Constantino"
@@ -15,16 +15,21 @@ package com.intrepid.nicge.kernel;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Disposable;
 import com.intrepid.nicge.theater.cameras.Camera;
 import com.intrepid.nicge.utils.graphics.GraphicsBatch;
+import com.intrepid.nicge.utils.graphics.TextureWorks;
 
 public class ScreenInfo implements Disposable
 {
     // ****************************************************************************************
     // Const Fields
     // ****************************************************************************************
+    private static final int SYS_PROCESS_BAR_WIDTH = 150;
+    private static final int SYS_PROCESS_BAR_HEIGHT = 20;
 
     // ****************************************************************************************
     // Common Fields
@@ -32,8 +37,12 @@ public class ScreenInfo implements Disposable
     private GraphicsBatch batchDebug;
     private BitmapFont bitmapFontDebug;
     private List< String > allMessages;
-    private List< String > sysInfo;
+    private List< SystemInfoProcess > sysInfo;
     private boolean showUp;
+
+    private final Texture sysProcessBar;
+    private final Texture sysProcessBarBackground;
+    private final Texture sysProcessBarBackgroundOver;
 
     // ****************************************************************************************
     // Constructors
@@ -50,27 +59,36 @@ public class ScreenInfo implements Disposable
         batchDebug.setProjectionMatrix( camera.combined );
 
         bitmapFontDebug = new BitmapFont(); // we have to replace it with a mono font
-        bitmapFontDebug.setColor( 1f, 1f, 0f, 0.7f );
+        bitmapFontDebug.setColor( new Color( 0xffff00cc ) );
 
         allMessages = new ArrayList<>();
         sysInfo = new ArrayList<>();
+
+        sysProcessBar = TextureWorks.createTexture( SYS_PROCESS_BAR_WIDTH, SYS_PROCESS_BAR_HEIGHT, new Color( 0x0000ff55 ) );
+        sysProcessBarBackground = TextureWorks.createTexture( SYS_PROCESS_BAR_WIDTH, SYS_PROCESS_BAR_HEIGHT, new Color( 0xafafaf55 ) );
+        sysProcessBarBackgroundOver = TextureWorks.createTexture( SYS_PROCESS_BAR_WIDTH, SYS_PROCESS_BAR_HEIGHT, new Color( 0xff00dd55 ) );
     }
 
     // ****************************************************************************************
     // Methods
     // ****************************************************************************************
-    public void addSystemInfo( String info, Object... args )
+    public void addSystemInfo( String systemVar, float use )
     {
-		if( info == null )
+		if( systemVar == null )
 		{
 			return;
 		}
-		if( info.isEmpty() )
+		if( systemVar.isEmpty() )
 		{
 			return;
 		}
 
-        sysInfo.add( String.format( info, args ) );
+        sysInfo.add( new SystemInfoProcess( systemVar, use ) );
+    }
+
+    public void addSystemInfo( String systemVar, String complement )
+    {
+        sysInfo.add( new SystemInfoProcess( systemVar + " :: " + complement, 1 ) );
     }
 
     private final void _addProcessMessages(
@@ -128,16 +146,33 @@ public class ScreenInfo implements Disposable
 
     public void throwUp()
     {
-        addProcessMessages( "SYSTEM INFO", sysInfo );
-
         if( showUp )
         {
             batchDebug.begin();
-            for( int counter = 0; counter < allMessages.size(); counter++ )
+            int x = 5;
+            int counter = 0;
+            for( SystemInfoProcess sip : sysInfo )
             {
-                bitmapFontDebug.draw( batchDebug, allMessages.get( counter ), 5,
-                        ( allMessages.size() - counter + 1 ) * 15 );
+                int y = ( SYS_PROCESS_BAR_HEIGHT * ( sysInfo.size() + 1 ) ) - ( ( SYS_PROCESS_BAR_HEIGHT + 2 ) * ( counter++ + 1 ) );
+                float w = SYS_PROCESS_BAR_WIDTH * sip.processing;
+                if( sip.processing >= 1 )
+                {
+                    batchDebug.draw( sysProcessBarBackgroundOver, x, y, SYS_PROCESS_BAR_WIDTH, SYS_PROCESS_BAR_HEIGHT );
+                }
+                else
+                {
+                    batchDebug.draw( sysProcessBarBackground, x, y, SYS_PROCESS_BAR_WIDTH, SYS_PROCESS_BAR_HEIGHT );
+                }
+                batchDebug.draw( sysProcessBar, x, y, w, SYS_PROCESS_BAR_HEIGHT );
+                bitmapFontDebug.draw( batchDebug, sip.systemVar,15, y + 15 );
             }
+
+            for( int i = 0; i < allMessages.size(); i++ )
+            {
+                bitmapFontDebug.draw( batchDebug, allMessages.get( i ), x,
+                        ( counter * SYS_PROCESS_BAR_HEIGHT ) + 10 + ( allMessages.size() - i + 1 ) * 15 );
+            }
+
             batchDebug.end();
         }
 
@@ -158,4 +193,17 @@ public class ScreenInfo implements Disposable
     // ****************************************************************************************
     // Patterns
     // ****************************************************************************************
+    private static class SystemInfoProcess
+    {
+        private final String systemVar;
+        private final float processing;
+
+        public SystemInfoProcess(
+                String systemVar,
+                float processing )
+        {
+            this.systemVar = systemVar;
+            this.processing = processing;
+        }
+    }
 }

@@ -46,7 +46,8 @@ import com.intrepid.nicge.utils.logger.Log;
 import com.intrepid.nicge.utils.threads.ITask;
 import com.intrepid.studio.OutputDesigns;
 
-public class GenerateAnimationPackInfo implements ITask
+public class GenerateAnimationPackInfo
+        implements ITask
 {
     // ****************************************************************************************
     // Const Fields
@@ -58,6 +59,7 @@ public class GenerateAnimationPackInfo implements ITask
     private Map< String, GroupTag > mapGroupTagResource;
     private Files files;
     private RootContent rootContent;
+    private float taskCompletion;
 
     // ****************************************************************************************
     // Constructors
@@ -65,6 +67,7 @@ public class GenerateAnimationPackInfo implements ITask
     public GenerateAnimationPackInfo( Files files )
     {
         this.files = files;
+        this.taskCompletion = 0f;
     }
 
     // ****************************************************************************************
@@ -368,51 +371,58 @@ public class GenerateAnimationPackInfo implements ITask
         return files.absolute( path );
     }
 
-    @Override
-    public float taskCompleted()
-    {
-        return 1;
-    }
-
     public void taskStart()
     {
         this.mapGroupTagResource = new HashMap<>();
-        rootContent = new RootContent( getFileHandle( WORKDIR_ANIMATION ) );
+        this.rootContent = new RootContent( getFileHandle( WORKDIR_ANIMATION ) );
+        this.taskCompletion = 0;
         System.out.println( OutputDesigns.createTagForService( "GENERATE ANIMATION PACK INFO SERVICE" ) );
     }
 
     @Override
-    public boolean taskRun()
+    public void taskRun()
     {
         Json json = JsonHelper.getJson();
 
         System.out.println( "### GENERATING NEW ANIMATION INFO..." );
         generateNewAnimationInfo( json );
+        taskCompletion += 0.1f;
 
         System.out.println( "### CREATING MAP TAG RESOURCES...." );
         createMapGroupTagResource();
+        taskCompletion += 0.1f;
 
         System.out.println( "### LOADING DATA..." );
         loadingTagResourcesData( json );
+        taskCompletion += 0.2f;
 
         System.out.println( "### ORDER THE TAG RESOURCES LIST..." );
         orderTheTagResourceList();
+        taskCompletion += 0.1f;
 
         System.out.println( "### CREATING ASSETS FOR CURRENT/AVAIBLE GROUPS..." );
         createGroupAssets();
+        taskCompletion += 0.2f;
 
         System.out.println( "### FIT RESOURCES IN ASSETS..." );
         fitResourcesAndCreateAnimationPackInfo();
+        taskCompletion += 0.2f;
 
         System.out.println( "### CREATING ANIMATION PACK INFO..." );
         createAnimationOutput( json );
-
-        return false;
+        taskCompletion += 0.1f;
     }
 
     @Override
     public void taskShutdown()
     {
+        taskCompletion = 1.0f;
+    }
+
+    @Override
+    public float getTaskCompletion()
+    {
+        return taskCompletion;
     }
 
     // ****************************************************************************************
