@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics.DisplayMode;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -72,6 +73,8 @@ public final class Game implements Application
     private static TimerManager timerManager;
     private static IProcessExecution[] process;
     private static Map< Class< ? >, ILoadable > dependencyContainer;
+
+    private static InputMultiplexer inputMultiplexer;
 
     // ****************************************************************************************
     // Constructors
@@ -145,6 +148,9 @@ public final class Game implements Application
 
         // initialize the game
         Game.boot.initialization();
+
+        inputMultiplexer = new InputMultiplexer(); // probably we have to build our own input multiplexer
+        Gdx.input.setInputProcessor( inputMultiplexer );
     }
 
     @Override
@@ -337,9 +343,19 @@ public final class Game implements Application
             return dependencies;
         }
 
-        public static void setInputProcessor( InputProcessor inputProcessor )
+        public static void addOnTopInputProcessor( InputProcessor inputProcessor )
         {
-            Gdx.input.setInputProcessor( inputProcessor );
+            inputMultiplexer.addProcessor( 0, inputProcessor );
+        }
+
+        public static void addInputProcessor( InputProcessor inputProcessor )
+        {
+            inputMultiplexer.addProcessor( inputProcessor );
+        }
+
+        public static void removeInputProcessor( InputProcessor inputProcessor )
+        {
+            inputMultiplexer.removeProcessor( inputProcessor );
         }
     }
 

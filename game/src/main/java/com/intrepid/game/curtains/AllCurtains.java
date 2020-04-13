@@ -10,6 +10,7 @@ import com.intrepid.nicge.utils.graphics.GraphicsBatch;
 public enum AllCurtains implements Curtain
 {
     IMAGE_FADE( new ImageFade() ),
+    OPENING_FADE( new OpeningFade() ),
     ;
 
     private Curtain curtain;

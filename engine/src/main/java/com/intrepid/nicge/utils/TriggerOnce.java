@@ -1,11 +1,10 @@
-package com.intrepid.nicge.gui.controls;
+package com.intrepid.nicge.utils;
 
-import com.intrepid.nicge.gui.ComponentWrapper;
-import com.intrepid.nicge.gui.IStyle;
-import com.intrepid.nicge.utils.graphics.GraphicsBatch;
+import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
-public class Label
-    extends AbstractControl
+public class TriggerOnce< R >
+    implements Callable< R >
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
@@ -18,17 +17,20 @@ public class Label
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private ComponentWrapper parent;
-    private final IStyle style;
-    private final String label;
+    private boolean isFirstTime;
+    private Supplier< Boolean > when;
+    private Callable< R > action;
+    private R defaultReturn;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Label( IStyle style, String label )
+    public TriggerOnce()
     {
-        this.style = style;
-        this.label = label;
+        this.isFirstTime = true;
+        this.when = () -> true;
+        this.defaultReturn = null;
+        this.action = () -> defaultReturn;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,49 +44,60 @@ public class Label
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    @Override
-    public void display( GraphicsBatch batch )
+    public TriggerOnce< R > usingDefaultReturn( R defaultReturn )
     {
+        this.defaultReturn = defaultReturn;
+        return this;
+    }
+
+    public TriggerOnce< R > when( Supplier< Boolean > when )
+    {
+        this.when = when;
+        return this;
+    }
+
+    public TriggerOnce< R > theAction( Runnable action )
+    {
+        this.action = () -> {
+            action.run();
+            return defaultReturn;
+        };
+        return this;
+    }
+
+    public TriggerOnce< R > theAction( Callable< R > action )
+    {
+        this.action = action;
+        return this;
     }
 
     @Override
-    public boolean checkMouseOver(
-            int screenX,
-            int screenY )
+    public R call() throws Exception
     {
-        return false;
+        if( isFirstTime )
+        {
+            final Boolean shouldItRun = when.get();
+            if( shouldItRun != null && shouldItRun )
+            {
+                final R ret = action.call();
+                isFirstTime = false;
+                return ret;
+            }
+        }
+
+        return defaultReturn;
     }
 
-    @Override
-    public boolean mouseButtonPressed(
-            int screenX,
-            int screenY,
-            int button )
+    public R exec()
     {
-        return false;
-    }
-
-    @Override
-    public boolean mouseButtonUnPressed(
-            int screenX,
-            int screenY,
-            int button )
-    {
-        return false;
-    }
-
-    @Override
-    public boolean dragged(
-            int screenX,
-            int screenY,
-            int button )
-    {
-        return false;
-    }
-
-    @Override
-    public void update()
-    {
+        try
+        {
+            return call();
+        }
+        catch( Exception e )
+        {
+            return defaultReturn;
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

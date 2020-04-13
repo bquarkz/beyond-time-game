@@ -72,9 +72,7 @@ public final class WindowsManager
 
     public static WindowsManager create( IStyle style )
     {
-        final WindowsManager windowsManager = new WindowsManager( style );
-        Game.common.setInputProcessor( windowsManager );
-        return windowsManager;
+        return new WindowsManager( style );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,9 +110,7 @@ public final class WindowsManager
         screenX = MathUtils.conversion.getXCorrection( screenX );
         screenY = MathUtils.conversion.getYCorrection( screenY );
 
-        mouseButtonPressed( screenX, screenY, button );
-
-        return false;
+        return mouseButtonPressed( screenX, screenY, button );
     }
 
     @Override
@@ -127,9 +123,7 @@ public final class WindowsManager
         screenX = MathUtils.conversion.getXCorrection( screenX );
         screenY = MathUtils.conversion.getYCorrection( screenY );
 
-        mouseButtonUnPressed( screenX, screenY, button );
-
-        return false;
+        return mouseButtonUnPressed( screenX, screenY, button );
     }
 
     @Override
@@ -153,10 +147,7 @@ public final class WindowsManager
     {
         screenX = MathUtils.conversion.getXCorrection( screenX );
         screenY = MathUtils.conversion.getYCorrection( screenY );
-
-        checkMouseOver( screenX, screenY );
-
-        return false;
+        return checkMouseOver( screenX, screenY );
     }
 
     @Override
@@ -206,12 +197,12 @@ public final class WindowsManager
     }
 
     @Override
-    public void dragged(
+    public boolean dragged(
             int screenX,
             int screenY,
             int button )
     {
-        windowsContainer.dragged( screenX, screenY, button );
+        return windowsContainer.dragged( screenX, screenY, button );
     }
 
     @Override

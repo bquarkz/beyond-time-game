@@ -134,11 +134,7 @@ public class ComponentContainer
             int screenY,
             int button )
     {
-
-        runOverAllEnabled( o -> {
-            o.mouseButtonPressed( screenX, screenY, button );
-        } );
-        return false;
+        return runOverAllEnabled( o -> o.mouseButtonPressed( screenX, screenY, button ) );
     }
 
     @Override
@@ -147,40 +143,30 @@ public class ComponentContainer
             int screenY,
             int button )
     {
-        runOverAllEnabled( o -> {
-            o.mouseButtonUnPressed( screenX, screenY, button );
-        } );
-        return false;
+        return runOverAllEnabled( o -> o.mouseButtonUnPressed( screenX, screenY, button ) );
     }
 
     @Override
-    public void dragged(
+    public boolean dragged(
             int screenX,
             int screenY,
             int button )
     {
-        runOverAllEnabled( o -> {
-            o.dragged( screenX, screenY, button );
-        } );
+        return runOverAllEnabled( o -> o.dragged( screenX, screenY, button ) );
     }
 
     @Override
     public void update()
     {
-        runOverAllEnabled( IUpdatable::update );
+        runOverAllEnabled( o -> {
+            o.update();
+            return false;
+        } );
     }
 
     protected boolean runOverAllEnabled( Function< IComponent, Boolean > function )
     {
         return runIfEnabled( getComponents().values(), function );
-    }
-
-    protected boolean runOverAllEnabled( Consumer< IComponent > consumer )
-    {
-        return runIfEnabled( getComponents().values(), c -> {
-            consumer.accept( c );
-            return false;
-        } );
     }
 
     @Override

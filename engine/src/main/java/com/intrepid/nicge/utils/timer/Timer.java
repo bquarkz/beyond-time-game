@@ -92,6 +92,12 @@ public class Timer implements IUpdatable, IPoolable
         }
     }
 
+    public void reset()
+    {
+        elapsedTime = 0L;
+        pausedTime = 0;
+    }
+
     // ****************************************************************************************
     // Getters And Setters Methods
     // ****************************************************************************************

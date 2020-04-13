@@ -23,8 +23,8 @@ public abstract class AbstractCurtain implements Curtain
     // ****************************************************************************************
     // Common Fields
     // ****************************************************************************************
-    protected CurtainCondition status;
-    protected CurtainCondition goal;
+    private CurtainCondition status;
+    private CurtainCondition goal;
 
     // ****************************************************************************************
     // Constructors
@@ -50,8 +50,8 @@ public abstract class AbstractCurtain implements Curtain
     protected abstract void closingDisplay( GraphicsBatch batch );
 
     protected void _update()
-	{
-	}
+    {
+    }
 
     @Override
     public final void update()
@@ -83,14 +83,14 @@ public abstract class AbstractCurtain implements Curtain
         _update();
     }
 
-	protected void _display( GraphicsBatch batch )
-	{
-	}
+    protected void _display( GraphicsBatch batch )
+    {
+    }
 
     @Override
     public final void display( GraphicsBatch batch )
     {
-    	_display( batch );
+        _display( batch );
 
         switch( status )
         {
@@ -120,10 +120,10 @@ public abstract class AbstractCurtain implements Curtain
     @Override
     public final void closeCommand()
     {
-		if( status == CurtainCondition.CLOSED )
-		{
-			return;
-		}
+        if( status == CurtainCondition.CLOSED )
+        {
+            return;
+        }
         status = CurtainCondition.CLOSING;
         goal = CurtainCondition.CLOSED;
     }
@@ -131,10 +131,10 @@ public abstract class AbstractCurtain implements Curtain
     @Override
     public final void openCommand()
     {
-		if( status == CurtainCondition.OPENED )
-		{
-			return;
-		}
+        if( status == CurtainCondition.OPENED )
+        {
+            return;
+        }
         status = CurtainCondition.OPENING;
         goal = CurtainCondition.OPENED;
     }
@@ -145,15 +145,29 @@ public abstract class AbstractCurtain implements Curtain
         return ( status == goal );
     }
 
+    // ****************************************************************************************
+    // Getters And Setters Methods
+    // ****************************************************************************************
     @Override
     public final CurtainCondition getStatus()
     {
         return status;
     }
 
-    // ****************************************************************************************
-    // Getters And Setters Methods
-    // ****************************************************************************************
+    protected void setStatus( CurtainCondition status )
+    {
+        this.status = status;
+    }
+
+    protected CurtainCondition getGoal()
+    {
+        return goal;
+    }
+
+    protected void setGoal( CurtainCondition goal )
+    {
+        this.goal = goal;
+    }
 
     // ****************************************************************************************
     // Patterns

@@ -40,7 +40,7 @@ public interface IMouseControllable
             int screenY,
             int button );
 
-    void dragged(
+    boolean dragged(
             int screenX,
             int screenY,
             int button );

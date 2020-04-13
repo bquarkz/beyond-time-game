@@ -9,6 +9,6 @@ public class SimpleExceptionHandler implements UncaughtExceptionHandler
 			Thread thread,
 			Throwable e )
 	{
-		System.out.println( "Exception na thread: " + thread.getName() + " :: " + e.getMessage() );
+		System.out.println( "thread exception: " + thread.getName() + " :: " + e.getMessage() );
 	}
 }

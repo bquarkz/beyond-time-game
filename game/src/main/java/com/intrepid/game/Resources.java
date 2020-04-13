@@ -29,6 +29,8 @@ public class Resources
         BLUE_CURTAIN( "BlueCurtain.png" ),
         RED_CURTAIN( "RedCurtain.png" ),
         PURPLE_CURTAIN( "PurpleCurtain.png" ),
+        FULL_BLACK( "full-black.png" ),
+        MAIN_BACKGROUND( "main-scene-background.png" ),
         ;
 
         private IResource< Texture > resource;
@@ -66,6 +68,7 @@ public class Resources
     public enum Animations implements IResource< AnimationPack >
     {
         SENTINEL( "sentinel.api" ),
+
         ;
 
         private IResource< AnimationPack > resource;

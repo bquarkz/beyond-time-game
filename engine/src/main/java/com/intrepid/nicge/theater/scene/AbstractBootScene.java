@@ -27,7 +27,7 @@ public abstract class AbstractBootScene implements IScene
     // Common Fields
     // ****************************************************************************************
     private boolean isFirstTime;
-    private Curtain curtain;
+    private final Curtain curtain;
 
     // ****************************************************************************************
     // Constructors

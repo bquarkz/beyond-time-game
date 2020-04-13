@@ -70,7 +70,7 @@ class ImageFade
         alpha -= 0.05f;
 		if( alpha <= 0.0f )
 		{
-			status = CurtainCondition.OPENED;
+			setStatus( CurtainCondition.OPENED );
 		}
     }
 
@@ -86,7 +86,7 @@ class ImageFade
         alpha += 0.05f;
 		if( alpha >= 1.0f )
 		{
-			status = CurtainCondition.CLOSED;
+            setStatus( CurtainCondition.CLOSED );
 		}
     }
 

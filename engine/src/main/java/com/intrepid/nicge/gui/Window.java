@@ -231,7 +231,7 @@ public abstract class Window
     }
 
     @Override
-    public void dragged(
+    public boolean dragged(
             int screenX,
             int screenY,
             int button )
@@ -242,7 +242,7 @@ public abstract class Window
             windowParameters.move( Vector.subtraction( vf, v0 ) );
             v0 = vf;
         }
-        super.dragged( screenX, screenY, button );
+        return super.dragged( screenX, screenY, button );
     }
 
     public void enable()

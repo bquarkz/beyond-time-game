@@ -19,8 +19,8 @@ import com.intrepid.nicge.content.Dependency;
 import com.intrepid.nicge.content.DependencyResource;
 import com.intrepid.nicge.content.IResource;
 
-@Dependency( SimulationScene.class )
-public class SimulationSceneDependency extends DependencyResource
+@Dependency( RandomScene.class )
+public class DependencyRandomScene extends DependencyResource
 {
     // ****************************************************************************************
     // Const Fields
@@ -40,8 +40,7 @@ public class SimulationSceneDependency extends DependencyResource
     @Override
     protected void setDependencies( Set< IResource< ? > > resources )
     {
-        resources.add( Resources.Animations.SENTINEL );
-        resources.add( Resources.Textures.BLANK );
+        resources.add( Resources.Textures.BACKGROUND );
     }
 
     // ****************************************************************************************

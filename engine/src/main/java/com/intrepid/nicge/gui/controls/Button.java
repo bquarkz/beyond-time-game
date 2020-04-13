@@ -173,11 +173,12 @@ public class Button
     }
 
     @Override
-    public void dragged(
+    public boolean dragged(
             int screenX,
             int screenY,
             int button )
     {
+        return false;
     }
 
     @Override

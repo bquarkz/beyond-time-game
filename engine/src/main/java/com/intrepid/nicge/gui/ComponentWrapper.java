@@ -128,12 +128,12 @@ public class ComponentWrapper
     }
 
     @Override
-    public void dragged(
+    public boolean dragged(
             int screenX,
             int screenY,
             int button )
     {
-        getComponent().dragged( screenX, screenY, button );
+        return getComponent().dragged( screenX, screenY, button );
     }
 
     @Override

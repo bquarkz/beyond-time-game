@@ -1,21 +1,13 @@
 package com.intrepid.game.gui;
 
-import com.badlogic.gdx.graphics.Color;
 import com.intrepid.game.Resources;
-import com.intrepid.game.curtains.AllCurtains;
-import com.intrepid.game.scenes.RandomScene;
-import com.intrepid.game.scenes.SimulationScene;
+import com.intrepid.game.scenes.GameplayScene;
 import com.intrepid.nicge.content.Dependency;
 import com.intrepid.nicge.content.DependencyResource;
 import com.intrepid.nicge.content.IResource;
-import com.intrepid.nicge.gui.Bundle;
 import com.intrepid.nicge.gui.Window;
 import com.intrepid.nicge.gui.WindowParameters;
-import com.intrepid.nicge.gui.controls.Button;
-import com.intrepid.nicge.kernel.game.Game;
 import com.intrepid.nicge.utils.MathUtils;
-import com.intrepid.nicge.utils.animation.Animation;
-import com.intrepid.nicge.utils.animation.AnimationPack;
 
 import java.util.Set;
 
@@ -66,7 +58,7 @@ public class GreenWindow
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    @Dependency( SimulationScene.class )
+    @Dependency( GameplayScene.class )
     public static class FreakWindowDependency extends DependencyResource
     {
         @Override

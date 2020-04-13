@@ -1,11 +1,18 @@
-package com.intrepid.nicge.gui.controls;
+package com.intrepid.game.scenes;
 
-import com.intrepid.nicge.gui.ComponentWrapper;
-import com.intrepid.nicge.gui.IStyle;
-import com.intrepid.nicge.utils.graphics.GraphicsBatch;
+import com.badlogic.gdx.graphics.Texture;
+import com.intrepid.game.Resources;
+import com.intrepid.nicge.content.Dependency;
+import com.intrepid.nicge.content.DependencyResource;
+import com.intrepid.nicge.content.IResource;
+import com.intrepid.nicge.theater.scene.GameScene;
+import com.intrepid.nicge.theater.scene.IScene;
 
-public class Label
-    extends AbstractControl
+import java.util.Set;
+
+@GameScene
+public class OpeningBlueScene
+    extends AbstractOpeningScene
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
@@ -18,17 +25,12 @@ public class Label
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private ComponentWrapper parent;
-    private final IStyle style;
-    private final String label;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Label( IStyle style, String label )
+    public OpeningBlueScene()
     {
-        this.style = style;
-        this.label = label;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,49 +45,17 @@ public class Label
     // Methods
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void display( GraphicsBatch batch )
+    protected IResource< Texture > getOpeningTexture()
     {
+        return Resources.Textures.BLUE_CURTAIN;
     }
 
     @Override
-    public boolean checkMouseOver(
-            int screenX,
-            int screenY )
+    protected Class< ? extends IScene > getNextScene()
     {
-        return false;
+        return OpeningPurpleScene.class;
     }
 
-    @Override
-    public boolean mouseButtonPressed(
-            int screenX,
-            int screenY,
-            int button )
-    {
-        return false;
-    }
-
-    @Override
-    public boolean mouseButtonUnPressed(
-            int screenX,
-            int screenY,
-            int button )
-    {
-        return false;
-    }
-
-    @Override
-    public boolean dragged(
-            int screenX,
-            int screenY,
-            int button )
-    {
-        return false;
-    }
-
-    @Override
-    public void update()
-    {
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Inner Classes And Patterns

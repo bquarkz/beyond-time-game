@@ -33,7 +33,7 @@ import com.intrepid.nicge.utils.timer.Timer;
 import org.bquarkz.beyondtime.simulator.Simulation;
 
 @GameScene
-public class SimulationScene
+public class GameplayScene
         implements IScene
 {
     // ****************************************************************************************
@@ -61,7 +61,7 @@ public class SimulationScene
     // ****************************************************************************************
     // Constructors
     // ****************************************************************************************
-    public SimulationScene()
+    public GameplayScene()
     {
         this.windowsManager = WindowsManager.create();
         this.button = Button.create( "Click Action" );
@@ -73,6 +73,8 @@ public class SimulationScene
     @Override
     public void start()
     {
+        Game.common.addOnTopInputProcessor( windowsManager );
+
         windowsManager.openWindow( blue );
         windowsManager.openWindow( red );
         windowsManager.openWindow( green );
@@ -120,6 +122,7 @@ public class SimulationScene
     @Override
     public void stop()
     {
+        Game.common.removeInputProcessor( windowsManager );
     }
 
     @Override

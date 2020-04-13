@@ -2,5 +2,9 @@ package com.intrepid.nicge.theater.curtain;
 
 public enum CurtainCondition
 {
-	OPENED, CLOSED, OPENING, CLOSING,
+	OPENED,
+	CLOSED,
+	OPENING,
+	CLOSING,
+	;
 }

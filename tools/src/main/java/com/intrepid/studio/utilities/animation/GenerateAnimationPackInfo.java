@@ -75,87 +75,77 @@ public class GenerateAnimationPackInfo
     // ****************************************************************************************
     private void generateNewAnimationInfo( Json json )
     {
-        rootContent.foreachFilesInAllRootDirectories( new IFileExec()
-        {
-            @Override
-            public void runOver( final FileHandle fHandle )
+        rootContent.foreachFilesInAllRootDirectories( fHandle -> {
+            if( fHandle.extension().equals( NEW_EXTENSION ) )
             {
-                if( fHandle.extension().equals( NEW_EXTENSION ) )
+                String line = null;
+                try( BufferedReader br = new BufferedReader( new FileReader( fHandle.file() ) ) )
                 {
-                    String line = null;
-                    try( BufferedReader br = new BufferedReader( new FileReader( fHandle.file() ) ) )
-                    {
-                        line = br.readLine();
-                    }
-                    catch( IOException e )
-                    {
-                        e.printStackTrace();
-                    }
-
-                    String path = fHandle.path();
-                    String[] split = path.split( "/" );
-                    String dir = split[ split.length - 2 ];
-                    String name = split[ split.length - 1 ];
-                    String tagName = dir + "." + name;
-                    AnimationInfo animationInfo = AnimationInfoFactory.create( tagName, line );
-
-                    System.out.println( "  new found: [ " + fHandle.path() + " ]" );
-
-                    String toWrite = json.prettyPrint( animationInfo );
-                    String output = fHandle.pathWithoutExtension() + "." + SAI_EXTENSION;
-                    files.local( output ).writeString( toWrite, false );
-
-                    fHandle.delete();
+                    line = br.readLine();
                 }
+                catch( IOException e )
+                {
+                    e.printStackTrace();
+                }
+
+                String path = fHandle.path();
+                String[] split = path.split( "/" );
+                String dir = split[ split.length - 2 ];
+                String name = split[ split.length - 1 ];
+                String tagName = dir + "." + name;
+                AnimationInfo animationInfo = AnimationInfoFactory.create( tagName, line );
+
+                System.out.println( "  new found: [ " + fHandle.path() + " ]" );
+
+                String toWrite = json.prettyPrint( animationInfo );
+                String output = fHandle.pathWithoutExtension() + "." + SAI_EXTENSION;
+                files.local( output ).writeString( toWrite, false );
+
+                fHandle.delete();
             }
         } );
     }
 
     private void createMapGroupTagResource()
     {
-        rootContent.foreachFilesInAllRootDirectories( new IFileExec()
-        {
-            @Override
-            public void runOver( final FileHandle fHandle )
+        rootContent.foreachFilesInAllRootDirectories( fHandle -> {
+            if( fHandle.name().equals( GROUP_TAG ) )
             {
-                if( fHandle.name().equals( GROUP_TAG ) )
+                String resDir = fHandle.path().replace( GROUP_TAG, "" );
+                String groupTagName = fHandle.readString().trim().toLowerCase();
+
+                System.out.println( "\n-- GROUP TAG FOUND -----------------------------" );
+                System.out.println( "GROUP TAG: " + groupTagName );
+                System.out.println( "Resources Dir: " + resDir );
+
+                for( FileHandle fRes : getFileHandle( resDir ).list() )
                 {
-                    String resDir = fHandle.path().replace( GROUP_TAG, "" );
-                    String groupTagName = fHandle.readString().trim().toLowerCase();
-
-                    System.out.println( "\n-- GROUP TAG FOUND -----------------------------" );
-                    System.out.println( "GROUP TAG: " + groupTagName );
-                    System.out.println( "Resources Dir: " + resDir );
-
-                    for( FileHandle fRes : getFileHandle( resDir ).list() )
-                    {
-                        if( fRes.isDirectory() )
-                        { //ignore files
-                            String path = fRes.path();
-                            String[] split = path.split( "/" );
+                    if( fRes.isDirectory() )
+                    { //ignore files
+                        String path = fRes.path();
+                        String[] split = path.split( "/" );
 //							String dir = split[ split.length - 2 ];
-                            String name = split[ split.length - 1 ];
-                            String filename = path + "/" + name + ".";
+                        String name = split[ split.length - 1 ];
+                        String filename = path + "/" + name + ".";
 
-                            FileHandle sai = new FileHandle( filename + SAI_EXTENSION );
-                            FileHandle png = new FileHandle( filename + TEXTURE_EXTENSION );
+                        FileHandle sai = new FileHandle( filename + SAI_EXTENSION );
+                        FileHandle png = new FileHandle( filename + TEXTURE_EXTENSION );
 
-                            System.out.println( "  " +
-                                    sai.name() + ": " + ( sai.exists() ? "OK" : "ERROR" ) + ", " +
-                                    png.name() + ": " + ( png.exists() ? "OK" : "ERROR" )
-                            );
+                        System.out.println( "  " +
+                                sai.name() + ": " + ( sai.exists() ? "OK" : "ERROR" ) + ", " +
+                                png.name() + ": " + ( png.exists() ? "OK" : "ERROR" )
+                        );
 
-                            boolean hasData = sai.exists() && png.exists();
-                            if( hasData )
+                        boolean hasData = sai.exists() && png.exists();
+                        if( hasData )
+                        {
+                            TagResource tagResource = new TagResource( sai, png );
+
+                            if( !mapGroupTagResource.containsKey( groupTagName ) )
                             {
-                                TagResource tagResource = new TagResource( sai, png );
-
-                                if( !mapGroupTagResource.containsKey( groupTagName ) )
-                                {
-                                    mapGroupTagResource.put( groupTagName, new GroupTag( groupTagName ) );
-                                }
-                                mapGroupTagResource.get( groupTagName ).addTagResource( tagResource );
+                                mapGroupTagResource.put( groupTagName, new GroupTag( groupTagName ) );
                             }
+                            mapGroupTagResource.get( groupTagName ).addTagResource( tagResource );
                         }
                     }
                 }
@@ -236,7 +226,7 @@ public class GenerateAnimationPackInfo
 			}
 			else
 			{
-				Log.from( this ).failure( "AS IBAGENS MUITO GRANDES, ARRUMA AI MOISES!" );
+				Log.from( this ).failure( "images too big, please fix it!" );
 				throw new RuntimeException();
 			}
             groupTag.createPixmapBase( pixmapBaseSize );
@@ -317,8 +307,7 @@ public class GenerateAnimationPackInfo
                 }
                 else
                 {
-                    System.out.println( "ON: " + groupTag.getName() +
-                            "; CANNOT FIT: " + tagRes.getPng().name() );
+                    System.out.println( "on: " + groupTag.getName() + "; picture doesn't fit: " + tagRes.getPng().name() );
                 }
 
                 Collections.sort( freeSpaceList );
@@ -400,7 +389,7 @@ public class GenerateAnimationPackInfo
         orderTheTagResourceList();
         taskCompletion += 0.1f;
 
-        System.out.println( "### CREATING ASSETS FOR CURRENT/AVAIBLE GROUPS..." );
+        System.out.println( "### CREATING ASSETS FOR CURRENT/AVAILABLE GROUPS..." );
         createGroupAssets();
         taskCompletion += 0.2f;
 

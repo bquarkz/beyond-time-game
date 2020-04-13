@@ -156,12 +156,14 @@ public class MainScene
     @Override
     public void start()
     {
+        Game.common.addOnTopInputProcessor( windowsManager );
         windowsManager.openWindow( windowAction );
     }
 
     @Override
     public void stop()
     {
+        Game.common.removeInputProcessor( windowsManager );
         threadExecutor.shutdown();
     }
 

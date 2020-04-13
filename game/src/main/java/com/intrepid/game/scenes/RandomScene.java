@@ -58,7 +58,7 @@ public class RandomScene implements IScene
 
         if( c == 150 )
         {
-            Game.scene.change( SimulationScene.class, AllCurtains.IMAGE_FADE );
+            Game.scene.change( GameplayScene.class, AllCurtains.IMAGE_FADE );
         }
     }
 
