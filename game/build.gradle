@@ -2,17 +2,6 @@ plugins {
 	id("org.jetbrains.kotlin.jvm") version "1.3.61"
 }
 
-task generateEclipseClasspath( description: "Post processing to create a classpath file for eclipse", group: "IDE" ) {
-	doLast {
-	    def classpath = new XmlParser().parse(file(".classpath"))
-	    new Node(classpath, "classpathentry", [ kind: 'src', path: 'assets' ]);
-	    def writer = new FileWriter(file(".classpath"))
-	    def printer = new XmlNodePrinter(new PrintWriter(writer))
-	    printer.setPreserveWhitespace(true)
-	    printer.print(classpath)
-	}
-}
-
 dependencies {
     compile project(":engine")
 	implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
