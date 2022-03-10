@@ -46,11 +46,11 @@ public class GameDesktopLauncher extends AbstractLauncher< GameBoot >
         final GameConfigurationBuilder gcb = new GameConfigurationBuilder();
         gcb.setMouseLockedAndInvisible( false );
         gcb.setTitle( "Behind Time - Game Test" );
-        gcb.setFullscreenMode( true );
+        gcb.setFullscreenMode( false );
         gcb.setResisable( false );
 
-        int nativeResolutionWidth = 1920;
-        int nativeResolutionHeight = 1080;
+        int nativeResolutionWidth = 1600;
+        int nativeResolutionHeight = 900;
         gcb.setNativeResolutionWidth( nativeResolutionWidth );
         gcb.setNativeResolutionHeight( nativeResolutionHeight );
 
