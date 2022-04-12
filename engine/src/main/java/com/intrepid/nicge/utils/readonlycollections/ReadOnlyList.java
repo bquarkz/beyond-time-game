@@ -1,4 +1,4 @@
-/**
+/*
  * Copyleft (C) 2016  Constantino, Nilton Rogerio <niltonrc@gmail.com>
  *
  * @author "Nilton R Constantino"
@@ -12,11 +12,11 @@
  */
 package com.intrepid.nicge.utils.readonlycollections;
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public interface IReadOnlyList< T > extends Iterable< T >
+public interface ReadOnlyList< T > extends Iterable< T >
 {
     // ****************************************************************************************
     // Constants
@@ -33,6 +33,12 @@ public interface IReadOnlyList< T > extends Iterable< T >
 
     int size();
 
+    Optional<T> randomPick(Random random);
+
+    Stream<T> stream();
+
+    boolean isEmpty();
+
     // ****************************************************************************************
     // Default methods
     // ****************************************************************************************
@@ -40,11 +46,19 @@ public interface IReadOnlyList< T > extends Iterable< T >
     // ****************************************************************************************
     // Static Methods
     // ****************************************************************************************
-    public static < T > IReadOnlyList< T > wrap(
-            final List< T > list
-    )
+    @SuppressWarnings("unchecked")
+    static <T> ReadOnlyList<T> empty() {
+        return ReadOnlyList.of();
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T> ReadOnlyList<T> of(T... ts) {
+        return ReadOnlyList.wrap(Stream.of(ts).collect(Collectors.toList()));
+    }
+
+    static < T > ReadOnlyList< T > wrap(final List< T > list)
     {
-        return new IReadOnlyList< T >()
+        return new ReadOnlyList< T >()
         {
             @Override
             public Iterator< T > iterator()
@@ -65,6 +79,14 @@ public interface IReadOnlyList< T > extends Iterable< T >
             }
 
             @Override
+            public Optional<T> randomPick(Random random) {
+                int size = size();
+                if (size == 0) return Optional.empty();
+                final int index = random.nextInt(size);
+                return Optional.ofNullable(get(index));
+            }
+
+            @Override
             public T get( int index )
             {
                 return list.get( index );
@@ -74,6 +96,21 @@ public interface IReadOnlyList< T > extends Iterable< T >
             public boolean contains( T o )
             {
                 return list.contains( o );
+            }
+
+            @Override
+            public String toString() {
+                return list.toString();
+            }
+
+            @Override
+            public Stream<T> stream() {
+                return list.stream();
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return list.isEmpty();
             }
         };
     }

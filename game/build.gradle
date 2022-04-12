@@ -8,4 +8,10 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	testImplementation("org.jetbrains.kotlin:kotlin-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+
+	compileOnly("org.projectlombok:lombok:1.18.20")
+	annotationProcessor("org.projectlombok:lombok:1.18.20")
+	testCompileOnly("org.projectlombok:lombok:1.18.20")
+	testAnnotationProcessor("org.projectlombok:lombok:1.18.20")
 }
+
